@@ -10,5 +10,14 @@
 	<atom:link href="http://sgswtky.githu.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Hugo</title>
+      <link>http://sgswtky.githu.io/categories/hugo/</link>
+      <pubDate>Sun, 08 Jul 2018 14:52:42 +0900</pubDate>
+      
+      <guid>http://sgswtky.githu.io/categories/hugo/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

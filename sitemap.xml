@@ -3,47 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://sgswtky.githu.io/post/test/</loc>
+    <loc>http://sgswtky.github.io/post/test/</loc>
     <lastmod>2018-07-08T14:52:42+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://sgswtky.githu.io/categories/</loc>
+    <loc>http://sgswtky.github.io/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://sgswtky.githu.io/tags/github/</loc>
-    <lastmod>2018-07-08T14:52:42+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://sgswtky.githu.io/categories/hugo/</loc>
+    <loc>http://sgswtky.github.io/tags/github/</loc>
     <lastmod>2018-07-08T14:52:42+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://sgswtky.githu.io/tags/hugo/</loc>
+    <loc>http://sgswtky.github.io/tags/hugo/</loc>
     <lastmod>2018-07-08T14:52:42+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://sgswtky.githu.io/post/</loc>
+    <loc>http://sgswtky.github.io/categories/hugo/</loc>
     <lastmod>2018-07-08T14:52:42+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://sgswtky.githu.io/tags/</loc>
+    <loc>http://sgswtky.github.io/post/</loc>
     <lastmod>2018-07-08T14:52:42+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://sgswtky.githu.io/</loc>
+    <loc>http://sgswtky.github.io/tags/</loc>
+    <lastmod>2018-07-08T14:52:42+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://sgswtky.github.io/</loc>
     <lastmod>2018-07-08T14:52:42+09:00</lastmod>
     <priority>0</priority>
   </url>

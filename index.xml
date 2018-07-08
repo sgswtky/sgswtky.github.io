@@ -8,7 +8,8 @@
     <language>ja-jp</language>
     <lastBuildDate>Sun, 08 Jul 2018 14:52:42 +0900</lastBuildDate>
     
-	<atom:link href="http://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
     
     
     <item>
@@ -19,6 +20,7 @@
       <guid>http://sgswtky.github.io/post/test/</guid>
       <description></description>
     </item>
+    
     
   </channel>
 </rss>

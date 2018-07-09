@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on sgswtky blog</title>
-    <link>http://sgswtky.github.io/categories/</link>
+    <link>https://sgswtky.github.io/categories/</link>
     <description>Recent content in Categories on sgswtky blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     
-	<atom:link href="http://sgswtky.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://sgswtky.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Hugo</title>
-      <link>http://sgswtky.github.io/categories/hugo/</link>
+      <link>https://sgswtky.github.io/categories/hugo/</link>
       <pubDate>Sun, 08 Jul 2018 14:52:42 +0900</pubDate>
       
-      <guid>http://sgswtky.github.io/categories/hugo/</guid>
+      <guid>https://sgswtky.github.io/categories/hugo/</guid>
       <description></description>
     </item>
     

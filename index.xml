@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>sgswtky blog</title>
+    <title>壁は登るためにある</title>
     <link>https://sgswtky.github.io/</link>
-    <description>Recent content on sgswtky blog</description>
+    <description>Recent content on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 08 Jul 2018 14:52:42 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 09 Jul 2018 17:08:18 +0900</lastBuildDate>
     
-        <atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
+	<atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Test</title>
-      <link>https://sgswtky.github.io/post/test/</link>
-      <pubDate>Sun, 08 Jul 2018 14:52:42 +0900</pubDate>
+      <title>ローカルMacのターミナルを個人的に良い感じにした</title>
+      <link>https://sgswtky.github.io/post/local-terminal-setting/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/post/test/</guid>
-      <description></description>
+      <guid>https://sgswtky.github.io/post/local-terminal-setting/</guid>
+      <description>きっかけ Macのバッテリーが膨らみすぎて、交換してもらった。 性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ</description>
     </item>
     
+    <item>
+      <title>About</title>
+      <link>https://sgswtky.github.io/about/</link>
+      <pubDate>Mon, 09 Jul 2018 16:50:05 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/about/</guid>
+      <description>渋谷のWeb系の企業でエンジニアをしているsgswtkyのブログです。 技術ネタや気になったことを記事として書いてます。 アウトプットが苦手なの</description>
+    </item>
     
   </channel>
 </rss>

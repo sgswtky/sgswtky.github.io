@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.42.2" />
+
+
+<title>ローカルMacのターミナルを個人的に良い感じにした - 壁は登るためにある</title>
+<meta property="og:title" content="ローカルMacのターミナルを個人的に良い感じにした - 壁は登るためにある">
+
+
+
+  
+
+
+
+
+
+
+<link rel="icon" href="https://sgswtky.github.io/images/" type="image/x-icon"/>
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css" media="all">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400|Lato:400,400italic,700">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="https://sgswtky.github.io/" class="nav-logo">
+    <img src="https://sgswtky.github.io/images/" 
+         width="" 
+         height="" 
+         alt="">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/">Blog</a></li>
+    
+    <li><a href="https://github.com/sgswtky">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">ローカルMacのターミナルを個人的に良い感じにした</h1>
+
+    
+    <span class="article-date">July 9, 2018</span>
+    
+
+    <div class="article-content">
+      
+
+<h2 id="きっかけ">きっかけ</h2>
+
+<p>Macのバッテリーが膨らみすぎて、交換してもらった。
+性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ・理解がある所には会社に感謝🙏</p>
+
+<p>がっつりイジり倒して玄人感あるターミナルっていうよりは基本機能に配色調整したシンプルなターミナルにしました。</p>
+
+<h2 id="いままで">いままで</h2>
+
+<ul>
+<li>iTerm2</li>
+<li>zsh</li>
+<li>oh-my-zsh</li>
+<li>デフォルトテーマ</li>
+</ul>
+
+<h2 id="これから">これから</h2>
+
+<ul>
+<li>iTerm2</li>
+<li>iTerm2のフォント変更</li>
+<li>japaneseque（配色）</li>
+<li>zsh</li>
+<li>oh-my-zsh</li>
+<li>avit（avit）</li>
+<li>ターミナルの表示カスタマイズ（ユーザーとか表示される部分）</li>
+</ul>
+
+<h3 id="iterm2">iTerm2</h3>
+
+<ul>
+<li><a href="https://www.iterm2.com/">https://www.iterm2.com/</a></li>
+</ul>
+
+<h3 id="iterm2のフォント変更">iTerm2のフォント変更</h3>
+
+<ul>
+<li><code>13pt Menlo Regular</code> に変更して使ってます
+
+<ul>
+<li>InteliJIdeaが Menloなのでそちらに合わせる形で設定しました</li>
+</ul></li>
+</ul>
+
+<h3 id="japaneseque">japaneseque</h3>
+
+<ul>
+<li>iTerm2の配色の設定ファイル
+
+<ul>
+<li><a href="https://github.com/aereal/dotfiles/blob/master/colors/Japanesque/Japanesque.itermcolors">https://github.com/aereal/dotfiles/blob/master/colors/Japanesque/Japanesque.itermcolors</a></li>
+</ul></li>
+<li>作者のブログ記事
+
+<ul>
+<li><a href="https://this.aereal.org/entry/2013/01/02/222304">https://this.aereal.org/entry/2013/01/02/222304</a></li>
+</ul></li>
+</ul>
+
+<h3 id="zsh">zsh</h3>
+
+<ul>
+<li>wikipedia
+
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/Z_Shell">https://ja.wikipedia.org/wiki/Z_Shell</a></li>
+</ul></li>
+<li>macだとbrewで入ります。入れ方はググると出てきます。
+
+<ul>
+<li><a href="https://qiita.com/nenokido2000/items/763a4af5c161ff5ede68">https://qiita.com/nenokido2000/items/763a4af5c161ff5ede68</a></li>
+</ul></li>
+</ul>
+
+<h3 id="oh-my-zsh">oh-my-zsh</h3>
+
+<ul>
+<li>github（入れ方もREADMEにあります）
+
+<ul>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></li>
+</ul></li>
+</ul>
+
+<h3 id="avit">avit</h3>
+
+<ul>
+<li><code>~/.zshrc</code> の <code>ZSH_THEME</code> を、<code>ZSH_THEME=&quot;avit&quot;</code> にするだけ</li>
+</ul>
+
+<h3 id="ターミナルの表示カスタマイズ">ターミナルの表示カスタマイズ</h3>
+
+<p>ここまではインストール＆設定するだけでしたが、この表示カスタマイズだけ色々イジりました。</p>
+
+<ul>
+<li>ブランチ表示変更の参考にした記事
+
+<ul>
+<li><a href="https://qiita.com/Kakuni/items/a8025e075926272f491d">https://qiita.com/Kakuni/items/a8025e075926272f491d</a>
+-　<code># ls collor</code> の所で、zshのls配色設定は見えづらいため変更しています</li>
+<li><a href="http://neko-mac.blogspot.com/2015/03/mac_18.html">http://neko-mac.blogspot.com/2015/03/mac_18.html</a></li>
+</ul></li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh.bash" data-lang="zsh.bash">mkdir ~/Settings
+touch ~/Settings/my-zsh</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-my-zsh" data-lang="my-zsh"># ls collor
+export LSCOLORS=gxfxcxdxbxegedabagacad
+
+# zsh
+PROMPT=&#39;%{${fg[green]}%}⌚ %* %{${fg[cyan]}%} 📁 %~ %{${reset_color}%}
+▶ &#39;
+# git branch color view
+function rprompt-git-current-branch {
+  local branch_name st branch_status
+
+  if [ ! -e  &#34;.git&#34; ]; then
+    return
+  fi
+  branch_name=`git rev-parse --abbrev-ref HEAD 2&gt; /dev/null`
+  st=`git status 2&gt; /dev/null`
+  if [[ -n `echo &#34;$st&#34; | grep &#34;^nothing to&#34;` ]]; then
+    # clean
+    branch_status=&#34;👍 %F{green}&#34;
+  elif [[ -n `echo &#34;$st&#34; | grep &#34;^Untracked files&#34;` ]]; then
+    # editing
+    branch_status=&#34;%F{red}?&#34;
+  elif [[ -n `echo &#34;$st&#34; | grep &#34;^Changes not staged for commit&#34;` ]]; then
+    # There is a file which is not add
+    branch_status=&#34;😀 %F{red}+&#34;
+  elif [[ -n `echo &#34;$st&#34; | grep &#34;^Changes to be committed&#34;` ]]; then
+    # There is a file which is not commit
+    branch_status=&#34;😆 %F{yellow}!&#34;
+  elif [[ -n `echo &#34;$st&#34; | grep &#34;^rebase in progress&#34;` ]]; then
+    # conflict
+    echo &#34;🤯  %F{red}!(no branch)&#34;
+    return
+  else
+    branch_status=&#34;%F{blue}&#34;
+  fi
+  echo &#34;${branch_status}[$branch_name] %{${reset_color}%}&#34;
+}
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
+setopt prompt_subst
+
+# プロンプトの右側(RPROMPT)にメソッドの結果を表示させる
+RPROMPT=&#39;`rprompt-git-current-branch`&#39;</code></pre></div>
+<p>こんな感じになります。</p>
+
+<p><img src="/images/local-terminal-example.png" alt="ターミナル参考画像" /></p>
+
+<h3 id="iterm2の設定">iTerm2の設定</h3>
+
+<ul>
+<li>配色の設定とか書いてないけど若干変えてる所があるので設定をエクスポートしておきました。</li>
+</ul>
+
+<p><a href="/files/iterm2-settings.json">settings.json</a></p>
+
+    </div>
+  </article>
+
+  
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="https://sgswtky.github.io/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="https://sgswtky.github.io/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

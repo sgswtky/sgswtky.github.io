@@ -6,9 +6,37 @@
     <description>Recent content in Tags on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
+    <lastBuildDate>Mon, 09 Jul 2018 17:08:18 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git</title>
+      <link>https://sgswtky.github.io/tags/git/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Iterm2</title>
+      <link>https://sgswtky.github.io/tags/iterm2/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/iterm2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Terminal</title>
+      <link>https://sgswtky.github.io/tags/terminal/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/terminal/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

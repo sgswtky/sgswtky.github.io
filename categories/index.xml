@@ -10,5 +10,14 @@
 	<atom:link href="https://sgswtky.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Local</title>
+      <link>https://sgswtky.github.io/categories/local/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/local/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

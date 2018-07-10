@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/tags/git/</link>
+    <description>Recent content in Git on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 09 Jul 2018 17:08:18 +0900</lastBuildDate>
+    
+	<atom:link href="https://sgswtky.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ローカルMacのターミナルを個人的に良い感じにした</title>
+      <link>https://sgswtky.github.io/post/local-terminal-setting/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/local-terminal-setting/</guid>
+      <description>きっかけ Macのバッテリーが膨らみすぎて、交換してもらった。 性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ</description>
+    </item>
+    
+  </channel>
+</rss>

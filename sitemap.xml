@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://sgswtky.github.io/post/golang-orm-sqlx/</loc>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/local-terminal-setting/</loc>
     <lastmod>2018-07-09T17:08:18+09:00</lastmod>
   </url>
@@ -24,8 +29,20 @@
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/categories/go/</loc>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/tags/iterm2/</loc>
     <lastmod>2018-07-09T17:08:18+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/library/</loc>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -36,8 +53,20 @@
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/tags/ormapper/</loc>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/sql/</loc>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -55,7 +84,7 @@
   
   <url>
     <loc>https://sgswtky.github.io/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
+    <lastmod>2018-07-10T13:53:07+09:00</lastmod>
     <priority>0</priority>
   </url>
   

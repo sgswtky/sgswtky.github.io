@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ormapper on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/tags/ormapper/</link>
+    <description>Recent content in Ormapper on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 10 Jul 2018 13:53:07 +0900</lastBuildDate>
+    
+	<atom:link href="https://sgswtky.github.io/tags/ormapper/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>jmoiron/sqlx - Golang O/R Mapper触ってみた</title>
+      <link>https://sgswtky.github.io/post/golang-orm-sqlx/</link>
+      <pubDate>Tue, 10 Jul 2018 13:53:07 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/golang-orm-sqlx/</guid>
+      <description>きっかけ 会社で僕のチームでは3層WebアプリでGoをサーバーサイドとして使ってます。 フロントはVuejsをでSPAとしてブラウザで動作する感</description>
+    </item>
+    
+  </channel>
+</rss>

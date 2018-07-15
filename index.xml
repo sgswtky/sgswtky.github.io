@@ -6,10 +6,19 @@
     <description>Recent content on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 10 Jul 2018 13:53:07 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 15 Jul 2018 23:17:35 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>go-xorm/xorm - Golang O/R Mapper触ってみた</title>
+      <link>https://sgswtky.github.io/post/golang-orm-xorm/</link>
+      <pubDate>Sun, 15 Jul 2018 23:17:35 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/golang-orm-xorm/</guid>
+      <description>先日 sqlx を触ってみて、他のORMも触ってみたいと思って触ってみた 色々試してみた DB接続部分 接続は他のORMと同じような感じ。 package orm import ( &amp;#34;testing&amp;#34; _ &amp;#34;github.com/go-sql-driver/mysql&amp;#34; &amp;#34;github.com/go-xorm/xorm&amp;#34; )</description>
+    </item>
     
     <item>
       <title>jmoiron/sqlx - Golang O/R Mapper触ってみた</title>

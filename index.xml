@@ -6,10 +6,19 @@
     <description>Recent content on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 15 Jul 2018 23:17:35 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 17 Jul 2018 20:14:21 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした</title>
+      <link>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</link>
+      <pubDate>Tue, 17 Jul 2018 20:14:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</guid>
+      <description>先日から古い Jenkins2 のジョブをメンテする仕事をしていて、Pipelineで Groovyを書いてたら特定のパターンでは動くけどそれ以外だと動かないと</description>
+    </item>
     
     <item>
       <title>go-xorm/xorm - Golang O/R Mapper触ってみた</title>

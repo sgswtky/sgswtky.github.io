@@ -6,10 +6,19 @@
     <description>Recent content on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 17 Jul 2018 20:14:21 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 22 Jul 2018 19:38:54 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go言語でwasm動かしてみた</title>
+      <link>https://sgswtky.github.io/post/golang-wasm/</link>
+      <pubDate>Sun, 22 Jul 2018 19:38:54 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/golang-wasm/</guid>
+      <description>wasmとは何かを調べてみて、Goでブラウザで動かしてみました。 WebAssembly とは 略してwasm。 メジャー4ブラウザ（Chrome、Edge、Firef</description>
+    </item>
     
     <item>
       <title>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした</title>

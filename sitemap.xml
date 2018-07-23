@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://sgswtky.github.io/post/golang-wasm/</loc>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</loc>
     <lastmod>2018-07-17T20:14:21+09:00</lastmod>
   </url>
@@ -40,7 +45,7 @@
   
   <url>
     <loc>https://sgswtky.github.io/categories/go/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -88,7 +93,7 @@
   
   <url>
     <loc>https://sgswtky.github.io/post/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -111,8 +116,14 @@
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/tags/webassembly/</loc>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
     <priority>0</priority>
   </url>
   

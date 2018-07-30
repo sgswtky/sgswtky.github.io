@@ -6,10 +6,19 @@
     <description>Recent content on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 22 Jul 2018 19:38:54 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 28 Jul 2018 15:44:16 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>所属プロダクトの開発プロセス</title>
+      <link>https://sgswtky.github.io/post/product-development-process/</link>
+      <pubDate>Sat, 28 Jul 2018 15:44:16 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/product-development-process/</guid>
+      <description>来週から期間限定で違うチームに異動するため、今のチームの開発プロセスをなるべく詳細に書き残しておこうと思う。 チームを異動して戻ってきた時に見</description>
+    </item>
     
     <item>
       <title>Go言語でwasm動かしてみた</title>

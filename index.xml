@@ -6,10 +6,19 @@
     <description>Recent content on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 28 Jul 2018 15:44:16 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 04 Aug 2018 21:37:40 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>チーム期間限定異動1週間目</title>
+      <link>https://sgswtky.github.io/post/team-idou-week1/</link>
+      <pubDate>Sat, 04 Aug 2018 21:37:40 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/team-idou-week1/</guid>
+      <description>チーム異動して学んだことを書いていこうと思う。 異動先で使用している言語はScalaなので、 一からScalaを覚えつつ そのチームのやり方を覚え</description>
+    </item>
     
     <item>
       <title>所属プロダクトの開発プロセス</title>

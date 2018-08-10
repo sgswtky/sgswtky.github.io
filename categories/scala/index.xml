@@ -6,7 +6,7 @@
     <description>Recent content in Scala on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 08 Aug 2018 22:17:08 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 10 Aug 2018 22:00:08 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/categories/scala/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>チーム期間限定異動2週間目</title>
       <link>https://sgswtky.github.io/post/team-idou-week2/</link>
-      <pubDate>Wed, 08 Aug 2018 22:17:08 +0900</pubDate>
+      <pubDate>Fri, 10 Aug 2018 22:00:08 +0900</pubDate>
       
       <guid>https://sgswtky.github.io/post/team-idou-week2/</guid>
       <description>6日目 // ※記事中の `DateTime型は org.joda.time.DateTimeです` import org.joda.time.DateTime 週次の計画MTGの後に、ペアプロでリファクタリ</description>

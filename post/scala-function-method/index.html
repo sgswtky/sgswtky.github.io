@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.42.2" />
+
+
+<title>ScalaのFunctionが実装するメソッド - 壁は登るためにある</title>
+<meta property="og:title" content="ScalaのFunctionが実装するメソッド - 壁は登るためにある">
+
+
+
+  
+
+
+
+
+
+
+<link rel="icon" href="https://sgswtky.github.io/images/" type="image/x-icon"/>
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css" media="all">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400|Lato:400,400italic,700">
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="https://sgswtky.github.io/" class="nav-logo" style="text-decoration: none; color: #000000; font-size: 18px">
+    <img src="https://sgswtky.github.io/images/logo.png" 
+         width="50" 
+         height="50" 
+         alt="logo"
+         style="float:left;"
+    >
+    <div style="white-space: nowrap; font-family: 'Lato', sans-serif; height:50px; display:flex; align-items: center; padding-left: 10px">壁は登るためにある</div>
+  </a>
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/">Blog</a></li>
+    
+    <li><a href="https://github.com/sgswtky">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">ScalaのFunctionが実装するメソッド</h1>
+
+    
+    <span class="article-date">October 23, 2018</span>
+    
+    <div class="article-content">
+      
+
+<p>しばらく放置してた。反省。</p>
+
+<p>Scalaで関数を定義すると、すでにその時点でいくつかのメソッドが実装されている。
+（レシーバとも言う？）</p>
+
+<p><code>Function1</code> で実際にどんなメソッドを実装しているかを見てみた。
+以下の4つを実装してるっぽい。</p>
+
+<pre><code>compose
+andThen
+apply
+toString
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>compose</td>
+<td>関数の合成</td>
+</tr>
+
+<tr>
+<td>andThen</td>
+<td>関数の合成</td>
+</tr>
+
+<tr>
+<td>apply</td>
+<td>関数の適用</td>
+</tr>
+
+<tr>
+<td>toString</td>
+<td>String型に変換</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="compose">compose</h2>
+
+<ul>
+<li>レシーバの関数を後に適用</li>
+<li>２つの <code>Function1</code> から新しい <code>Function1</code> を生成</li>
+</ul>
+
+<p>引数に <code>func{n}</code> を結合するメソッドを３つ compose してみる</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">object</span> <span style="color:#447fcf">method</span> <span style="color:#6ab825;font-weight:bold">extends</span> <span style="color:#447fcf">App</span> {
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc1(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func1&#34;</span>
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc2(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func2&#34;</span>
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc3(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func3&#34;</span>
+
+  <span style="color:#6ab825;font-weight:bold">val</span> ef1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> =&gt; <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc1
+  <span style="color:#6ab825;font-weight:bold">val</span> ef2 <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc2 <span style="color:#6ab825;font-weight:bold">_</span>
+  <span style="color:#6ab825;font-weight:bold">val</span> ef3 <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc3 <span style="color:#6ab825;font-weight:bold">_</span>
+
+  <span style="color:#6ab825;font-weight:bold">val</span> f <span style="color:#6ab825;font-weight:bold">=</span> ef1 compose ef2 compose ef3
+  <span style="color:#6ab825;font-weight:bold">val</span> r <span style="color:#6ab825;font-weight:bold">=</span> f(<span style="color:#ed9d13">&#34;EXAMPLE&#34;</span>)
+  println(r)
+}</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">EXAMPLE func3 func2 func1</code></pre></div>
+<p>composeはレシーバのメソッドを後ろから実行するような動きをするみたい。</p>
+
+<p>↓この部分は実際は</p>
+
+<pre><code>val f = ef1 compose ef2 compose ef3
+</code></pre>
+
+<p>↓こう呼び出される</p>
+
+<pre><code>val f = ef1.compose(ef2).compose(ef3)
+</code></pre>
+
+<p>順番的にはこうなる</p>
+
+<pre><code>1. ef1.compose(ef2).compose(ef3)
+2. {ef2のあとef1が実行されるFunction1}.compose(ef3)
+3. {ef3のあとef2のあとef1が実行されるFunction1}
+</code></pre>
+
+<h2 id="andthen">andThen</h2>
+
+<ul>
+<li>composeとは逆でレシーバを先に適用</li>
+<li>２つの <code>Function1</code> から新しい <code>Function1</code> を生成</li>
+</ul>
+
+<p>引数に <code>func{n}</code> を結合するメソッドを３つ andThen する</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">object</span> <span style="color:#447fcf">method</span> <span style="color:#6ab825;font-weight:bold">extends</span> <span style="color:#447fcf">App</span> {
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc1(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func1&#34;</span>
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc2(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func2&#34;</span>
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc3(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func3&#34;</span>
+
+  <span style="color:#6ab825;font-weight:bold">val</span> ef1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> =&gt; <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc1
+  <span style="color:#6ab825;font-weight:bold">val</span> ef2 <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc2 <span style="color:#6ab825;font-weight:bold">_</span>
+  <span style="color:#6ab825;font-weight:bold">val</span> ef3 <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc3 <span style="color:#6ab825;font-weight:bold">_</span>
+
+  <span style="color:#6ab825;font-weight:bold">val</span> f <span style="color:#6ab825;font-weight:bold">=</span> ef1 andThen ef2 andThen ef3
+  <span style="color:#6ab825;font-weight:bold">val</span> r <span style="color:#6ab825;font-weight:bold">=</span> f(<span style="color:#ed9d13">&#34;EXAMPLE&#34;</span>)
+  println(r)
+}</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">EXAMPLE func1 func2 func3</code></pre></div>
+<p>andThenは composeとは逆の動きをする認識</p>
+
+<pre><code>ef1.andThen(ef2).andThen(ef3)
+{ef1の後ef2を適用する関数}.andThen(ef3)
+{ef1の後ef2の後ef3を適用する関数}
+</code></pre>
+
+<h2 id="apply">apply</h2>
+
+<ul>
+<li>関数を適用する時にすでに呼ばれてる</li>
+<li>普通にいつもシンタックスシュガーで呼び出してる</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">object</span> <span style="color:#447fcf">method</span> <span style="color:#6ab825;font-weight:bold">extends</span> <span style="color:#447fcf">App</span> {
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc1(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func1&#34;</span>
+
+  <span style="color:#6ab825;font-weight:bold">val</span> ef1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> =&gt; <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc1
+  <span style="color:#6ab825;font-weight:bold">val</span> r1 <span style="color:#6ab825;font-weight:bold">=</span> ef1.apply(<span style="color:#ed9d13">&#34;EXAMPLE&#34;</span>)
+  <span style="color:#6ab825;font-weight:bold">val</span> r2 <span style="color:#6ab825;font-weight:bold">=</span> ef1(<span style="color:#ed9d13">&#34;EXAMPLE&#34;</span>)
+
+  println(r1)
+  println(r2)
+}</code></pre></div>
+<p>r1 と r2 は同じ結果となる</p>
+
+<h2 id="tostring">toString</h2>
+
+<ul>
+<li>継承元に存在しない場合は <code>java.lang.Object</code> が呼ばれる認識</li>
+<li><code>Function1</code> の場合は overrideしてるけどこれは呼ばれてなくてよくわからない。。。</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">object</span> <span style="color:#447fcf">method</span> <span style="color:#6ab825;font-weight:bold">extends</span> <span style="color:#447fcf">App</span> {
+  <span style="color:#6ab825;font-weight:bold">def</span> exampleFunc1(s<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s + <span style="color:#ed9d13">&#34; func1&#34;</span>
+
+  <span style="color:#6ab825;font-weight:bold">val</span> ef1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> =&gt; <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> exampleFunc1
+  println(ef1.toString())
+}</code></pre></div>
+<p>InteliJで上記の <code>toString</code> を辿ると <code>Function1</code> で以下のような実装であることがわかる</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Function1.scala" data-lang="Function1.scala"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">def</span> toString() <span style="color:#6ab825;font-weight:bold">=</span> <span style="color:#ed9d13">&#34;&lt;function1&gt;&#34;</span></code></pre></div>
+<p>でも結果は下記のようになる。。。謎</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">cop.method$$$Lambda$6/817406040@61009542</code></pre></div>
+<h1 id="function2">Function2</h1>
+
+<p>これまで <code>Function1</code> を例として見てきたけど、Function <code>2</code> では実装してるメソッドが異なる。</p>
+
+<p><code>Function1</code> で実装されていた <code>compore, andThen</code> は実装されておらず、代わりに以下のメソッドが実装されている。</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-list.txt" data-lang="list.txt">curried
+tupled</code></pre></div>
+<h2 id="curried">curried</h2>
+
+<p>定義した関数の引数をまとめてカリー化してくれる。</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">object</span> <span style="color:#447fcf">method</span> <span style="color:#6ab825;font-weight:bold">extends</span> <span style="color:#447fcf">App</span> {
+
+  <span style="color:#6ab825;font-weight:bold">def</span> f2(s1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>, s2<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s1 + s2
+
+  <span style="color:#6ab825;font-weight:bold">val</span> f<span style="color:#6ab825;font-weight:bold">:</span> (<span style="color:#6ab825;font-weight:bold">String</span>, <span style="color:#6ab825;font-weight:bold">String</span>) <span style="color:#6ab825;font-weight:bold">=&gt;</span> <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> f2
+
+  <span style="color:#999;font-style:italic">// non curry
+</span><span style="color:#999;font-style:italic"></span>  <span style="color:#6ab825;font-weight:bold">val</span> a1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = f(<span style="color:#ed9d13">&#34;EX&#34;</span>, <span style="color:#ed9d13">&#34;AMPLE&#34;</span>)
+  println(a1)
+
+  <span style="color:#999;font-style:italic">// curry
+</span><span style="color:#999;font-style:italic"></span>  <span style="color:#6ab825;font-weight:bold">val</span> curry<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> =&gt; <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=&gt;</span> <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> f.curried
+  <span style="color:#6ab825;font-weight:bold">val</span> c1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> =&gt; <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> curry(<span style="color:#ed9d13">&#34;EX&#34;</span>)
+  <span style="color:#6ab825;font-weight:bold">val</span> c2<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = c1(<span style="color:#ed9d13">&#34;AMPLE&#34;</span>)
+  println(c2)
+}</code></pre></div>
+<p>出力は以下のようになる</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">EXAMPLE
+EXAMPLE</code></pre></div>
+<h2 id="tupled">tupled</h2>
+
+<p>引数をタプルで受け取れるようにしてくれる。</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">object</span> <span style="color:#447fcf">method</span> <span style="color:#6ab825;font-weight:bold">extends</span> <span style="color:#447fcf">App</span> {
+
+  <span style="color:#6ab825;font-weight:bold">def</span> f2(s1<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>, s2<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span>)<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = s1 + s2
+
+  <span style="color:#6ab825;font-weight:bold">val</span> f<span style="color:#6ab825;font-weight:bold">:</span> (<span style="color:#6ab825;font-weight:bold">String</span>, <span style="color:#6ab825;font-weight:bold">String</span>) <span style="color:#6ab825;font-weight:bold">=&gt;</span> <span style="color:#447fcf">String</span> <span style="color:#6ab825;font-weight:bold">=</span> f2
+  <span style="color:#6ab825;font-weight:bold">val</span> t<span style="color:#6ab825;font-weight:bold">:</span> (<span style="color:#6ab825;font-weight:bold">String</span>, <span style="color:#6ab825;font-weight:bold">String</span>) <span style="color:#6ab825;font-weight:bold">=</span> (<span style="color:#ed9d13">&#34;EX&#34;</span>, <span style="color:#ed9d13">&#34;AMPLE&#34;</span>)
+
+
+  <span style="color:#999;font-style:italic">// *** compile error ***
+</span><span style="color:#999;font-style:italic">//  val r = f(t)
+</span><span style="color:#999;font-style:italic">//  println(r)
+</span><span style="color:#999;font-style:italic"></span>  <span style="color:#999;font-style:italic">// tupled
+</span><span style="color:#999;font-style:italic"></span>  <span style="color:#6ab825;font-weight:bold">val</span> tupled <span style="color:#6ab825;font-weight:bold">=</span> f.tupled
+  <span style="color:#6ab825;font-weight:bold">val</span> tr<span style="color:#6ab825;font-weight:bold">:</span> <span style="color:#6ab825;font-weight:bold">String</span> = tupled(t)
+  println(tr)
+}</code></pre></div>
+<p>出力は以下のようになる</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">EXAMPLE</code></pre></div>
+<p><code>tupled</code> 変数に型指定したけどなぜかエラーになる。よくわからない…。
+<code>tupled</code> の型は恐らく <code>(String, String) =&gt; String</code> である。</p>
+
+<p><code>compile error</code> の部分は元の関数 <code>f</code> に対してタプルを渡している。
+これは単純に型が違うのでエラーとなる。 tupledを呼び出す事でタプルで受け付ける関数に変換できる。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>scalaは全てオブジェクトになっていて、関数ですらオブジェクトになっている。
+こういう細かい実装されてる関数に詳しくなってscalaの使いたい機能をサクサク使えるようになりたい。</p>
+
+    </div>
+    <div class="addthis_inline_share_toolbox"></div>
+
+  </article>
+  
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="https://sgswtky.github.io/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="https://sgswtky.github.io/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b4b66137935d0b4" async></script>
+
+  </body>
+</html>
+

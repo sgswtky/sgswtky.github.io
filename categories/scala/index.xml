@@ -6,10 +6,19 @@
     <description>Recent content in Scala on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 10 Aug 2018 22:00:08 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 23 Oct 2018 09:30:08 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/categories/scala/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ScalaのFunctionが実装するメソッド</title>
+      <link>https://sgswtky.github.io/post/scala-function-method/</link>
+      <pubDate>Tue, 23 Oct 2018 09:30:08 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/scala-function-method/</guid>
+      <description>しばらく放置してた。反省。 Scalaで関数を定義すると、すでにその時点でいくつかのメソッドが実装されている。 （レシーバとも言う？） Function1 で実際に</description>
+    </item>
     
     <item>
       <title>チーム期間限定異動2週間目</title>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Function on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/tags/function/</link>
+    <description>Recent content in Function on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 23 Oct 2018 09:30:08 +0900</lastBuildDate>
+    
+	<atom:link href="https://sgswtky.github.io/tags/function/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ScalaのFunctionが実装するメソッド</title>
+      <link>https://sgswtky.github.io/post/scala-function-method/</link>
+      <pubDate>Tue, 23 Oct 2018 09:30:08 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/scala-function-method/</guid>
+      <description>しばらく放置してた。反省。 Scalaで関数を定義すると、すでにその時点でいくつかのメソッドが実装されている。 （レシーバとも言う？） Function1 で実際に</description>
+    </item>
+    
+  </channel>
+</rss>

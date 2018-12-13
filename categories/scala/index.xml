@@ -6,10 +6,19 @@
     <description>Recent content in Scala on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Oct 2018 09:30:08 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 13 Dec 2018 21:30:21 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/categories/scala/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ScalikeJDBCのクォート付く付かない挙動調べてみた</title>
+      <link>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</link>
+      <pubDate>Thu, 13 Dec 2018 21:30:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</guid>
+      <description>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、 一部不明な点があったので調べてみました。 ScalikeJDB</description>
+    </item>
     
     <item>
       <title>ScalaのFunctionが実装するメソッド</title>

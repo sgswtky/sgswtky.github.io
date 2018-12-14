@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Other on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/categories/other/</link>
+    <description>Recent content in Other on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Fri, 14 Dec 2018 19:17:05 +0900</lastBuildDate>
+    
+	<atom:link href="https://sgswtky.github.io/categories/other/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>多相について今一度調べてみた</title>
+      <link>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</link>
+      <pubDate>Fri, 14 Dec 2018 19:17:05 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</guid>
+      <description>自分はエンジニアになって数年が経つけど、たまに基礎の基礎を知らなかったりします。 最近 Scalaで関数型プログラミングの勉強をしてる時に 高カイ</description>
+    </item>
+    
+  </channel>
+</rss>

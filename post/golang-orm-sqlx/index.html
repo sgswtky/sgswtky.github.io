@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.42.2" />
+<meta name="generator" content="Hugo 0.68.3" />
 
 
 <title>jmoiron/sqlx - Golang O/R Mapper触ってみた - 壁は登るためにある</title>
@@ -66,36 +66,22 @@
     <span class="article-date">July 10, 2018</span>
     
     <div class="article-content">
-      
-
-<h2 id="きっかけ">きっかけ</h2>
-
+      <h2 id="きっかけ">きっかけ</h2>
 <p>会社で僕のチームでは3層WebアプリでGoをサーバーサイドとして使ってます。</p>
-
 <p>フロントはVuejsをでSPAとしてブラウザで動作する感じです。
 AWS上で動いていて、サーバーサイド（Go）とRDS（MySQL）のデータのやり取りで <code>dbr</code> というORMを使っているのですが、以前このORMで一点問題になる事があった。</p>
-
 <p>日本をターゲットにしたプロダクトを作っているので日本を基準にした時刻でDBとやり取りしたいので、JSTとして時刻を扱いたいけど <code>dbr</code> によって強制的にUTCとなる。
 UTCからJSTに無理矢理変換するなどして対応しているのですが、正直かっこ悪いので根本的な対応をしたいです。</p>
-
 <p>色々調べてみた所dbrのコミッタはこれをissueでなく仕様としているような発言が以下のissueから見て取れる。</p>
-
 <p><a href="https://github.com/gocraft/dbr/issues/96">https://github.com/gocraft/dbr/issues/96</a></p>
-
 <p>このため、この先 <code>dbr</code> でなく別のORMを使用することを検討しています。
 軽く調べてみて今回紹介する <code>jmoiron/sqlx</code> が個人的にすごく好きな感じだったので紹介したいと思います。</p>
-
 <h2 id="goのormに個人的に求めてるもの">GoのORMに個人的に求めてるもの</h2>
-
 <h3 id="goに合う">Goに合う</h3>
-
 <p>Goをしばらく触っていて感じるのは多機能で色々やってくれるモノは基本的にGoに合わない気がしています。
 例えばJavaのspring系のフレームワークであったりMyBatisのようなXMLとかアノテーションたくさん使っていろんな機能がある奴。</p>
-
 <p>Goはどちらかというと小さいライブラリを組み合わせて使うほうが向いている感じがあって、それぞれが疎結合になってるというのが一番綺麗でわかりやすいような気がしてます。（そして個人的に好き）</p>
-
 <h3 id="個人的に求めてるもの">個人的に求めてるもの</h3>
-
 <ul>
 <li>なんでもやってくれない、なるべく最低限</li>
 <li>ActiveRecordみたいな黒魔術でない</li>
@@ -105,27 +91,19 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 <li>読みやすいか</li>
 <li>生SQLが書ける</li>
 </ul>
-
 <h2 id="公式readmeを見た感じ">公式READMEを見た感じ</h2>
-
 <ul>
 <li>database/sql に一連の拡張機能追加してるだけ</li>
 <li>database/sql 使ってるなら簡単に導入できる</li>
 <li>コンセプトがシンプル</li>
 </ul>
-
 <p>な印象を受けて、この時点で <strong>良さそう</strong> と思った</p>
-
 <h2 id="実際触ってみて">実際触ってみて</h2>
-
 <p>簡単にCRUD、NamedExecというsqlxが作ったメソッド、トランザクションを一通り試してみた。</p>
-
 <h3 id="select">select</h3>
-
 <p>selectでマッピングを行ってくれる。</p>
-
 <p>カラム名は構造体のタグで明示的に指定する。</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go">db, _ := sqlx.Connect(<span style="color:#ed9d13">&#34;mysql&#34;</span>,
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go">db, _ := sqlx.<span style="color:#447fcf">Connect</span>(<span style="color:#ed9d13">&#34;mysql&#34;</span>,
   <span style="color:#ed9d13">&#34;root:rootpasswd@(example.host:3306)/example?parseTime=true&#34;</span>)
 <span style="color:#6ab825;font-weight:bold">type</span> UserStatus <span style="color:#6ab825;font-weight:bold">struct</span> {
 	UserID <span style="color:#6ab825;font-weight:bold">string</span>                <span style="color:#ed9d13">`db:&#34;user_id&#34;`</span>
@@ -133,7 +111,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 	UserStatusDescription <span style="color:#6ab825;font-weight:bold">string</span> <span style="color:#ed9d13">`db:&#34;user_status_description&#34;`</span>
 }
 userStatus := []UserStatus{}
-err := db.Select(&amp;userStatus, <span style="color:#ed9d13">`
+err := db.<span style="color:#447fcf">Select</span>(&amp;userStatus, <span style="color:#ed9d13">`
 </span><span style="color:#ed9d13">  select
 </span><span style="color:#ed9d13">    user_id,
 </span><span style="color:#ed9d13">    user_name,
@@ -142,53 +120,42 @@ err := db.Select(&amp;userStatus, <span style="color:#ed9d13">`
 </span><span style="color:#ed9d13">    users u
 </span><span style="color:#ed9d13">  inner join user_status us
 </span><span style="color:#ed9d13">    on u.user_status = us.user_status_id
-</span><span style="color:#ed9d13">`</span>)</code></pre></div>
-<p>上記のようなコードで、 <code>userStatus</code> にSQLの結果一覧が入ってくるようになる。</p>
-
+</span><span style="color:#ed9d13">`</span>)
+</code></pre></div><p>上記のようなコードで、 <code>userStatus</code> にSQLの結果一覧が入ってくるようになる。</p>
 <h3 id="insert-update-deleteなどその他のクエリ">insert, update, deleteなどその他のクエリ</h3>
-
 <p>その他のクエリは以下のように <code>tx.Query</code> を使う</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go">r, err := db.Query(<span style="color:#ed9d13">&#34;update users set user_name = &#39;update&#39; where user_id = ?&#34;</span>, <span style="color:#3677a9">1</span>)</code></pre></div>
-<p>戻り値には Rowsとerorrが入る</p>
-
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go">r, err := db.<span style="color:#447fcf">Query</span>(<span style="color:#ed9d13">&#34;update users set user_name = &#39;update&#39; where user_id = ?&#34;</span>, <span style="color:#3677a9">1</span>)
+</code></pre></div><p>戻り値には Rowsとerorrが入る</p>
 <h3 id="namedexecメソッド">NamedExecメソッド</h3>
-
 <p>実際に触っていると <code>NamedExec</code> というメソッドを見つけた。</p>
-
 <p>このメソッドが便利そうで、 <code>map[string]interface{}</code> で渡して良い感じにクエリが組み立てられそうだと感じた。</p>
-
 <p>いちいちただの <code>insert</code> とか <code>update</code> を書くのが面倒くさいから構造体渡したら作成・更新やってほしいと思っていて、実際にプロダクションのコードに <code>reflect</code> を使って構造体渡すだけで作成・更新してくれるメソッドを作っていたりする。</p>
-
 <p>（これは多分ActiveRecordと同じだと思うのですが、チームでメンテできるし…ということでそんな感じになってます）</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#999;font-style:italic">// 公式READMEより引用
-</span><span style="color:#999;font-style:italic"></span>_, err = db.NamedExec(<span style="color:#ed9d13">`
+</span><span style="color:#999;font-style:italic"></span>_, err = db.<span style="color:#447fcf">NamedExec</span>(<span style="color:#ed9d13">`
 </span><span style="color:#ed9d13">    INSERT INTO person (first_name,last_name,email) VALUES (:first,:last,:email)
 </span><span style="color:#ed9d13">`</span>,
     <span style="color:#6ab825;font-weight:bold">map</span>[<span style="color:#6ab825;font-weight:bold">string</span>]<span style="color:#6ab825;font-weight:bold">interface</span>{}{
         <span style="color:#ed9d13">&#34;first&#34;</span>: <span style="color:#ed9d13">&#34;Bin&#34;</span>,
         <span style="color:#ed9d13">&#34;last&#34;</span>: <span style="color:#ed9d13">&#34;Smuth&#34;</span>,
         <span style="color:#ed9d13">&#34;email&#34;</span>: <span style="color:#ed9d13">&#34;bensmith@allblacks.nz&#34;</span>,
-})</code></pre></div>
-<p><code>NamedExec</code> はそういう面倒くささを払拭するのに結構使えそうだと思った。</p>
-
+})
+</code></pre></div><p><code>NamedExec</code> はそういう面倒くささを払拭するのに結構使えそうだと思った。</p>
 <p>例えば以下のコードで構造体のカラム名と中身のmap（<code>map[string]interface{}</code>）が取れる。</p>
-
 <p>これと <code>NamedExec</code> を組み合わせる事で構造体を渡すことで作成・更新してくれるメソッドが作れそうだと思った。</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#6ab825;font-weight:bold">func</span> namedExecMap(inf <span style="color:#6ab825;font-weight:bold">interface</span>{}) (entityMap <span style="color:#6ab825;font-weight:bold">map</span>[<span style="color:#6ab825;font-weight:bold">string</span>]<span style="color:#6ab825;font-weight:bold">interface</span>{}) {
-	tof := reflect.TypeOf(inf)
-	vof := reflect.ValueOf(inf)
-	<span style="color:#6ab825;font-weight:bold">for</span> i := <span style="color:#3677a9">0</span>; i &lt; tof.NumField(); i++ {
-		tag := tof.Field(i).Tag.Get(<span style="color:#ed9d13">&#34;db&#34;</span>)
-		entityMap[tag] = vof.Field(i).Interface()
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">namedExecMap</span>(inf <span style="color:#6ab825;font-weight:bold">interface</span>{}) (entityMap <span style="color:#6ab825;font-weight:bold">map</span>[<span style="color:#6ab825;font-weight:bold">string</span>]<span style="color:#6ab825;font-weight:bold">interface</span>{}) {
+	tof := reflect.<span style="color:#447fcf">TypeOf</span>(inf)
+	vof := reflect.<span style="color:#447fcf">ValueOf</span>(inf)
+	<span style="color:#6ab825;font-weight:bold">for</span> i := <span style="color:#3677a9">0</span>; i &lt; tof.<span style="color:#447fcf">NumField</span>(); i++ {
+		tag := tof.<span style="color:#447fcf">Field</span>(i).Tag.<span style="color:#447fcf">Get</span>(<span style="color:#ed9d13">&#34;db&#34;</span>)
+		entityMap[tag] = vof.<span style="color:#447fcf">Field</span>(i).<span style="color:#447fcf">Interface</span>()
 	}
 	<span style="color:#6ab825;font-weight:bold">return</span> entityMap
-}</code></pre></div>
-<h3 id="トランザクション">トランザクション</h3>
-
+}
+</code></pre></div><h3 id="トランザクション">トランザクション</h3>
 <p>トランザクションも一応試してみた。</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go">tx, err := db.Beginx()</code></pre></div>
-<p>最初、 <code>db.Begin</code> でトランザクションを開始していた所、 <code>NamedExec</code> が使えずがっかりしていたが取得するメソッドが違っただけで <code>Beginx</code> から取得する事で使えた。帰ってくる型が違って以下のように返る。</p>
-
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go">tx, err := db.<span style="color:#447fcf">Beginx</span>()
+</code></pre></div><p>最初、 <code>db.Begin</code> でトランザクションを開始していた所、 <code>NamedExec</code> が使えずがっかりしていたが取得するメソッドが違っただけで <code>Beginx</code> から取得する事で使えた。帰ってくる型が違って以下のように返る。</p>
 <table>
 <thead>
 <tr>
@@ -197,14 +164,12 @@ err := db.Select(&amp;userStatus, <span style="color:#ed9d13">`
 <th align="right">NamedExec使える</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td align="left">db.Beginx()</td>
 <td align="center">database/sql/Tx</td>
 <td align="right">○</td>
 </tr>
-
 <tr>
 <td align="left">db.Begin()</td>
 <td align="center">jmoiron/sqlx/Tx</td>
@@ -212,17 +177,11 @@ err := db.Select(&amp;userStatus, <span style="color:#ed9d13">`
 </tr>
 </tbody>
 </table>
-
 <p>InteliJで書いてるとタイピング中に <code>db.Begin()</code> のほうが優先してサジェストされるのでいつか無意味にハマりそうだなと思った。</p>
-
 <h2 id="その他">その他</h2>
-
 <h3 id="selectでdatetime型がちゃんと認識しない">selectでdatetime型がちゃんと認識しない</h3>
-
 <p>この問題は <code>sqlx</code> 固有の問題ではなく、 <code>database/sql</code> を生で使ってても発生する。</p>
-
 <p>dbrだと <code>time.Time</code> への変換は行われる。でも、呼び出されるメソッドを時前で実装すればどうにかなる。</p>
-
 <ul>
 <li><code>Scan(value interface{}) error</code></li>
 <li><code>Value() (driver.Value, error)</code></li>
@@ -231,8 +190,8 @@ err := db.Select(&amp;userStatus, <span style="color:#ed9d13">`
 	value time.Time
 }
 <span style="color:#999;font-style:italic">// select用
-</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">func</span> (dbTime *DBTime) Scan(value <span style="color:#6ab825;font-weight:bold">interface</span>{}) <span style="color:#6ab825;font-weight:bold">error</span> {
-	t, err := time.Parse(<span style="color:#ed9d13">&#34;2006-01-02 15:04:05 +0000 MST&#34;</span>, fmt.Sprintf(<span style="color:#ed9d13">&#34;%s&#34;</span>, value))
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">func</span> (dbTime *DBTime) <span style="color:#447fcf">Scan</span>(value <span style="color:#6ab825;font-weight:bold">interface</span>{}) <span style="color:#6ab825;font-weight:bold">error</span> {
+	t, err := time.<span style="color:#447fcf">Parse</span>(<span style="color:#ed9d13">&#34;2006-01-02 15:04:05 +0000 MST&#34;</span>, fmt.<span style="color:#447fcf">Sprintf</span>(<span style="color:#ed9d13">&#34;%s&#34;</span>, value))
 	<span style="color:#6ab825;font-weight:bold">if</span> err != <span style="color:#6ab825;font-weight:bold">nil</span> {
 		<span style="color:#6ab825;font-weight:bold">return</span> err
 	}
@@ -240,26 +199,20 @@ err := db.Select(&amp;userStatus, <span style="color:#ed9d13">`
 	<span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">nil</span>
 }
 <span style="color:#999;font-style:italic">// 時間取る用
-</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">func</span> (dbTime *DBTime) Time() time.Time {
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">func</span> (dbTime *DBTime) <span style="color:#447fcf">Time</span>() time.Time {
 	<span style="color:#6ab825;font-weight:bold">return</span> dbTime.value
 }
 <span style="color:#999;font-style:italic">// プレースホルダ用
-</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">func</span> (DBTime DBTime) Value() (driver.Value, <span style="color:#6ab825;font-weight:bold">error</span>) {
-	<span style="color:#6ab825;font-weight:bold">return</span> DBTime.Time().Format(<span style="color:#ed9d13">&#34;2006-01-02 15:04:05&#34;</span>), <span style="color:#6ab825;font-weight:bold">nil</span>
-}</code></pre></div>
-<p><code>database/sql</code> の対応してない箇所をあえて <code>sqlx</code> が対応してないように見えて好印象だった。
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">func</span> (DBTime DBTime) <span style="color:#447fcf">Value</span>() (driver.Value, <span style="color:#6ab825;font-weight:bold">error</span>) {
+	<span style="color:#6ab825;font-weight:bold">return</span> DBTime.<span style="color:#447fcf">Time</span>().<span style="color:#447fcf">Format</span>(<span style="color:#ed9d13">&#34;2006-01-02 15:04:05&#34;</span>), <span style="color:#6ab825;font-weight:bold">nil</span>
+}
+</code></pre></div><p><code>database/sql</code> の対応してない箇所をあえて <code>sqlx</code> が対応してないように見えて好印象だった。
 この件については<code>time.Time</code> が公式パッケージなんだから対応したら良いのに、と自分は思ってたりします。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>詳しい使い方については <code>jmoiron</code> さんのgithub Pagesに詳細に書いてあった。</p>
-
 <p><a href="http://jmoiron.github.io/sqlx/">http://jmoiron.github.io/sqlx/</a></p>
-
 <p>極々薄い感じのORMでとても良い感じだった。</p>
-
 <p>database/sql をほんの少し拡張しただけ、みたいな感じで責任範囲が明確。他の責任範囲が明確なライブラリと組み合わせる事で更に便利に使えそう。</p>
-
 <p>ORMリプレースが本格的に動き出したら、もっと踏み込んで触ってみたい。</p>
 
     </div>

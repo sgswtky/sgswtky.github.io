@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.42.2" />
+<meta name="generator" content="Hugo 0.68.3" />
 
 
 <title>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした - 壁は登るためにある</title>
@@ -66,17 +66,11 @@
     <span class="article-date">July 17, 2018</span>
     
     <div class="article-content">
-      
-
-<p>先日から古い <code>Jenkins2</code> のジョブをメンテする仕事をしていて、Pipelineで Groovyを書いてたら特定のパターンでは動くけどそれ以外だと動かないという事情に遭遇した。</p>
-
+      <p>先日から古い <code>Jenkins2</code> のジョブをメンテする仕事をしていて、Pipelineで Groovyを書いてたら特定のパターンでは動くけどそれ以外だと動かないという事情に遭遇した。</p>
 <p>やりたかったことは、パイプラインAから、ジョブAを並列で2つ起動させたかった。
 色々調べたけど結局わからなくて、バージョンアップしたら治った話。</p>
-
 <h2 id="事象">事象</h2>
-
 <h3 id="動かないコード">動かないコード</h3>
-
 <p>コードは極々単純で以下のようなコード。</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node(<span style="color:#ed9d13">&#34;master&#34;</span>){
   <span style="color:#6ab825;font-weight:bold">def</span> tasks = [:]
@@ -86,9 +80,9 @@
       }
   }
   parallel tasks
-}</code></pre></div>
-<p>このコードを実行したら通常であれば ジョブA が２つ実行されるはず。しかし以下のように1つしか Job_Aが実行されなかった。</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jenkins.log" data-lang="jenkins.log">Started by timer
+}
+</code></pre></div><p>このコードを実行したら通常であれば ジョブA が２つ実行されるはず。しかし以下のように1つしか Job_Aが実行されなかった。</p>
+<pre><code class="language-jenkins.log" data-lang="jenkins.log">Started by timer
 [Pipeline] node
 Running on master in /var/lib/jenkins/workspace/Pipeline_A
 [Pipeline] {
@@ -115,11 +109,9 @@ Running on master in /var/lib/jenkins/workspace/Pipeline_A
 [Pipeline] }
 [Pipeline] // node
 [Pipeline] End of Pipeline
-Finished: SUCCESS</code></pre></div>
-<h3 id="何故か動くコード">何故か動くコード</h3>
-
+Finished: SUCCESS
+</code></pre><h3 id="何故か動くコード">何故か動くコード</h3>
 <p>以下のコードは期待する動きをした。</p>
-
 <p>でもサーバー名を渡してるパラメータを廃止したかったため、 <code>params.size()</code> でなく、普通に forで回数分ループするコード（記事上部のコード）にしたかったが動かない。</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node(<span style="color:#ed9d13">&#34;master&#34;</span>){
   <span style="color:#6ab825;font-weight:bold">def</span> params = [<span style="color:#ed9d13">&#34;server-01&#34;</span>, <span style="color:#ed9d13">&#34;server-02&#34;</span>]
@@ -129,21 +121,17 @@ Finished: SUCCESS</code></pre></div>
     <span style="color:#6ab825;font-weight:bold">def</span> param = params[i]
     tasks[param] = {
       param: {
-        build job: <span style="color:#ed9d13">&#34;Job_A&#34;</span>, parameters: [<span style="color:#6ab825;font-weight:bold">new</span> <span style="color:#447fcf">StringParameterValue</span>(<span style="color:#ed9d13">&#34;HOST&#34;</span>, param)]
+        build job: <span style="color:#ed9d13">&#34;Job_A&#34;</span>, parameters: [<span style="color:#6ab825;font-weight:bold">new</span> StringParameterValue(<span style="color:#ed9d13">&#34;HOST&#34;</span>, param)]
       }
     }
   }
   print(tasks)
   parallel tasks
-}</code></pre></div>
-<p>これの原因が全くわからなくて、バージョンアップした所正常に動くようになった。</p>
-
+}
+</code></pre></div><p>これの原因が全くわからなくて、バージョンアップした所正常に動くようになった。</p>
 <h2 id="バージョン情報">バージョン情報</h2>
-
 <p>バージョンアップの際に対象のプラグインだけでなく全てのプラグインのバージョンアップを行ってしまいました。</p>
-
 <p>そのため下記に記載するプラグイン以外もバージョンアップしちゃってます。。。</p>
-
 <table>
 <thead>
 <tr>
@@ -152,14 +140,12 @@ Finished: SUCCESS</code></pre></div>
 <th>新バージョン</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>Jenkins</td>
 <td>v2.30</td>
 <td>v2.132</td>
 </tr>
-
 <tr>
 <td>Pipeline（プラグイン）</td>
 <td>2.5</td>
@@ -167,14 +153,10 @@ Finished: SUCCESS</code></pre></div>
 </tr>
 </tbody>
 </table>
-
 <p>（Jenkinsのマイナーバージョンが100くらい上がってますね💦）</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>結構長い間（といっても合計3時間くらい）苦しんでたので解決できてよかった。
 Jenkinsのバージョンアップだけは動かなくなる可能性がある（と勝手にそう思い込んでた）のでなるべくしたくなかったけど行って治ってよかった。</p>
-
 <p>毎日定時でAMIをまるごとバックアップを取ってからか、バージョンアップ等のオペレーションの敷居がある程度低く、バックアップは大事だと再認識した。</p>
 
     </div>

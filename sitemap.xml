@@ -1,10 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://sgswtky.github.io/categories/</loc>
+    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/categories/digdag/</loc>
+    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/digdag-require-reuse/</loc>
     <lastmod>2019-07-26T14:38:49+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/post/</loc>
+    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/</loc>
+    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/workflow/</loc>
+    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/categories/other/</loc>
+    <lastmod>2018-12-14T19:17:05+09:00</lastmod>
   </url>
   
   <url>
@@ -13,8 +43,23 @@
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/categories/scala/</loc>
+    <lastmod>2018-12-13T21:30:21+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/scalikejdbc/</loc>
+    <lastmod>2018-12-13T21:30:21+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</loc>
     <lastmod>2018-12-13T21:30:21+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/function/</loc>
+    <lastmod>2018-10-23T09:30:08+09:00</lastmod>
   </url>
   
   <url>
@@ -23,13 +68,13 @@
   </url>
   
   <url>
-    <loc>https://sgswtky.github.io/post/team-idou-week2/</loc>
-    <lastmod>2018-08-10T22:00:08+09:00</lastmod>
+    <loc>https://sgswtky.github.io/categories/development/</loc>
+    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://sgswtky.github.io/post/team-idou-week1/</loc>
-    <lastmod>2018-08-04T21:37:40+09:00</lastmod>
+    <loc>https://sgswtky.github.io/tags/environment/</loc>
+    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
   </url>
   
   <url>
@@ -38,12 +83,37 @@
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/categories/go/</loc>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/golang-wasm/</loc>
     <lastmod>2018-07-22T19:38:54+09:00</lastmod>
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/tags/webassembly/</loc>
+    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/jenkins/</loc>
+    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/categories/jenkins/</loc>
+    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</loc>
+    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/pipeline/</loc>
     <lastmod>2018-07-17T20:14:21+09:00</lastmod>
   </url>
   
@@ -53,8 +123,43 @@
   </url>
   
   <url>
+    <loc>https://sgswtky.github.io/tags/library/</loc>
+    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/ormapper/</loc>
+    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/sql/</loc>
+    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://sgswtky.github.io/post/golang-orm-sqlx/</loc>
     <lastmod>2018-07-10T13:53:07+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/git/</loc>
+    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/iterm2/</loc>
+    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/categories/local/</loc>
+    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://sgswtky.github.io/tags/terminal/</loc>
+    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
   </url>
   
   <url>
@@ -68,152 +173,8 @@
   </url>
   
   <url>
-    <loc>https://sgswtky.github.io/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/development/</loc>
-    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/digdag/</loc>
-    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/environment/</loc>
-    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/function/</loc>
-    <lastmod>2018-10-23T09:30:08+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/git/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/go/</loc>
-    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/iterm2/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/jenkins/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/jenkins/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/library/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/local/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/ormapper/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/other/</loc>
-    <lastmod>2018-12-14T19:17:05+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/pipeline/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/post/</loc>
-    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/categories/scala/</loc>
-    <lastmod>2018-12-13T21:30:21+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/scalikejdbc/</loc>
-    <lastmod>2018-12-13T21:30:21+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/sql/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/</loc>
-    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/terminal/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/webassembly/</loc>
-    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/workflow/</loc>
-    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://sgswtky.github.io/tags/%E5%88%9D%E5%BF%83%E8%80%85/</loc>
-    <lastmod>2018-08-10T22:00:08+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://sgswtky.github.io/</loc>
-    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2018-07-09T16:50:05+09:00</lastmod>
   </url>
   
 </urlset>

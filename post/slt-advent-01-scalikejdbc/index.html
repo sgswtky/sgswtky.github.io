@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.42.2" />
+<meta name="generator" content="Hugo 0.68.3" />
 
 
 <title>ScalikeJDBCのクォート付く付かない挙動調べてみた - 壁は登るためにある</title>
@@ -66,70 +66,49 @@
     <span class="article-date">December 13, 2018</span>
     
     <div class="article-content">
-      
-
-<p>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、
+      <p>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、
 一部不明な点があったので調べてみました。</p>
-
 <h2 id="scalikejdbcとは">ScalikeJDBCとは</h2>
-
-<p><img src="/images/scalikejdbc-logo.png" alt="ScalikeJDBC_ロゴ" /></p>
-
+<p><img src="/images/scalikejdbc-logo.png" alt="ScalikeJDBC_ロゴ"></p>
 <p>ScalikeJDBCは、JDBCをラップしたScalaのライブラリです。
 様々なDBに対応していて、直感的に書けるQueryDSLで効率的にSQLが書けます。</p>
-
 <p>自分もいくつかのScalaプロジェクトで、MySQLのコネクタとして採用しています。
 日本語の情報が多く、Scala触り始めの方でも扱う敷居は低いのではないかと思います。</p>
-
 <h2 id="querydsl">QueryDSL</h2>
-
 <p>ScalikeJDBCのDSLはコード中にSQLを記述するように書けて、以下の2種類の書き方が可能です。</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">val</span> userMap <span style="color:#6ab825;font-weight:bold">=</span> sql<span style="color:#ed9d13">&#34;&#34;&#34;
 </span><span style="color:#ed9d13">    select * from user
 </span><span style="color:#ed9d13">    where created_at &gt; &#39;2018-10-01&#39;
-</span><span style="color:#ed9d13">  &#34;&#34;&#34;</span>.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply</code></pre></div>
-<p>SQLInterpolation という機能を使用している場合は、クエリビルダのようにクエリを組み立てられます。</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">val</span> u <span style="color:#6ab825;font-weight:bold">=</span> <span style="color:#447fcf">User</span>.syntax(<span style="color:#ed9d13">&#34;u&#34;</span>)
+</span><span style="color:#ed9d13">  &#34;&#34;&#34;</span>.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply
+</code></pre></div><p>SQLInterpolation という機能を使用している場合は、クエリビルダのようにクエリを組み立てられます。</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">val</span> u <span style="color:#6ab825;font-weight:bold">=</span> <span style="color:#447fcf;text-decoration:underline">User</span>.syntax(<span style="color:#ed9d13">&#34;u&#34;</span>)
 <span style="color:#6ab825;font-weight:bold">val</span> groupMember <span style="color:#6ab825;font-weight:bold">=</span> withSQL {
-  select.from(<span style="color:#447fcf">User</span> as u).where.gt(u.createdAt, createdAt)
-}.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply</code></pre></div>
-<h2 id="一部不明な点とは">一部不明な点とは</h2>
-
+  select.from(<span style="color:#447fcf;text-decoration:underline">User</span> as u).where.gt(u.createdAt, createdAt)
+}.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply
+</code></pre></div><h2 id="一部不明な点とは">一部不明な点とは</h2>
 <p>QueryDSLを使って、以下のように WHERE句に LocalDateの値を使用してSELECT句のクエリを流しました。</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">val</span> value <span style="color:#6ab825;font-weight:bold">=</span> <span style="color:#447fcf">LocalDate</span>.now()
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">val</span> value <span style="color:#6ab825;font-weight:bold">=</span> <span style="color:#447fcf;text-decoration:underline">LocalDate</span>.now()
 <span style="color:#6ab825;font-weight:bold">val</span> userMap <span style="color:#6ab825;font-weight:bold">=</span> sql<span style="color:#ed9d13">&#34;&#34;&#34;
 </span><span style="color:#ed9d13">  select * from user
 </span><span style="color:#ed9d13">  where value = $value
-</span><span style="color:#ed9d13">&#34;&#34;&#34;</span>.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply</code></pre></div>
-<p>👇下記のようにSQLが流れる想定でしたが、</p>
-
+</span><span style="color:#ed9d13">&#34;&#34;&#34;</span>.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply
+</code></pre></div><p>👇下記のようにSQLが流れる想定でしたが、</p>
 <pre><code>select * from user where value = '2018-12-13'
-</code></pre>
-
-<p>👇以下のSQLが実行されてエラーとなりました。</p>
-
+</code></pre><p>👇以下のSQLが実行されてエラーとなりました。</p>
 <pre><code>select * from user where value = 2018-12-13
-</code></pre>
-
-<p>つまり、自動でクォートされる型・されない型があるようです。</p>
-
-<h2 id="クォート-される型と-クォート-されない型">&ldquo;クォート&rdquo;される型と クォート されない型</h2>
-
+</code></pre><p>つまり、自動でクォートされる型・されない型があるようです。</p>
+<h2 id="クォートされる型と-クォート-されない型">&ldquo;クォート&quot;される型と クォート されない型</h2>
 <p>今回は、この時にクォートされる型とされない型について SELECT句で調べてみました。</p>
-
 <p>公式に対応されている型は、👇下記リンク先に書かれています。
 <a href="http://scalikejdbc.org/documentation/sql-interpolation.html">http://scalikejdbc.org/documentation/sql-interpolation.html</a></p>
-
 <p>Scala組み込みのオブジェクトや、<code>java.sql</code> , <code>java.util.Date</code>, <code>org.joda.time.</code>, <code>java.time</code> が含まれている事がわかります。</p>
-
 <p>👇下記のように、変数 <strong>value</strong> の型を変えてQueryDSL内部でSQL実行、実行されたSQLにクォートが付加されたかされなかったかを見ていきます。</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#6ab825;font-weight:bold">val</span> value<span style="color:#6ab825;font-weight:bold">:</span><span style="color:#6ab825;font-weight:bold">A</span> = ???
 <span style="color:#6ab825;font-weight:bold">val</span> userMap <span style="color:#6ab825;font-weight:bold">=</span> sql<span style="color:#ed9d13">&#34;&#34;&#34;
 </span><span style="color:#ed9d13">  select * from user
 </span><span style="color:#ed9d13">  where value = $value
-</span><span style="color:#ed9d13">&#34;&#34;&#34;</span>.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply</code></pre></div>
-<p>まずは  <strong>Scala組み込みのオブジェクト</strong> 。</p>
-
+</span><span style="color:#ed9d13">&#34;&#34;&#34;</span>.map(<span style="color:#6ab825;font-weight:bold">_</span>.toMap).list.apply
+</code></pre></div><p>まずは  <strong>Scala組み込みのオブジェクト</strong> 。</p>
 <table>
 <thead>
 <tr>
@@ -137,60 +116,48 @@
 <th>クォート</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>Int</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>Int</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>Short</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>Long</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>Float</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>Double</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>BigInt</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>BigDecimal</td>
 <td>×</td>
 </tr>
-
 <tr>
 <td>String</td>
 <td>○</td>
 </tr>
 </tbody>
 </table>
-
 <p>※ ○ = 付加される、× = 付加されない</p>
-
 <p>ここまでは想定通りの結果でした。
 次に <strong>DateTime系の時間を扱うオブジェクト</strong> の結果を見ていきます。</p>
-
 <table>
 <thead>
 <tr>
@@ -199,80 +166,67 @@
 <th>フォーマット</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>org.joda.time.DateTime</td>
 <td>○</td>
 <td>&lsquo;2018-12-13 20:14:34.913&rsquo;</td>
 </tr>
-
 <tr>
 <td>org.joda.time.LocalDateTime</td>
 <td>×</td>
 <td>2018-12-13 20:14:53.638</td>
 </tr>
-
 <tr>
 <td>org.joda.time.LocalDate</td>
 <td>×</td>
 <td>2018-12-13</td>
 </tr>
-
 <tr>
 <td>org.joda.time.LocalTime</td>
 <td>×</td>
 <td>20:16:01</td>
 </tr>
-
 <tr>
 <td>java.sql.Date</td>
 <td>○</td>
 <td>&lsquo;2018-12-13 00:00:00.0&rsquo;</td>
 </tr>
-
 <tr>
 <td>java.sql.Time</td>
 <td>○</td>
 <td>&lsquo;1970-01-01 00:00:00.0&rsquo;</td>
 </tr>
-
 <tr>
 <td>java.sql.TimeStamp</td>
 <td>○</td>
 <td>&lsquo;2018-12-13 20:16:41.704&rsquo;</td>
 </tr>
-
 <tr>
 <td>java.time.ZonedDateTime</td>
 <td>×</td>
 <td>2018-12-13T20:11:25.862681+09:00[Asia/Tokyo]</td>
 </tr>
-
 <tr>
 <td>java.time.Instant</td>
 <td>×</td>
 <td>2018-12-13T11:12:07.373849Z</td>
 </tr>
-
 <tr>
 <td>java.time.LocalDateTime</td>
 <td>×</td>
 <td>2018-12-13T20:12:40.509394</td>
 </tr>
-
 <tr>
 <td>java.time.LocalDate</td>
 <td>×</td>
 <td>2018-12-13</td>
 </tr>
-
 <tr>
 <td>java.time.LocalTime</td>
 <td>×</td>
 <td>20:13:51.527330</td>
 </tr>
-
 <tr>
 <td>java.util.Date</td>
 <td>○</td>
@@ -280,34 +234,19 @@
 </tr>
 </tbody>
 </table>
-
 <p>※ ○ = 付加される、× = 付加されない</p>
-
 <p>予想を裏切る結果となったのではないでしょうか。</p>
-
 <p><code>org.joda.time.DateTime</code>, <code>java.sql.Date</code>, <code>java.sql.Time</code>, <code>java.sql.TimeStamp</code>, <code>java.util.Date</code> あたりは、ちゃんとクォートが付加されていますね。</p>
-
 <p>しかし <code>java.sql.Time</code> は、 <code>Time</code> なので時間の情報しか所持していないように見えるにも関わらず、年月日のエポック秒が表示されてしまいました。</p>
-
 <p>深く追っていないのですが、<code>java.sql.Time</code>のコメントに以下のように書いてあったので、</p>
-
 <pre><code>The date components should be set to the &quot;zero epoch&quot; value of January 1, 1970 and should not be accessed.
-</code></pre>
-
-<p>ScalikeJDBCもしくはその先で使用しているライブラリが、<code>java.sql.Time</code> の言う日付コンポーネントにアクセスしているという事が挙動からわかりました。</p>
-
+</code></pre><p>ScalikeJDBCもしくはその先で使用しているライブラリが、<code>java.sql.Time</code> の言う日付コンポーネントにアクセスしているという事が挙動からわかりました。</p>
 <h2 id="まとめ">まとめ</h2>
-
 <p>ScalikeJDBCを使用すると、<strong>型によってクォートが付加されない事がある</strong> という事がわかりました。</p>
-
 <p>クォートが付かない型を無理矢理使い続けると、自前でクォートを付けざるを得ないため、 <strong>スマートに書けるはずの QueryDSLがスマートでは無くなってしまいます</strong> 。</p>
-
 <p>クォート付けるために implicit使うのも個人的になんとなく好きでなく、できればライブラリにやってほしい…という気持ちがあります。</p>
-
 <p>今回 <code>org.joda.time.LocalDate</code>を使う事になってこの問題にぶち当たったのですが、恒久的な対応はせず、クエリ部分に 一時的に <code>org.joda.time.DateTime</code> を代用して回避しています。</p>
-
 <p>今回の記事ではライブラリの内部を詳細に調査していないので、ScalikeJDBCが原因か、JDBCが原因かまでは追っていません。</p>
-
 <p>また調査の時間が取れたら記事を書きたいと思います。</p>
 
     </div>

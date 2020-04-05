@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Webassembly on 壁は登るためにある</title>
+    <title>WebAssembly on 壁は登るためにある</title>
     <link>https://sgswtky.github.io/tags/webassembly/</link>
-    <description>Recent content in Webassembly on 壁は登るためにある</description>
+    <description>Recent content in WebAssembly on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 22 Jul 2018 19:38:54 +0900</lastBuildDate>

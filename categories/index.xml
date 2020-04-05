@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 壁は登るためにある</title>
@@ -6,18 +6,10 @@
     <description>Recent content in Categories on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
+    <lastBuildDate>Fri, 26 Jul 2019 14:38:49 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Development</title>
-      <link>https://sgswtky.github.io/categories/development/</link>
-      <pubDate>Sat, 28 Jul 2018 15:44:16 +0900</pubDate>
-      
-      <guid>https://sgswtky.github.io/categories/development/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>Digdag</title>
@@ -25,6 +17,33 @@
       <pubDate>Fri, 26 Jul 2019 14:38:49 +0900</pubDate>
       
       <guid>https://sgswtky.github.io/categories/digdag/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Other</title>
+      <link>https://sgswtky.github.io/categories/other/</link>
+      <pubDate>Fri, 14 Dec 2018 19:17:05 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/other/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Scala</title>
+      <link>https://sgswtky.github.io/categories/scala/</link>
+      <pubDate>Thu, 13 Dec 2018 21:30:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/scala/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>development</title>
+      <link>https://sgswtky.github.io/categories/development/</link>
+      <pubDate>Sat, 28 Jul 2018 15:44:16 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/development/</guid>
       <description></description>
     </item>
     
@@ -47,29 +66,11 @@
     </item>
     
     <item>
-      <title>Local</title>
+      <title>local</title>
       <link>https://sgswtky.github.io/categories/local/</link>
       <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
       
       <guid>https://sgswtky.github.io/categories/local/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Other</title>
-      <link>https://sgswtky.github.io/categories/other/</link>
-      <pubDate>Fri, 14 Dec 2018 19:17:05 +0900</pubDate>
-      
-      <guid>https://sgswtky.github.io/categories/other/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Scala</title>
-      <link>https://sgswtky.github.io/categories/scala/</link>
-      <pubDate>Thu, 13 Dec 2018 21:30:21 +0900</pubDate>
-      
-      <guid>https://sgswtky.github.io/categories/scala/</guid>
       <description></description>
     </item>
     

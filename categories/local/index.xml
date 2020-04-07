@@ -13,11 +13,13 @@
     
     <item>
       <title>ローカルMacのターミナルを個人的に良い感じにした</title>
-      <link>https://sgswtky.github.io/post/local-terminal-setting/</link>
+      <link>https://sgswtky.github.io/posts/local-terminal-setting/</link>
       <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/post/local-terminal-setting/</guid>
-      <description>きっかけ Macのバッテリーが膨らみすぎて、交換してもらった。 性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ</description>
+      <guid>https://sgswtky.github.io/posts/local-terminal-setting/</guid>
+      <description>きっかけ Macのバッテリーが膨らみすぎて、交換してもらった。 性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ・理解がある所には会社に感謝🙏
+がっつりイジり倒して玄人感あるターミナルっていうよりは基本機能に配色調整したシンプルなターミナルにしました。
+いままで  iTerm2 zsh oh-my-zsh デフォルトテーマ  これから  iTerm2 iTerm2のフォント変更 japaneseque（配色） zsh oh-my-zsh avit（avit） ターミナルの表示カスタマイズ（ユーザーとか表示される部分）  iTerm2  https://www.iterm2.com/  iTerm2のフォント変更  13pt Menlo Regular に変更して使ってます  InteliJIdeaが Menloなのでそちらに合わせる形で設定しました    japaneseque  iTerm2の配色の設定ファイル  https://github.com/aereal/dotfiles/blob/master/colors/Japanesque/Japanesque.itermcolors   作者のブログ記事  https://this.aereal.org/entry/2013/01/02/222304    zsh  wikipedia  https://ja.wikipedia.org/wiki/Z_Shell   macだとbrewで入ります。入れ方はググると出てきます。  https://qiita.com/nenokido2000/items/763a4af5c161ff5ede68    oh-my-zsh  github（入れ方もREADMEにあります）  https://github.com/robbyrussell/oh-my-zsh    avit  ~/.</description>
     </item>
     
   </channel>

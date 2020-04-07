@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ローカルMacのターミナルを個人的に良い感じにした</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">ローカルMacのターミナルを個人的に良い感じにした</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/posts/">Blog</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>ローカルMacのターミナルを個人的に良い感じにした</h2>
+        <h5></h5>
+        
+<a href="https://sgswtky.github.iotags/iterm2"><kbd class="item-tag">iTerm2</kbd></a>
+
+<a href="https://sgswtky.github.iotags/terminal"><kbd class="item-tag">Terminal</kbd></a>
+
+<a href="https://sgswtky.github.iotags/git"><kbd class="item-tag">git</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><h2 id="きっかけ">きっかけ</h2>
+<p>Macのバッテリーが膨らみすぎて、交換してもらった。
+性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ・理解がある所には会社に感謝🙏</p>
+<p>がっつりイジり倒して玄人感あるターミナルっていうよりは基本機能に配色調整したシンプルなターミナルにしました。</p>
+<h2 id="いままで">いままで</h2>
+<ul>
+<li>iTerm2</li>
+<li>zsh</li>
+<li>oh-my-zsh</li>
+<li>デフォルトテーマ</li>
+</ul>
+<h2 id="これから">これから</h2>
+<ul>
+<li>iTerm2</li>
+<li>iTerm2のフォント変更</li>
+<li>japaneseque（配色）</li>
+<li>zsh</li>
+<li>oh-my-zsh</li>
+<li>avit（avit）</li>
+<li>ターミナルの表示カスタマイズ（ユーザーとか表示される部分）</li>
+</ul>
+<h3 id="iterm2">iTerm2</h3>
+<ul>
+<li><a href="https://www.iterm2.com/">https://www.iterm2.com/</a></li>
+</ul>
+<h3 id="iterm2のフォント変更">iTerm2のフォント変更</h3>
+<ul>
+<li><code>13pt Menlo Regular</code> に変更して使ってます
+<ul>
+<li>InteliJIdeaが Menloなのでそちらに合わせる形で設定しました</li>
+</ul>
+</li>
+</ul>
+<h3 id="japaneseque">japaneseque</h3>
+<ul>
+<li>iTerm2の配色の設定ファイル
+<ul>
+<li><a href="https://github.com/aereal/dotfiles/blob/master/colors/Japanesque/Japanesque.itermcolors">https://github.com/aereal/dotfiles/blob/master/colors/Japanesque/Japanesque.itermcolors</a></li>
+</ul>
+</li>
+<li>作者のブログ記事
+<ul>
+<li><a href="https://this.aereal.org/entry/2013/01/02/222304">https://this.aereal.org/entry/2013/01/02/222304</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="zsh">zsh</h3>
+<ul>
+<li>wikipedia
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/Z_Shell">https://ja.wikipedia.org/wiki/Z_Shell</a></li>
+</ul>
+</li>
+<li>macだとbrewで入ります。入れ方はググると出てきます。
+<ul>
+<li><a href="https://qiita.com/nenokido2000/items/763a4af5c161ff5ede68">https://qiita.com/nenokido2000/items/763a4af5c161ff5ede68</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="oh-my-zsh">oh-my-zsh</h3>
+<ul>
+<li>github（入れ方もREADMEにあります）
+<ul>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh">https://github.com/robbyrussell/oh-my-zsh</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="avit">avit</h3>
+<ul>
+<li><code>~/.zshrc</code> の <code>ZSH_THEME</code> を、<code>ZSH_THEME=&quot;avit&quot;</code> にするだけ</li>
+</ul>
+<h3 id="ターミナルの表示カスタマイズ">ターミナルの表示カスタマイズ</h3>
+<p>ここまではインストール＆設定するだけでしたが、この表示カスタマイズだけ色々イジりました。</p>
+<ul>
+<li>ブランチ表示変更の参考にした記事
+<ul>
+<li><a href="https://qiita.com/Kakuni/items/a8025e075926272f491d">https://qiita.com/Kakuni/items/a8025e075926272f491d</a>
+-　<code># ls collor</code> の所で、zshのls配色設定は見えづらいため変更しています</li>
+<li><a href="http://neko-mac.blogspot.com/2015/03/mac_18.html">http://neko-mac.blogspot.com/2015/03/mac_18.html</a></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh.bash" data-lang="zsh.bash">mkdir ~/Settings
+touch ~/Settings/my-zsh
+</code></pre></div><pre><code class="language-my-zsh" data-lang="my-zsh"># ls collor
+export LSCOLORS=gxfxcxdxbxegedabagacad
+
+# zsh
+PROMPT='%{${fg[green]}%}⌚ %* %{${fg[cyan]}%} 📁 %~ %{${reset_color}%}
+▶ '
+# git branch color view
+function rprompt-git-current-branch {
+  local branch_name st branch_status
+
+  if [ ! -e  &quot;.git&quot; ]; then
+    return
+  fi
+  branch_name=`git rev-parse --abbrev-ref HEAD 2&gt; /dev/null`
+  st=`git status 2&gt; /dev/null`
+  if [[ -n `echo &quot;$st&quot; | grep &quot;^nothing to&quot;` ]]; then
+    # clean
+    branch_status=&quot;👍 %F{green}&quot;
+  elif [[ -n `echo &quot;$st&quot; | grep &quot;^Untracked files&quot;` ]]; then
+    # editing
+    branch_status=&quot;%F{red}?&quot;
+  elif [[ -n `echo &quot;$st&quot; | grep &quot;^Changes not staged for commit&quot;` ]]; then
+    # There is a file which is not add
+    branch_status=&quot;😀 %F{red}+&quot;
+  elif [[ -n `echo &quot;$st&quot; | grep &quot;^Changes to be committed&quot;` ]]; then
+    # There is a file which is not commit
+    branch_status=&quot;😆 %F{yellow}!&quot;
+  elif [[ -n `echo &quot;$st&quot; | grep &quot;^rebase in progress&quot;` ]]; then
+    # conflict
+    echo &quot;🤯  %F{red}!(no branch)&quot;
+    return
+  else
+    branch_status=&quot;%F{blue}&quot;
+  fi
+  echo &quot;${branch_status}[$branch_name] %{${reset_color}%}&quot;
+}
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
+setopt prompt_subst
+
+# プロンプトの右側(RPROMPT)にメソッドの結果を表示させる
+RPROMPT='`rprompt-git-current-branch`'
+</code></pre><p>こんな感じになります。</p>
+<p><img src="/images/local-terminal-example.png" alt="ターミナル参考画像"></p>
+<h3 id="iterm2の設定">iTerm2の設定</h3>
+<ul>
+<li>配色の設定とか書いてないけど若干変えてる所があるので設定をエクスポートしておきました。</li>
+</ul>
+<p><a href="/files/iterm2-settings.json">settings.json</a></p>
+</div>
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

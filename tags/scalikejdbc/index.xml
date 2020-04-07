@@ -13,11 +13,19 @@
     
     <item>
       <title>ScalikeJDBCのクォート付く付かない挙動調べてみた</title>
-      <link>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</link>
+      <link>https://sgswtky.github.io/posts/slt-advent-01-scalikejdbc/</link>
       <pubDate>Thu, 13 Dec 2018 21:30:21 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</guid>
-      <description>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、 一部不明な点があったので調べてみました。 ScalikeJDB</description>
+      <guid>https://sgswtky.github.io/posts/slt-advent-01-scalikejdbc/</guid>
+      <description>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、 一部不明な点があったので調べてみました。
+ScalikeJDBCとは ScalikeJDBCは、JDBCをラップしたScalaのライブラリです。 様々なDBに対応していて、直感的に書けるQueryDSLで効率的にSQLが書けます。
+自分もいくつかのScalaプロジェクトで、MySQLのコネクタとして採用しています。 日本語の情報が多く、Scala触り始めの方でも扱う敷居は低いのではないかと思います。
+QueryDSL ScalikeJDBCのDSLはコード中にSQLを記述するように書けて、以下の2種類の書き方が可能です。
+val userMap = sql&amp;#34;&amp;#34;&amp;#34; select * from user where created_at &amp;gt; &amp;#39;2018-10-01&amp;#39; &amp;#34;&amp;#34;&amp;#34;.map(_.toMap).list.apply SQLInterpolation という機能を使用している場合は、クエリビルダのようにクエリを組み立てられます。
+val u = User.syntax(&amp;#34;u&amp;#34;) val groupMember = withSQL { select.from(User as u).where.gt(u.createdAt, createdAt) }.map(_.toMap).list.apply 一部不明な点とは QueryDSLを使って、以下のように WHERE句に LocalDateの値を使用してSELECT句のクエリを流しました。
+val value = LocalDate.now() val userMap = sql&amp;#34;&amp;#34;&amp;#34; select * from user where value = $value &amp;#34;&amp;#34;&amp;#34;.map(_.toMap).list.apply 👇下記のようにSQLが流れる想定でしたが、
+select * from user where value = &#39;2018-12-13&#39; 👇以下のSQLが実行されてエラーとなりました。
+select * from user where value = 2018-12-13 つまり、自動でクォートされる型・されない型があるようです。</description>
     </item>
     
   </channel>

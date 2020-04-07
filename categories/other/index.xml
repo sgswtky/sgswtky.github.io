@@ -13,11 +13,21 @@
     
     <item>
       <title>多相について今一度調べてみた</title>
-      <link>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</link>
+      <link>https://sgswtky.github.io/posts/slt-advent-02-polymorphism/</link>
       <pubDate>Fri, 14 Dec 2018 19:17:05 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</guid>
-      <description>自分はエンジニアになって数年が経つけど、たまに基礎の基礎を知らなかったりします。 最近 Scalaで関数型プログラミングの勉強をしてる時に 高カイ</description>
+      <guid>https://sgswtky.github.io/posts/slt-advent-02-polymorphism/</guid>
+      <description>自分はエンジニアになって数年が経つけど、たまに基礎の基礎を知らなかったりします。
+最近 Scalaで関数型プログラミングの勉強をしてる時に 高カインド多相 というものが出てきました。
+他の多相も全く知らないのに、名前を見るにすごく高度そうな多相。良い機会だから多相について調べてみようと思ったのが今回のきっかけです。
+ Wikipediaや、調べて出てきた他の方のブログ、本なんかを参考にしてます。 間違いがあったらご指摘頂けると🙏
+ 多相性 下記3つは全て全く同じものです。
+ ポリモーフィズム 多態性 多様性  これらは何？と言われるとプログラム言語の型システムを取り扱う性質の事を指します。
+型システム = 変数、式、オブジェクト、関数&amp;hellip;などを指します。
+ 部分型多相  同意語  派生型多態 サブタイピング多相 部分型付け    この多相を指して単にポリモーフィズムと呼ぶ場合もあります。
+複数種類の型を１つの型のように扱える性質の事を指します。
+例えば、 Animal を extendsした3つの型があるとします。
+trait Animal { def call(): String } case class Cat() extends Animal { override def call(): String = &amp;#34;bark&amp;#34; } case class Dog() extends Animal { override def call(): String = &amp;#34;mew&amp;#34; } case class Cow() extends Animal { override def call(): String = &amp;#34;low&amp;#34; } 3つの型は、Animal型として扱えるので、これが実現できる Scalaは部分型多相の性質を持っています。</description>
     </item>
     
   </channel>

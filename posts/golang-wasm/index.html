@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Go言語でwasm動かしてみた</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Go言語でwasm動かしてみた</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/posts/">Blog</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Go言語でwasm動かしてみた</h2>
+        <h5></h5>
+        
+<a href="https://sgswtky.github.iotags/webassembly"><kbd class="item-tag">WebAssembly</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><p>wasmとは何かを調べてみて、Goでブラウザで動かしてみました。</p>
+<h2 id="webassembly-とは">WebAssembly とは</h2>
+<ul>
+<li>略してwasm。</li>
+<li>メジャー4ブラウザ（Chrome、Edge、Firefox、Safari）でサポート</li>
+<li>ブラウザ上でGo等でコンパイルされたバイナリが動かせる👐</li>
+<li>同じWeb API（Javascriptが操作できる領域、プロセスのVM?）でJsのコンテキストの呼び出しや、メソッドを呼び出せる感じ。</li>
+<li>ネイティブに近いパフォーマンスで動作する</li>
+</ul>
+<h3 id="webassembly登場の背景">WebAssembly登場の背景</h3>
+<ul>
+<li>コードのサイズが大きい場合のダウンロードのコストが高いという問題に対応するため、WebAssemblyが登場。</li>
+<li>普通にWebやってると感じないと思うけど、ブラウザ上で動作するゲーム・3Dを使ったサービスのJsコードとかは数十MBあるらしいのでサイズ問題は無視できない。
+<img src="/images/go-wasm-illust.png" alt="wasm雰囲気イラスト"></li>
+</ul>
+<h3 id="使える言語">使える言語</h3>
+<ul>
+<li>LLVMに変換できる言語なら動くらしい。（C・C++・Objective-C・Rust・Go?）</li>
+<li>kripken/emscripten というツールで LLVM to wasmが可能</li>
+</ul>
+<h3 id="将来的に">将来的に</h3>
+<ul>
+<li>Jsからwasmに置き換わる事はない</li>
+<li>Javascriptを補完するだけ</li>
+</ul>
+<h2 id="goで触るには">Goで触るには</h2>
+<p>wasmは <code>go1.11</code> 系のバージョンから使用可能。</p>
+<p><code>go1.11</code> 系は正式にリリースされていないので、beta版となる。</p>
+<p>僕は <code>go1.11beta2</code> をインストールして試しました。</p>
+<p>※go1.11未満だとエラーになります</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-failure.bash" data-lang="failure.bash">&gt; GOARCH<span style="color:#f92672">=</span>wasm GOOS<span style="color:#f92672">=</span>js go build -o test.wasm main.go
+cmd/go: unsupported GOOS/GOARCH pair js/wasm
+</code></pre></div><p>実際に触ってみるにあたり、golangのwasmをブラウザ上で実際に動かせるこちらのチュートリアルをやってみた <a href="https://blog.gopheracademy.com/advent-2017/go-wasm/">https://blog.gopheracademy.com/advent-2017/go-wasm/</a></p>
+<h2 id="触ってみて">触ってみて</h2>
+<p>Goでビルドしたコードがブラウザで動いて感動。</p>
+<p>wasmファイルのレスポンスヘッダの Content-Typeが <code>application/wasm</code> となっていた。</p>
+<p>以下のようなgoroutineのコードもwasmで動かしてみたらちゃんと動いた。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
+	<span style="color:#e6db74">&#34;sync&#34;</span>
+	<span style="color:#e6db74">&#34;math/rand&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">wg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>) {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>)
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s%d: %d\n&#34;</span>, <span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Int</span>())
+	}
+	<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">wg</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+		<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">f</span>(<span style="color:#e6db74">&#34;test&#34;</span>, <span style="color:#a6e22e">wg</span>)
+	}
+	<span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
+}
+
+</code></pre></div><p>以下は実際に動かした様子。
+Content-Typeが <code>wasm</code> となる所、<code>fmt.Printlf</code> が console.logに並列で出力されている所がわかる。
+<img src="/images/go-wasm-run.gif" alt="実際にwasmで動かした様子"></p>
+<p>ネイティブに近いパフォーマンスという所についてはちゃんと検証してないのであまりわからなかった。</p>
+<p>Golangは処理の速さに定評があるので、コレひとつ覚えるだけででサーバーサイドもフロントエンドも速度出せる感じのモノが作れるように今後なるのかなと思った。</p>
+<h2 id="実際に使えるのか">実際に使えるのか</h2>
+<p>メリット・デメリットを見る感じ、今の所活かせそうな分野でいくとゲーム・3D描画・重い処理する系の所くらい…？という所感でした。</p>
+<p>そのためWebシステム屋としては今の所、まだ使う所はしっかり想像できませんでした。
+ネイティブに近いパフォーマンスで動いたとしても、フロントでそんな重い事ゴリゴリにやらないんじゃないかなーという印象です。</p>
+<p>ただ、ある程度の棲み分けができれば開発者にとってのメリットはありそうだなと思いました。
+例えば、JS + wasm(Go) で、主な処理はGoに書いてJSはDOM周りだけを担当するみたいな感じで責任範囲を分けて、なるべくサーバーサイドと同じ言語で書くみたいな。</p>
+<p>周辺のエコシステムによってできることが増えていくと思うので、今後の発展に注目したいと思います。</p>
+<h2 id="参考にしたサイト">参考にしたサイト</h2>
+<p><a href="https://developer.mozilla.org/ja/docs/WebAssembly/Concepts">https://developer.mozilla.org/ja/docs/WebAssembly/Concepts</a></p>
+</div>
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

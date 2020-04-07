@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/posts/</link>
+    <description>Recent content in Posts on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Fri, 26 Jul 2019 14:38:49 +0900</lastBuildDate>
+    
+	<atom:link href="https://sgswtky.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Digdagの require オペレータで別のワークフローを複数回起動させる</title>
+      <link>https://sgswtky.github.io/posts/digdag-require-reuse/</link>
+      <pubDate>Fri, 26 Jul 2019 14:38:49 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/digdag-require-reuse/</guid>
+      <description>digdag https://www.digdag.io/
+TreasureDataが開発するオープンソースのジョブスケジューラ
+個人的に、Jenkinsと比較してコード管理・ログの扱いを厳重に管理できる好印象なプロダクト
+今回の内容 通常、 require オペレータを使用すると session_time の関係で別のワークフローを複数回起動する事はできないけど、 session_time を動的に変更して無理矢理複数回起動させる。
+call を使えば同じ事ができるけど、 ignore_failure を使いたかったので、 require で動くようにしてみた。
+現時点で調べてみた感じ同様の内容は特に記事になってなかったので、せっかくなので書いてみる。
+（session_time と require であえてできないようにしてる事を無理矢理やってる感じがあるので、もし本番に適用する場合は自己責任で…）
+requireを普通に使ったパターン parent.diglk
+timezone: UTC +setup: echo&amp;gt;: start ${session_time} +pypy: py&amp;gt;: task.EXAMPLE.getParam +repeat: for_each&amp;gt;: param: ${params} _do: require&amp;gt;: child params: param: ${param} child.dig
+timezone: UTC +setup: echo&amp;gt;: ${moment(session_time).utc().format(&#39;YYYY-MM-DD HH:mm:ss Z&#39;)} +child_job: sh&amp;gt;: sleep 5 &amp;amp;&amp;amp; echo ${param} task/__init__.py
+# coding=utf-8 import json import digdag class EXAMPLE(object): def getParam(self): list = [&amp;#34;e&amp;#34;, &amp;#34;x&amp;#34;, &amp;#34;a&amp;#34;, &amp;#34;m&amp;#34;, &amp;#34;p&amp;#34;, &amp;#34;l&amp;#34;, &amp;#34;e&amp;#34;] digdag.</description>
+    </item>
+    
+    <item>
+      <title>多相について今一度調べてみた</title>
+      <link>https://sgswtky.github.io/posts/slt-advent-02-polymorphism/</link>
+      <pubDate>Fri, 14 Dec 2018 19:17:05 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/slt-advent-02-polymorphism/</guid>
+      <description>自分はエンジニアになって数年が経つけど、たまに基礎の基礎を知らなかったりします。
+最近 Scalaで関数型プログラミングの勉強をしてる時に 高カインド多相 というものが出てきました。
+他の多相も全く知らないのに、名前を見るにすごく高度そうな多相。良い機会だから多相について調べてみようと思ったのが今回のきっかけです。
+ Wikipediaや、調べて出てきた他の方のブログ、本なんかを参考にしてます。 間違いがあったらご指摘頂けると🙏
+ 多相性 下記3つは全て全く同じものです。
+ ポリモーフィズム 多態性 多様性  これらは何？と言われるとプログラム言語の型システムを取り扱う性質の事を指します。
+型システム = 変数、式、オブジェクト、関数&amp;hellip;などを指します。
+ 部分型多相  同意語  派生型多態 サブタイピング多相 部分型付け    この多相を指して単にポリモーフィズムと呼ぶ場合もあります。
+複数種類の型を１つの型のように扱える性質の事を指します。
+例えば、 Animal を extendsした3つの型があるとします。
+trait Animal { def call(): String } case class Cat() extends Animal { override def call(): String = &amp;#34;bark&amp;#34; } case class Dog() extends Animal { override def call(): String = &amp;#34;mew&amp;#34; } case class Cow() extends Animal { override def call(): String = &amp;#34;low&amp;#34; } 3つの型は、Animal型として扱えるので、これが実現できる Scalaは部分型多相の性質を持っています。</description>
+    </item>
+    
+    <item>
+      <title>ScalikeJDBCのクォート付く付かない挙動調べてみた</title>
+      <link>https://sgswtky.github.io/posts/slt-advent-01-scalikejdbc/</link>
+      <pubDate>Thu, 13 Dec 2018 21:30:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/slt-advent-01-scalikejdbc/</guid>
+      <description>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、 一部不明な点があったので調べてみました。
+ScalikeJDBCとは ScalikeJDBCは、JDBCをラップしたScalaのライブラリです。 様々なDBに対応していて、直感的に書けるQueryDSLで効率的にSQLが書けます。
+自分もいくつかのScalaプロジェクトで、MySQLのコネクタとして採用しています。 日本語の情報が多く、Scala触り始めの方でも扱う敷居は低いのではないかと思います。
+QueryDSL ScalikeJDBCのDSLはコード中にSQLを記述するように書けて、以下の2種類の書き方が可能です。
+val userMap = sql&amp;#34;&amp;#34;&amp;#34; select * from user where created_at &amp;gt; &amp;#39;2018-10-01&amp;#39; &amp;#34;&amp;#34;&amp;#34;.map(_.toMap).list.apply SQLInterpolation という機能を使用している場合は、クエリビルダのようにクエリを組み立てられます。
+val u = User.syntax(&amp;#34;u&amp;#34;) val groupMember = withSQL { select.from(User as u).where.gt(u.createdAt, createdAt) }.map(_.toMap).list.apply 一部不明な点とは QueryDSLを使って、以下のように WHERE句に LocalDateの値を使用してSELECT句のクエリを流しました。
+val value = LocalDate.now() val userMap = sql&amp;#34;&amp;#34;&amp;#34; select * from user where value = $value &amp;#34;&amp;#34;&amp;#34;.map(_.toMap).list.apply 👇下記のようにSQLが流れる想定でしたが、
+select * from user where value = &#39;2018-12-13&#39; 👇以下のSQLが実行されてエラーとなりました。
+select * from user where value = 2018-12-13 つまり、自動でクォートされる型・されない型があるようです。</description>
+    </item>
+    
+    <item>
+      <title>ScalaのFunctionが実装するメソッド</title>
+      <link>https://sgswtky.github.io/posts/scala-function-method/</link>
+      <pubDate>Tue, 23 Oct 2018 09:30:08 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/scala-function-method/</guid>
+      <description>しばらく放置してた。反省。
+Scalaで関数を定義すると、すでにその時点でいくつかのメソッドが実装されている。 （レシーバとも言う？）
+Function1 で実際にどんなメソッドを実装しているかを見てみた。 以下の4つを実装してるっぽい。
+compose andThen apply toString    method description     compose 関数の合成   andThen 関数の合成   apply 関数の適用   toString String型に変換    compose  レシーバの関数を後に適用 ２つの Function1 から新しい Function1 を生成  引数に  func{n} を結合するメソッドを３つ compose してみる
+object method extends App { def exampleFunc1(s: String): String = s + &amp;#34; func1&amp;#34; def exampleFunc2(s: String): String = s + &amp;#34; func2&amp;#34; def exampleFunc3(s: String): String = s + &amp;#34; func3&amp;#34; val ef1: String =&amp;gt; String = exampleFunc1 val ef2 = exampleFunc2 _ val ef3 = exampleFunc3 _ val f = ef1 compose ef2 compose ef3 val r = f(&amp;#34;EXAMPLE&amp;#34;) println(r) } EXAMPLE func3 func2 func1 composeはレシーバのメソッドを後ろから実行するような動きをするみたい。</description>
+    </item>
+    
+    <item>
+      <title>所属プロダクトの開発プロセス</title>
+      <link>https://sgswtky.github.io/posts/product-development-process/</link>
+      <pubDate>Sat, 28 Jul 2018 15:44:16 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/product-development-process/</guid>
+      <description>来週から期間限定で違うチームに異動するため、今のチームの開発プロセスをなるべく詳細に書き残しておこうと思う。 チームを異動して戻ってきた時に見返した時に何か得られるような気がするので。
+進め方 進め方は全体的にやんわりスクラムで進めるような感じ。 やんわりというのは、スクラムマスターが居てちゃんとしたスクラムのやり方を実践していこう！というわけではないので、割と中途半端なスクラムでやってると思う。
+チームメンバーの構成  開発責任者 1人 ※後述の朝会・レビュー会には参加しない PO 1人 サーバーサイド・インフラエンジニア 2人 iOSエンジニア 2人 フロントエンドエンジニア 1人  使ってるツール  GitHub ZenHub（GitHubの拡張） esa instagantt スプレッドシート（KPTのシート等）  やっている事ハイライト  朝会（デイリースクラム） レビュー会 振り返り（スプリントレトロスペクティブ）   スプリントレビュー スプリントプランニング KPT  スプリントプランニングミーティング（スプリント計画） 分報（雑談）  1週間の予定    曜日 内容     月 10:00~朝会 11:00~レビュー会   火 10:00~朝会 11:00~レビュー会 18:00~振り返り（スプリントレトロスペクティブ）   水 10:00~スプリントプランニングミーティング（スプリント計画）   木 10:00~朝会 11:00~レビュー会   金 10:00~朝会 11:00~レビュー会    1.</description>
+    </item>
+    
+    <item>
+      <title>Go言語でwasm動かしてみた</title>
+      <link>https://sgswtky.github.io/posts/golang-wasm/</link>
+      <pubDate>Sun, 22 Jul 2018 19:38:54 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/golang-wasm/</guid>
+      <description>wasmとは何かを調べてみて、Goでブラウザで動かしてみました。
+WebAssembly とは  略してwasm。 メジャー4ブラウザ（Chrome、Edge、Firefox、Safari）でサポート ブラウザ上でGo等でコンパイルされたバイナリが動かせる👐 同じWeb API（Javascriptが操作できる領域、プロセスのVM?）でJsのコンテキストの呼び出しや、メソッドを呼び出せる感じ。 ネイティブに近いパフォーマンスで動作する  WebAssembly登場の背景  コードのサイズが大きい場合のダウンロードのコストが高いという問題に対応するため、WebAssemblyが登場。 普通にWebやってると感じないと思うけど、ブラウザ上で動作するゲーム・3Dを使ったサービスのJsコードとかは数十MBあるらしいのでサイズ問題は無視できない。   使える言語  LLVMに変換できる言語なら動くらしい。（C・C++・Objective-C・Rust・Go?） kripken/emscripten というツールで LLVM to wasmが可能  将来的に  Jsからwasmに置き換わる事はない Javascriptを補完するだけ  Goで触るには wasmは go1.11 系のバージョンから使用可能。
+go1.11 系は正式にリリースされていないので、beta版となる。
+僕は go1.11beta2 をインストールして試しました。
+※go1.11未満だとエラーになります
+&amp;gt; GOARCH=wasm GOOS=js go build -o test.wasm main.go cmd/go: unsupported GOOS/GOARCH pair js/wasm 実際に触ってみるにあたり、golangのwasmをブラウザ上で実際に動かせるこちらのチュートリアルをやってみた https://blog.gopheracademy.com/advent-2017/go-wasm/
+触ってみて Goでビルドしたコードがブラウザで動いて感動。
+wasmファイルのレスポンスヘッダの Content-Typeが application/wasm となっていた。
+以下のようなgoroutineのコードもwasmで動かしてみたらちゃんと動いた。
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;math/rand&amp;#34; ) func f(s string, wg *sync.</description>
+    </item>
+    
+    <item>
+      <title>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした</title>
+      <link>https://sgswtky.github.io/posts/jenkins-pipeline-unexpected-behavior/</link>
+      <pubDate>Tue, 17 Jul 2018 20:14:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/jenkins-pipeline-unexpected-behavior/</guid>
+      <description>先日から古い Jenkins2 のジョブをメンテする仕事をしていて、Pipelineで Groovyを書いてたら特定のパターンでは動くけどそれ以外だと動かないという事情に遭遇した。
+やりたかったことは、パイプラインAから、ジョブAを並列で2つ起動させたかった。 色々調べたけど結局わからなくて、バージョンアップしたら治った話。
+事象 動かないコード コードは極々単純で以下のようなコード。
+node(&amp;#34;master&amp;#34;){ def tasks = [:] for (i = 0; i &amp;lt; 2; i++) { tasks[i.toString()] = { build job: &amp;#34;Job_A&amp;#34; } } parallel tasks } このコードを実行したら通常であれば ジョブA が２つ実行されるはず。しかし以下のように1つしか Job_Aが実行されなかった。
+Started by timer [Pipeline] node Running on master in /var/lib/jenkins/workspace/Pipeline_A [Pipeline] { [Pipeline] parallel [Pipeline] [0] { (Branch: 0) [Pipeline] [1] { (Branch: 1) [Pipeline] [0] stage [Pipeline] [0] { (branch_2) [Pipeline] [1] stage [Pipeline] [1] { (branch_2) [Pipeline] [0] build (Building Job_A) [0] Scheduling project: Job_A [Pipeline] [1] build (Building Job_A) [1] Scheduling project: Job_A [0] Starting building: Job_A #4 // ↑ここで Job_A が ビルド番号4で起動しているのがわかるが、起動しているのは #4 だけ。 [Pipeline] [0] } [Pipeline] [1] } [Pipeline] [0] // stage [Pipeline] [1] // stage [Pipeline] [0] } [Pipeline] [1] } [Pipeline] // parallel [Pipeline] } [Pipeline] // node [Pipeline] End of Pipeline Finished: SUCCESS 何故か動くコード 以下のコードは期待する動きをした。</description>
+    </item>
+    
+    <item>
+      <title>go-xorm/xorm - Golang O/R Mapper触ってみた</title>
+      <link>https://sgswtky.github.io/posts/golang-orm-xorm/</link>
+      <pubDate>Sun, 15 Jul 2018 23:17:35 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/golang-orm-xorm/</guid>
+      <description>先日 sqlx を触ってみて、他のORMも触ってみたいと思って触ってみた
+色々試してみた DB接続部分 接続は他のORMと同じような感じ。
+package orm import ( &amp;#34;testing&amp;#34; _ &amp;#34;github.com/go-sql-driver/mysql&amp;#34; &amp;#34;github.com/go-xorm/xorm&amp;#34; ) var engine *xorm.Engine func TestXorm(t *testing.T) { var err error engine, err = xorm.NewEngine(&amp;#34;mysql&amp;#34;, &amp;#34;root:rootpasswd@tcp(localhost):3306/example?parseTime=true&amp;amp;charset=utf8&amp;#34;) if err != nil { panic(err) } } 今回操作するDDLと構造体 CREATE TABLE `users` ( `user_id` varchar(11) NOT NULL DEFAULT &amp;#39;&amp;#39; COMMENT &amp;#39;userID&amp;#39;, `user_name` varchar(255) NOT NULL COMMENT &amp;#39;userName&amp;#39;, `created_at` datetime NOT NULL COMMENT &amp;#39;createdAt&amp;#39;, `created_user` varchar(255) DEFAULT NULL COMMENT &amp;#39;createdUser&amp;#39;, `updated_at` datetime NOT NULL COMMENT &amp;#39;updatedAt&amp;#39;, `updated_user` varchar(255) DEFAULT NULL COMMENT &amp;#39;updatedUser&amp;#39;, PRIMARY KEY (`user_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&amp;#39;user&amp;#39;; type Users struct { UserId string UserName string CreatedAt time.</description>
+    </item>
+    
+    <item>
+      <title>jmoiron/sqlx - Golang O/R Mapper触ってみた</title>
+      <link>https://sgswtky.github.io/posts/golang-orm-sqlx/</link>
+      <pubDate>Tue, 10 Jul 2018 13:53:07 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/golang-orm-sqlx/</guid>
+      <description>きっかけ 会社で僕のチームでは3層WebアプリでGoをサーバーサイドとして使ってます。
+フロントはVuejsをでSPAとしてブラウザで動作する感じです。 AWS上で動いていて、サーバーサイド（Go）とRDS（MySQL）のデータのやり取りで dbr というORMを使っているのですが、以前このORMで一点問題になる事があった。
+日本をターゲットにしたプロダクトを作っているので日本を基準にした時刻でDBとやり取りしたいので、JSTとして時刻を扱いたいけど dbr によって強制的にUTCとなる。 UTCからJSTに無理矢理変換するなどして対応しているのですが、正直かっこ悪いので根本的な対応をしたいです。
+色々調べてみた所dbrのコミッタはこれをissueでなく仕様としているような発言が以下のissueから見て取れる。
+https://github.com/gocraft/dbr/issues/96
+このため、この先 dbr でなく別のORMを使用することを検討しています。 軽く調べてみて今回紹介する jmoiron/sqlx が個人的にすごく好きな感じだったので紹介したいと思います。
+GoのORMに個人的に求めてるもの Goに合う Goをしばらく触っていて感じるのは多機能で色々やってくれるモノは基本的にGoに合わない気がしています。 例えばJavaのspring系のフレームワークであったりMyBatisのようなXMLとかアノテーションたくさん使っていろんな機能がある奴。
+Goはどちらかというと小さいライブラリを組み合わせて使うほうが向いている感じがあって、それぞれが疎結合になってるというのが一番綺麗でわかりやすいような気がしてます。（そして個人的に好き）
+個人的に求めてるもの  なんでもやってくれない、なるべく最低限 ActiveRecordみたいな黒魔術でない リレーション張る機能が無い 構造体とのマッピングができる 自分で書くコードが減りそう 読みやすいか 生SQLが書ける  公式READMEを見た感じ  database/sql に一連の拡張機能追加してるだけ database/sql 使ってるなら簡単に導入できる コンセプトがシンプル  な印象を受けて、この時点で 良さそう と思った
+実際触ってみて 簡単にCRUD、NamedExecというsqlxが作ったメソッド、トランザクションを一通り試してみた。
+select selectでマッピングを行ってくれる。
+カラム名は構造体のタグで明示的に指定する。
+db, _ := sqlx.Connect(&amp;#34;mysql&amp;#34;, &amp;#34;root:rootpasswd@(example.host:3306)/example?parseTime=true&amp;#34;) type UserStatus struct { UserID string `db:&amp;#34;user_id&amp;#34;` UserName string `db:&amp;#34;user_name&amp;#34;` UserStatusDescription string `db:&amp;#34;user_status_description&amp;#34;` } userStatus := []UserStatus{} err := db.</description>
+    </item>
+    
+    <item>
+      <title>ローカルMacのターミナルを個人的に良い感じにした</title>
+      <link>https://sgswtky.github.io/posts/local-terminal-setting/</link>
+      <pubDate>Mon, 09 Jul 2018 17:08:18 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/posts/local-terminal-setting/</guid>
+      <description>きっかけ Macのバッテリーが膨らみすぎて、交換してもらった。 性能面では特に問題なかったのに新品の希望通りのPCを手配して頂いてこの辺の柔軟さ・理解がある所には会社に感謝🙏
+がっつりイジり倒して玄人感あるターミナルっていうよりは基本機能に配色調整したシンプルなターミナルにしました。
+いままで  iTerm2 zsh oh-my-zsh デフォルトテーマ  これから  iTerm2 iTerm2のフォント変更 japaneseque（配色） zsh oh-my-zsh avit（avit） ターミナルの表示カスタマイズ（ユーザーとか表示される部分）  iTerm2  https://www.iterm2.com/  iTerm2のフォント変更  13pt Menlo Regular に変更して使ってます  InteliJIdeaが Menloなのでそちらに合わせる形で設定しました    japaneseque  iTerm2の配色の設定ファイル  https://github.com/aereal/dotfiles/blob/master/colors/Japanesque/Japanesque.itermcolors   作者のブログ記事  https://this.aereal.org/entry/2013/01/02/222304    zsh  wikipedia  https://ja.wikipedia.org/wiki/Z_Shell   macだとbrewで入ります。入れ方はググると出てきます。  https://qiita.com/nenokido2000/items/763a4af5c161ff5ede68    oh-my-zsh  github（入れ方もREADMEにあります）  https://github.com/robbyrussell/oh-my-zsh    avit  ~/.</description>
+    </item>
+    
+  </channel>
+</rss>

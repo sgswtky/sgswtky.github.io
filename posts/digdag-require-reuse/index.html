@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Digdagの require オペレータで別のワークフローを複数回起動させる</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Digdagの require オペレータで別のワークフローを複数回起動させる</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/posts/">Blog</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Digdagの require オペレータで別のワークフローを複数回起動させる</h2>
+        <h5></h5>
+        
+<a href="https://sgswtky.github.iotags/workflow"><kbd class="item-tag">Workflow</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><h2 id="digdag">digdag</h2>
+<p><a href="https://www.digdag.io/">https://www.digdag.io/</a></p>
+<p>TreasureDataが開発するオープンソースのジョブスケジューラ</p>
+<p>個人的に、Jenkinsと比較してコード管理・ログの扱いを厳重に管理できる好印象なプロダクト</p>
+<h2 id="今回の内容">今回の内容</h2>
+<p>通常、 <code>require</code> オペレータを使用すると <code>session_time</code> の関係で別のワークフローを複数回起動する事はできないけど、 <code>session_time</code> を動的に変更して無理矢理複数回起動させる。</p>
+<p><code>call</code> を使えば同じ事ができるけど、 <code>ignore_failure</code> を使いたかったので、 <code>require</code> で動くようにしてみた。</p>
+<p>現時点で調べてみた感じ同様の内容は特に記事になってなかったので、せっかくなので書いてみる。</p>
+<p>（<code>session_time</code> と <code>require</code> であえてできないようにしてる事を無理矢理やってる感じがあるので、もし本番に適用する場合は自己責任で…）</p>
+<h3 id="requireを普通に使ったパターン">requireを普通に使ったパターン</h3>
+<p><code>parent.diglk</code></p>
+<pre><code class="language-parent.dig" data-lang="parent.dig">timezone: UTC
+
++setup:
+  echo&gt;: start ${session_time}
+
++pypy:
+  py&gt;: task.EXAMPLE.getParam
+
++repeat:
+  for_each&gt;:
+    param: ${params}
+  _do:
+    require&gt;: child
+    params:
+      param: ${param}
+</code></pre><p><code>child.dig</code></p>
+<pre><code class="language-child.dig" data-lang="child.dig">timezone: UTC
+
++setup:
+  echo&gt;: ${moment(session_time).utc().format('YYYY-MM-DD HH:mm:ss Z')}
+
++child_job:
+  sh&gt;: sleep 5 &amp;&amp; echo ${param}
+</code></pre><p><code>task/__init__.py</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-task/__init__.py" data-lang="task/__init__.py"><span style="color:#75715e"># coding=utf-8</span>
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> digdag
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EXAMPLE</span>(object):
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getParam</span>(self):
+    list <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;e&#34;</span>, <span style="color:#e6db74">&#34;x&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;m&#34;</span>, <span style="color:#e6db74">&#34;p&#34;</span>, <span style="color:#e6db74">&#34;l&#34;</span>, <span style="color:#e6db74">&#34;e&#34;</span>]
+    digdag<span style="color:#f92672">.</span>env<span style="color:#f92672">.</span>store({<span style="color:#e6db74">&#39;params&#39;</span>: json<span style="color:#f92672">.</span>dumps(list)})
+</code></pre></div><p>requireで <code>child.dig</code> を呼び出すも、複数回呼ばれる事はありません。</p>
+<p>WebUIで見るとこうなる。</p>
+<p><img src="/images/digdag-require-reuse-normal-require.png" alt="digdagのWebUI"></p>
+<h3 id="今回の内容-requireを無理矢理複数回呼び出してみる">[今回の内容] requireを無理矢理複数回呼び出してみる</h3>
+<p>内容は比較的単純で、呼び出す <code>require</code> 全てに違う <code>session_time</code> を指定している。</p>
+<p><code>require</code> で <code>session_time</code> 指定せずに起動した場合、親の <code>session_time</code> を使うため、２度目の起動ができない。なのでループ毎に違う <code>session_time</code> を指定するだけで全てのループで <code>require</code> が起動する。</p>
+<p><code>reuse_parent.dig</code></p>
+<pre><code class="language-reuse_parent.dig" data-lang="reuse_parent.dig">timezone: UTC
+
++setup:
+  echo&gt;: start ${session_time}
+
++pypy:
+  py&gt;: task.EXAMPLE.getParamNum
+
++repeat:
+  for_each&gt;:
+    param: ${params}
+  _do:
+    require&gt;: reuse_child
+    ## ここで加算して全てのループで違う値にする事で全て起動する
+    session_time: ${moment(session_time).add(param.no, 's').format('YYYY-MM-DDTHH:mm:ssZ')}
+    params:
+      param: ${param.value}
+</code></pre><p>↓こちらは特に変更無いです</p>
+<p><code>reuse_child.dig</code></p>
+<pre><code class="language-reuse_child.dig" data-lang="reuse_child.dig">timezone: UTC
+
++setup:
+  echo&gt;: ${moment(session_time).utc().format('YYYY-MM-DD HH:mm:ss Z')}
+
++child_job:
+  sh&gt;: sleep 5 &amp;&amp; echo ${param}
+</code></pre><p><code>task/__init__.py</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-task/__init__.py" data-lang="task/__init__.py"><span style="color:#75715e"># coding=utf-8</span>
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> digdag
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EXAMPLE</span>(object):
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getParamNum</span>(self):
+    list <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;e&#34;</span>, <span style="color:#e6db74">&#34;x&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;m&#34;</span>, <span style="color:#e6db74">&#34;p&#34;</span>, <span style="color:#e6db74">&#34;l&#34;</span>, <span style="color:#e6db74">&#34;e&#34;</span>]
+    result <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(list)):
+      result<span style="color:#f92672">.</span>append({<span style="color:#e6db74">&#39;no&#39;</span>: i, <span style="color:#e6db74">&#39;value&#39;</span>: list[i]})
+    digdag<span style="color:#f92672">.</span>env<span style="color:#f92672">.</span>store({<span style="color:#e6db74">&#39;params&#39;</span>: json<span style="color:#f92672">.</span>dumps(result)})
+</code></pre></div><p>結果、このように <code>require</code> を使用していますが順番に実行されます。</p>
+<p><img src="/images/digdag-require-reuse-require.png" alt="digdagのWebUI"></p>
+<h4 id="パラメータで付与している理由">パラメータで付与している理由</h4>
+<p>現在時刻を使って加算する方法などもあると思うけど、うまく動作しなかった。</p>
+<p>動的なパラメータを <code>moment</code> で加算するとうまく動かなかったので、 python側で生成し、digdagが扱う際には静的になってるパラメータを使う事で全ての <code>require</code> が動作した。</p>
+<h4 id="オススメしないパターン">オススメしないパターン</h4>
+<p>なんとなく触っていて、 <code>子ワークフローを共有する</code> というのは避けたほうが良いと思いました。</p>
+<p>子を複数の親が使うと、片親が使ってる時、もう片親も使い始めて <code>session_time</code> がかぶった時にどちらかがスキップされる挙動になると思います。</p>
+<h2 id="requireオペレーターを使った時の挙動">requireオペレーターを使った時の挙動</h2>
+<p>普通に使った時の挙動などはこちらのQiitaに詳しくまとめられていました。ので、こちらなどを参考にすると良いと思います。</p>
+<p><a href="https://qiita.com/shiozaki/items/b3aaff926b7b601b4f86">https://qiita.com/shiozaki/items/b3aaff926b7b601b4f86</a></p>
+<h2 id="最後に">最後に</h2>
+<p>書かなきゃと思ってたけどずっとサボってて 2019年初記事が7月下旬になってしまった。</p>
+<p>今回のコードをこちらに上げてありますので機会がありましたらお試しください。</p>
+<p><a href="https://github.com/sgswtky/example-digdag-require-reuse">https://github.com/sgswtky/example-digdag-require-reuse</a></p>
+</div>
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

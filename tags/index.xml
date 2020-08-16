@@ -6,10 +6,46 @@
     <description>Recent content in Tags on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 09 Apr 2020 17:01:38 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2020 13:41:21 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Aurora</title>
+      <link>https://sgswtky.github.io/tags/aurora/</link>
+      <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/aurora/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DB</title>
+      <link>https://sgswtky.github.io/tags/db/</link>
+      <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/db/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MySQL</title>
+      <link>https://sgswtky.github.io/tags/mysql/</link>
+      <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Query</title>
+      <link>https://sgswtky.github.io/tags/query/</link>
+      <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/tags/query/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Flutter</title>

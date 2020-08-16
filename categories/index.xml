@@ -6,10 +6,28 @@
     <description>Recent content in Categories on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 09 Apr 2020 17:01:38 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2020 13:41:21 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Aurora</title>
+      <link>https://sgswtky.github.io/categories/aurora/</link>
+      <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/aurora/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MySQL</title>
+      <link>https://sgswtky.github.io/categories/mysql/</link>
+      <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/mysql/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Flutter</title>

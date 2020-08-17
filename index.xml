@@ -36,6 +36,7 @@ SELECT INSERT で長時間ロックが掛かる  前提1  バージョン: AWS A
 Position: backend engineer
 Birth(yyyy/MM): 1991/02
 WorkPlace: Shibuya / 2020.07~ WFH
+Comment: 本を読了した的なスキルは載せてません。全て実務経験があるスキルのみ載せてます。
 Skills Highlight  backend  設計(Restful-API, Batch, App Architecture) Scala(functional) Golang Java   AWS  EC2, ELB, ALB ECS, AWS Batch RDS(Aurora-MySQL)   DB  MySQL   Other  CircleCI Docker swagger digdag    Industry WEB広告の実績可視化システムに長年携わっているため、一般的なエンジニアと比較してWEB広告の構造等への理解があります。
 Career 所属会社にて担当プロダクトの新機能の設計、チューニング、実装等を行っております。
 マネジメント領域ではメンバーのメンタリング・チーム内勉強会の開催等を行っております。

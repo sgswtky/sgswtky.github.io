@@ -144,6 +144,7 @@
 <ul>
 <li>バージョン: AWS Aurora mysql 5.6(の現時点での最新)</li>
 <li>クラスタ: writer 1台、reader 1台（オートスケール）</li>
+<li>インスタンスサイズ: r5.16xlarge</li>
 </ul>
 <p>ユーザー任意のタイミングで CREATE TABLE の後に SELECT INSERT する機能（要はレコード絞ってテーブルコピー）があるのですが、この出力結果のテーブルが次のようになっています。</p>
 <ul>
@@ -210,24 +211,50 @@ FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef"
 <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#66d9ef">TABLE</span> public_report
 FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;,&#39;</span>
 (<span style="color:#75715e">/* テーブルのカラム全て指定 */</span>)
-</code></pre></div><h3 id="良くなった事">良くなった事</h3>
-<p>ロック待ちの発生が無くなった。</p>
-<ul>
-<li><code>SELECT INSERT</code> は絶対ロックが発生してしまい、同期的にクエリ結果をテーブルに入れるのでロックが発生する。</li>
-</ul>
-<p>SELECT処理をroエンドポイントに寄せられた。</p>
-<ul>
-<li>いままではwirterインスタンスでSELECT処理を行っていたが、今回からroエンドポイントに <code>SELECT INTO OUTFILE S3</code> を実行している。</li>
-<li>そのためこの処理自体がオートスケールにより、スケールしやすくなった</li>
-</ul>
-<h3 id="悪かった事">悪かった事</h3>
-<p>特に無かった。</p>
-<p>超厳密に言えば、1回あたりの実行時間は長くなった。</p>
-<p><code>SELECT INSERT</code> は内部的に SELECT しながら INSERTするので、クエリ単体の時間で見ると恐らく最も効率が良いのだと思う。しかし、今回の対応では外部（S3）を経由しており実行時間は伸びた。</p>
-<p>が、ロック待ちの時間が発生しなくなったので全体としてはパフォーマンスが向上した。</p>
+</code></pre></div><h3 id="結果">結果</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th><code>SELECT INSERT</code></th>
+<th><code>INTO OUTFILE S3</code> → <code>LOAD DATA FROM S3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>実行あたりの単純速度</td>
+<td>速い</td>
+<td>遅い</td>
+</tr>
+<tr>
+<td>テーブルロック</td>
+<td>有り</td>
+<td>無し</td>
+</tr>
+<tr>
+<td>オートスケール対応</td>
+<td>してない</td>
+<td>してる(INTO OUTFILEはスケール可)</td>
+</tr>
+<tr>
+<td>最終的なパフォーマンス</td>
+<td>-</td>
+<td>UP</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>実行あたりの単純速度は、1回あたりの実行時間は長くなった事を指します。</p>
+<p>やはり <code>SELECT INSERT</code> は高速で、書き込みが競合せず即座に完了するのであれば <code>SELECT INSERT</code> が速いし一番良い。</p>
+<p>僕の担当プロダクト的には合わなかったという話なのでケースバイケース。</p>
 <h2 id="感想">感想</h2>
-<p>Auroraは改めて書き込み処理は writerエンドポイント、読み込み処理は readerエンドポイントを徹底して行うべきなのかなと感じた。</p>
-<p>現時点で writerに対して SELECTしてるクエリがいくつかあるので、洗い出してクエリ実行の向き先を変える必要がありそう。</p>
+<p>僕の担当プロダクトでは、ETL処理からの書き込みがあるため、下記を徹底すべきなのかなと感じた。</p>
+<ul>
+<li>書き込み処理は writerエンドポイント</li>
+<li>読み込み処理は readerエンドポイント</li>
+</ul>
+<p>今現時点で writerに対して SELECTしてるクエリがいくつかあるので、洗い出してクエリ実行の向き先を変える必要がありそう。</p>
 <p>年1更新でしたが今年2ポスト目です。これからもチマチマ更新したいと思います。</p>
 </div>
 

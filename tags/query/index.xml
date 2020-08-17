@@ -22,7 +22,7 @@
 Amazon Aurora https://aws.amazon.com/jp/rds/aurora/
 RDBで、要は MySQL を AWS に最適化して機能を増やしたSaaS。
 クエリとかは MySQLで使えるクエリが使える（厳密に使えないのいくつかあるかも）
-SELECT INSERT で長時間ロックが掛かる  前提1  バージョン: AWS Aurora mysql 5.6(の現時点での最新) クラスタ: writer 1台、reader 1台（オートスケール）  ユーザー任意のタイミングで CREATE TABLE の後に SELECT INSERT する機能（要はレコード絞ってテーブルコピー）があるのですが、この出力結果のテーブルが次のようになっています。
+SELECT INSERT で長時間ロックが掛かる  前提1  バージョン: AWS Aurora mysql 5.6(の現時点での最新) クラスタ: writer 1台、reader 1台（オートスケール） インスタンスサイズ: r5.16xlarge  ユーザー任意のタイミングで CREATE TABLE の後に SELECT INSERT する機能（要はレコード絞ってテーブルコピー）があるのですが、この出力結果のテーブルが次のようになっています。
  1テーブル 平均 0.8GB 最小100MB、 最大40GB / 1テーブル 約1000テーブル以上/日 でコピー  -- イメージこんな感じ CREATE TABLE public_report ...; INSERT INTO public_report -- 作りたいテーブル SELECT * FROM report r -- 元データのあるテーブル INNER JOIN report_setting rs -- 公開情報のあるテーブル ON r.</description>
     </item>
     

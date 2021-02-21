@@ -6,10 +6,28 @@
     <description>Recent content in Categories on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 16 Aug 2020 13:41:21 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 21 Feb 2021 10:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://sgswtky.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AWS</title>
+      <link>https://sgswtky.github.io/categories/aws/</link>
+      <pubDate>Sun, 21 Feb 2021 10:00:00 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cognito</title>
+      <link>https://sgswtky.github.io/categories/cognito/</link>
+      <pubDate>Sun, 21 Feb 2021 10:00:00 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/categories/cognito/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Aurora</title>

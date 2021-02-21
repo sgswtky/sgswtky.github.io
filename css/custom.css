@@ -29,3 +29,24 @@ th + th,td {
 table tr:nth-child(odd) td {
   background: #eee;
 }
+
+p {
+  margin: 0 0 15px;
+}
+
+ul {
+  margin-top: 5px !important;
+  margin-bottom: 15px !important;
+}
+
+h1 {
+  margin-top: 40px !important;
+  margin-right: 50px !important;
+  border-bottom: double 10px #eee;
+}
+
+h2 {
+  margin-right: 50px !important;
+  border-bottom: inset 3px #eee;
+}
+

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+ <link rel="stylesheet" href="https://sgswtky.github.io/css/custom.css"> 
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/posts/">Blog</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="/profile/">Profile</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</h2>
+        <h5></h5>
+        
+<a href="https://sgswtky.github.iotags/aws"><kbd class="item-tag">AWS</kbd></a>
+
+<a href="https://sgswtky.github.iotags/cognito"><kbd class="item-tag">Cognito</kbd></a>
+
+<a href="https://sgswtky.github.iotags/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E7%AE%A1%E7%90%86"><kbd class="item-tag">ユーザー管理</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><p>Cognito は AWS で提供されてるユーザー管理のための機能群のようなもの。</p>
+<p>アプリケーションを作成するとほぼ必ずと言って良いほどつきまとうのが <strong>ユーザー管理とその周辺機能</strong>。</p>
+<p>Cognitoはこれをサポートするようなプロダクトで、サインアップ・サインインは標準で提供し、 Oauth2.0、SAML2.0の対応やSNS認証やメール認証といった機能も簡単に使える。</p>
+<h1 id="動かす">動かす</h1>
+<h2 id="構成">構成</h2>
+<ul>
+<li>フロント: <code>PureJS</code></li>
+<li>インフラ: <code>AWS Cognito</code>, <code>Lambda(Go)</code>, <code>Google reCAPTCHA v3</code></li>
+</ul>
+<p>Cognitoは <code>aws-cli</code>、<code>aws-sdk</code>で操作できる他、ユーザーとして Cognitoを操作するためのライブラリも存在している。<code>amplify</code> のライブラリ群にもその実装があり、今回はそちらを使用した。</p>
+<p><code>amplify</code>は各クライアント向けに下記のようなライブラリがある。</p>
+<ul>
+<li><a href="https://github.com/aws-amplify/amplify-js">https://github.com/aws-amplify/amplify-js</a></li>
+<li><a href="https://github.com/aws-amplify/amplify-ios">https://github.com/aws-amplify/amplify-ios</a></li>
+<li><a href="https://github.com/aws-amplify/amplify-android">https://github.com/aws-amplify/amplify-android</a></li>
+</ul>
+<h3 id="フロント">フロント</h3>
+<p>普段jsは触らないためとりあえず動けばおｋで PureJSで作ってます。package.jsonで <code>npm run start</code> :8080で起動します。</p>
+<p>npmのバージョンは <code>v14.15.5</code> で下記ファイル群を準備して立ち上げれば動くと思います。
+（jsのライブリロードとかは面倒くさくてやってないです）</p>
+<ul>
+<li><a href="https://gist.github.com/sgswtky/385b836ac5ad3ef04d0557199f725e8a">https://gist.github.com/sgswtky/385b836ac5ad3ef04d0557199f725e8a</a></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console.sh" data-lang="console.sh">npm i
+npm run start
+</code></pre></div><h4 id="画面">画面</h4>
+<p>これらのファイルから立ち上がるフロントの画面は下記画像のようになっており、 <strong>サインアップ</strong>、<strong>サインイン</strong>、<strong>チャレンジでのサインイン</strong> のフォームが存在します。</p>
+<figure class="center">
+    <img src="/images/cognito-front-image.png"/> 
+</figure>
+
+<table>
+<thead>
+<tr>
+<th>項目名</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sign up</td>
+<td>cognitoのユーザープールにユーザーを登録します</td>
+</tr>
+<tr>
+<td>sign in</td>
+<td>ユーザープールに登録されているユーザーでログインします</td>
+</tr>
+<tr>
+<td>sign up challenge</td>
+<td>sign in と同じ事を実現しますが、メールアドレスを用いたワンタイムパスワードで認証します。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recaptcha">reCAPTCHA</h3>
+<p>今回 reCAPTCHA v3を画面に実装しています。</p>
+<p>v3なので v2までとは違い、画像認証やロボットアクセスの確認等が無くなったバージョンの使用を想定しています。</p>
+<p>reCAPTCHAはトークン作成時にドメインを指定するため、指定のドメイン以外で reCAPTCHAを組み込むとエラーになりますが、ローカルの <code>/etc/hosts</code> に <code>127.0.0.1</code> でドメインを追記して動作させていました。</p>
+<h3 id="インフラ">インフラ</h3>
+<p>ブラウザから Cognitoを呼び出す事はできるので、次に Cognitoから呼び出す Lambdaを設定する必要があります。</p>
+<p>下記の各それぞれのファイルを各々 <code>go build</code> して Lambdaファンクションの作成＆アップロードしておく。</p>
+<p>※ 環境変数 <code>RECAPTCHA_SECRET</code> に reCAPTCHAのシークレットキーが必要なので Lambdaに設定しておいてください。</p>
+<table>
+<thead>
+<tr>
+<th>トリガー</th>
+<th>url</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>サインアップ前</td>
+<td><a href="https://gist.github.com/sgswtky/c0f83c91ccb66901cb52dfc6b202fb9f">https://gist.github.com/sgswtky/c0f83c91ccb66901cb52dfc6b202fb9f</a></td>
+</tr>
+<tr>
+<td>認証前</td>
+<td><a href="https://gist.github.com/sgswtky/5c877df2553f56d7d668bdea844d0a57">https://gist.github.com/sgswtky/5c877df2553f56d7d668bdea844d0a57</a></td>
+</tr>
+<tr>
+<td>認証チャレンジの定義</td>
+<td><a href="https://gist.github.com/sgswtky/d3bfee839856767b56f0b61151dedf5a">https://gist.github.com/sgswtky/d3bfee839856767b56f0b61151dedf5a</a></td>
+</tr>
+<tr>
+<td>認証チャレンジレスポンスの確認</td>
+<td><a href="https://gist.github.com/sgswtky/62e6ad7f66da8d89bc4738361949e8ca">https://gist.github.com/sgswtky/62e6ad7f66da8d89bc4738361949e8ca</a></td>
+</tr>
+<tr>
+<td>認証チャレンジの作成</td>
+<td><a href="https://gist.github.com/sgswtky/4e55a27b26959f88f17c4ce06730dc9a">https://gist.github.com/sgswtky/4e55a27b26959f88f17c4ce06730dc9a</a></td>
+</tr>
+</tbody>
+</table>
+<p>次に、登録した Lambdaファンクションを使用するユーザープールのトリガーからそれぞれ選んでいく。（上記テーブルのトリガー名を参考に設定）</p>
+<p>マネジメントコンソールに下記のような画面があると思うのでそこから設定できる。</p>
+<figure class="center">
+    <img src="/images/aws-cognito-trigger.png"/> 
+</figure>
+
+<h3 id="サインアップサインインを動かす">サインアップ・サインインを動かす</h3>
+<p>ブラウザからサインアップ・サインインしてみると、CloudWatch Logsから Lambdaのログ出力がされている事が確認できると思う。</p>
+<figure class="center">
+    <img src="/images/aws-cognito-pre_sign_up.png"/> 
+</figure>
+
+<p>サインアップ・サインインそれぞれのコード内 <code>localVerify</code> メソッドにて、 reCAPTCHAスコアが0.5未満の場合に認証をエラーにする処理を入れているので、もし動かない場合はその処理をコメントアウトして試すと良いかもしれません。</p>
+<p>下記のような処理が入っています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">localVerify</span>(<span style="color:#a6e22e">recaptchaResponse</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RecaptchaResponse</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#75715e">// TODO: write verify logic.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">errMsg</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;recaptcha failed&#34;</span>
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">recaptchaResponse</span>.<span style="color:#a6e22e">Success</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">errMsg</span>)
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">recaptchaResponse</span>.<span style="color:#a6e22e">Score</span> &lt; <span style="color:#ae81ff">0.5</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">errMsg</span>)
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>また、sign up 時のフロント側の処理で一部正しくない処理をしている箇所があるため注意が必要です。</p>
+<p><code>amplify-js</code> の <code>signUp</code> メソッドを使用すると <code>validationData</code> パラメータがうまく機能しません。通常であれば reCAPTCHAのトークンをここに入れてバリデーションするのですが、 <code>signUp</code>の処理だけ正常に送信されず <code>clientMetadata</code> を代用しています。</p>
+<p>このバグは進捗として、プルリクはマージされているのですがリリースがされていないように見えました。 <a href="https://github.com/aws-amplify/amplify-js/issues/7655">https://github.com/aws-amplify/amplify-js/issues/7655</a></p>
+<p>現時点の最新版 <code>3.0.25</code> ではバグが含まれたままなので、もし使用する場合はこのメソッドを使わないようにする必要がありそうです。</p>
+<h3 id="チャレンジでのサインインを動かす">チャレンジでのサインインを動かす</h3>
+<p>今回こちらの内容をミニマムで試しました。(<a href="https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/user-pool-lambda-challenge.html">https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/user-pool-lambda-challenge.html</a>)</p>
+<p>独自の認証方法を定義するには <code>認証チャレンジの定義</code>, <code>認証チャレンジレスポンスの確認</code>, <code>認証チャレンジの作成</code> トリガーが必要になります。</p>
+<p>ユーザー側から見ると以下のような処理となります。</p>
+<ol>
+<li>メールアドレス入力 ==&gt; Cognito側でチャレンジコード生成</li>
+<li>チャレンジコード取得・入力 ==&gt; Cognito側で認証 ==&gt;  sign in 完了</li>
+</ol>
+<p>Lambdaは、Cognito任意のタイミングで呼び出されるため、都度それらに応じたレスポンスを返す必要があります。</p>
+<p>※実装してあるコードは、ログインする際にパスワードではなくメールに送信された4桁の数字（チャレンジコード）を入力する事でサインインさせるコードです。</p>
+<p>※メール送信するコードは用意するのが面倒くさかったので <code>createAuthChallenge.go</code> の CloudWatch Logsに4桁のコードが出力されるので、メールが送信された想定で考えてください。</p>
+<h1 id="動かしてみて">動かしてみて</h1>
+<h2 id="良いと思う点">良いと思う点</h2>
+<ul>
+<li>料金が安い（MAU50,000ユーザーまで無料）</li>
+<li>スケールへの考慮が不要</li>
+<li>認証の拡張性が柔軟</li>
+</ul>
+<h3 id="料金が安いmau50000ユーザーまで無料">料金が安い（MAU50,000ユーザーまで無料）</h3>
+<p>特に注目すべきは料金で、Cognito単体の料金は MAU50,000人以下は無料。それ以上なら人数に対して料金がかかる料金形態。驚くほど安い。</p>
+<p>lambdaとの連携が可能なので自前のユーザーデータベースと繋ごうと思ったら一応可能です。（もしかすると二重管理的な感じになるので若干微妙かもしれないですが…）</p>
+<p>実はこの自前のユーザーデータベースと繋ぐの、 <strong>Auth0</strong>（CognitoみたいなSaas）でやろうとすると <code>CustomConnection</code> という機能を使う必要があり、 Enterpriseプランでしか使えなかった気がします。なのでそちらと比べるととてもお得に感じます。</p>
+<p>※ <strong>Auth0</strong> の Enterpriseの料金は非公開のため不明ですが、１つ下の DeveloperPro でも $130/mo かかります。</p>
+<p>しかし、 <strong>Auth0</strong> の方が多機能でドキュメントが充実している感じが強いです。</p>
+<h3 id="スケールへの考慮が不要">スケールへの考慮が不要</h3>
+<p>Saasのような形で提供されており、インフラ管理はAWSとなるためスケールへの考慮が不要。（各種limitはそれはまあありますが…）</p>
+<h3 id="認証の拡張性が柔軟">認証の拡張性が柔軟</h3>
+<p>拡張性については lambdaを用いて、各認証フローや処理へのカスタマイズが可能。</p>
+<ul>
+<li>サインアップ前</li>
+<li>認証前</li>
+<li>カスタムメッセージ送信</li>
+<li>認証後</li>
+<li>ユーザー確認後</li>
+<li>ユーザー移行時</li>
+<li>IDトークン生成前</li>
+</ul>
+<p>これにより入れたいタイミングで入れたい処理が入れられる。</p>
+<h2 id="残念だと思う点">残念だと思う点</h2>
+<ul>
+<li>コストメリットが低い(MAU多い場合に)</li>
+<li>認証の拡張性は柔軟だけど、選択肢が lambda一択しか無い</li>
+</ul>
+<h3 id="コストメリットが低いmau多い場合に">コストメリットが低い(MAU多い場合に)</h3>
+<p>真逆の事書いてるじゃん、となりますがMAU多いと料金結構上がります。</p>
+<p>MAU多いと言っても 100万人くらいの話。例えば 100万人で日本円で約50万ほどかかるので、MAUは多いが売上がそこまで無いシステムの場合、コストメリットが低い。</p>
+<p>100万人 =&gt;  約50万円、2000万人 =&gt; 約600万円という形でMAUによって料金がどんどん上がっていくため、MAU数に比例して利益が生まれるシステムでないと採用は難しそうな印象。まあ管理を全部任せられるのでそのメリットが欲しい場合は良さそう。</p>
+<h3 id="認証の拡張性は柔軟だけど選択肢が-lambda一択しか無い">認証の拡張性は柔軟だけど、選択肢が lambda一択しか無い</h3>
+<p>静的型付け言語を扱っている場合やり辛さがどうしても出てくる。API経由での操作可能にしてくれたら嬉しかった🤔（自分のコードが <code>interface{}</code> で受け取って処理してるからかもしれない…。リクエスト内容を構造体に定義しても良いのかも）</p>
+<h1 id="最後に">最後に</h1>
+<p>スタートアップ企業とかで超使えそうなイメージ。MAU5万人まで無料、Lambdaもほぼタダみたいなもんだし実質ほぼ無料でユーザー管理周りの機能が使えちゃう事になる。すごい…🤔</p>
+<p>gistのコード貼り付けたら驚くほど長い投稿になったのでリンクにしてあります。逆に見にくくなってたらすみません…。</p>
+<hr>
+<p>2021年最初の投稿。また気が向いたら更新します。</p>
+</div>
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

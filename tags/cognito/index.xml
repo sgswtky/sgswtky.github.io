@@ -20,12 +20,13 @@
       <description>Cognito は AWS で提供されてるユーザー管理のための機能群のようなもの。
 アプリケーションを作成するとほぼ必ずと言って良いほどつきまとうのが ユーザー管理とその周辺機能。
 Cognitoはこれをサポートするようなプロダクトで、サインアップ・サインインは標準で提供し、 Oauth2.0、SAML2.0の対応やSNS認証やメール認証といった機能も簡単に使える。
-動かす 構成  フロント: PureJS インフラ: AWS Cognito, Lambda(Go), Google reCAPTCHA v3  Cognitoは aws-cli、aws-sdkで操作できる他、ユーザーとして Cognitoを操作するためのライブラリも存在している。amplify のライブラリ群にもその実装があり、今回はそちらを使用した。
+コレを実際に動かしてみます。
+今回Cognitoを最低限使うための構成  フロント: PureJS インフラ: AWS Cognito, Lambda(Go), Google reCAPTCHA v3  Cognitoは aws-cli、aws-sdkで操作できる他、ユーザーとして Cognitoを操作するためのライブラリも存在している。amplify のライブラリ群にもその実装があり、今回はそちらを使用した。
 amplifyは各クライアント向けに下記のようなライブラリがある。
- https://github.com/aws-amplify/amplify-js https://github.com/aws-amplify/amplify-ios https://github.com/aws-amplify/amplify-android  フロント 普段jsは触らないためとりあえず動けばおｋで PureJSで作ってます。package.jsonで npm run start :8080で起動します。
+ https://github.com/aws-amplify/amplify-js https://github.com/aws-amplify/amplify-ios https://github.com/aws-amplify/amplify-android  フロントのコードについて 普段jsは触らないためとりあえず動けばおｋで PureJSで作ってます。package.jsonで npm run start :8080で起動します。
 npmのバージョンは v14.15.5 で下記ファイル群を準備して立ち上げれば動くと思います。 （jsのライブリロードとかは面倒くさくてやってないです）
  https://gist.github.com/sgswtky/385b836ac5ad3ef04d0557199f725e8a  npm i npm run start 画面 これらのファイルから立ち上がるフロントの画面は下記画像のようになっており、 サインアップ、サインイン、チャレンジでのサインイン のフォームが存在します。
-    項目名 内容     sign up cognitoのユーザープールにユーザーを登録します   sign in ユーザープールに登録されているユーザーでログインします   sign up challenge sign in と同じ事を実現しますが、メールアドレスを用いたワンタイムパスワードで認証します。    reCAPTCHA 今回 reCAPTCHA v3を画面に実装しています。</description>
+    項目名 内容     sign up cognitoのユーザープールにユーザーを登録します   sign in ユーザープールに登録されているユーザーでログインします   sign up challenge sign in と同じ事を実現しますが、メールアドレスを用いたワンタイムパスワードで認証します。    フロントに reCAPTCHA v3の実装済み v3なので v2までとは違い、画像認証やロボットアクセスの確認等が無くなったバージョンの使用を想定しています。</description>
     </item>
     
   </channel>

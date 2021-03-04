@@ -128,7 +128,7 @@
 
     </div>
 
-    <div align="start" class="content"><h2 id="きっかけ">きっかけ</h2>
+    <div align="start" class="content"><h2 id="このorm触ってみようと思ったきっかけ">このORM触ってみようと思ったきっかけ</h2>
 <p>会社で僕のチームでは3層WebアプリでGoをサーバーサイドとして使ってます。</p>
 <p>フロントはVuejsをでSPAとしてブラウザで動作する感じです。
 AWS上で動いていて、サーバーサイド（Go）とRDS（MySQL）のデータのやり取りで <code>dbr</code> というORMを使っているのですが、以前このORMで一点問題になる事があった。</p>
@@ -138,12 +138,12 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 <p><a href="https://github.com/gocraft/dbr/issues/96">https://github.com/gocraft/dbr/issues/96</a></p>
 <p>このため、この先 <code>dbr</code> でなく別のORMを使用することを検討しています。
 軽く調べてみて今回紹介する <code>jmoiron/sqlx</code> が個人的にすごく好きな感じだったので紹介したいと思います。</p>
-<h2 id="goのormに個人的に求めてるもの">GoのORMに個人的に求めてるもの</h2>
-<h3 id="goに合う">Goに合う</h3>
-<p>Goをしばらく触っていて感じるのは多機能で色々やってくれるモノは基本的にGoに合わない気がしています。
+<h2 id="goのormに超個人的に求めてるもの">GoのORMに超個人的に求めてるもの</h2>
+<h3 id="なんとなくgoに合う感じがする">なんとなくGoに合う感じがする</h3>
+<p>とても曖昧ですが、Goをしばらく触っていて感じるのは多機能で色々やってくれるモノは基本的にGoに合わない気がしています。
 例えばJavaのspring系のフレームワークであったりMyBatisのようなXMLとかアノテーションたくさん使っていろんな機能がある奴。</p>
 <p>Goはどちらかというと小さいライブラリを組み合わせて使うほうが向いている感じがあって、それぞれが疎結合になってるというのが一番綺麗でわかりやすいような気がしてます。（そして個人的に好き）</p>
-<h3 id="個人的に求めてるもの">個人的に求めてるもの</h3>
+<h3 id="超個人的に求めてるものリスト">超個人的に求めてるものリスト</h3>
 <ul>
 <li>なんでもやってくれない、なるべく最低限</li>
 <li>ActiveRecordみたいな黒魔術でない</li>
@@ -153,16 +153,16 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 <li>読みやすいか</li>
 <li>生SQLが書ける</li>
 </ul>
-<h2 id="公式readmeを見た感じ">公式READMEを見た感じ</h2>
+<h2 id="sqlxのreadmeを流し読みした感じの印象">sqlxのREADMEを流し読みした感じの印象</h2>
 <ul>
 <li>database/sql に一連の拡張機能追加してるだけ</li>
 <li>database/sql 使ってるなら簡単に導入できる</li>
 <li>コンセプトがシンプル</li>
 </ul>
 <p>な印象を受けて、この時点で <strong>良さそう</strong> と思った</p>
-<h2 id="実際触ってみて">実際触ってみて</h2>
+<h2 id="crudを簡単に作る等で触ってみた">CRUDを簡単に作る等で触ってみた</h2>
 <p>簡単にCRUD、NamedExecというsqlxが作ったメソッド、トランザクションを一通り試してみた。</p>
-<h3 id="select">select</h3>
+<h3 id="select句">select句</h3>
 <p>selectでマッピングを行ってくれる。</p>
 <p>カラム名は構造体のタグで明示的に指定する。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">Connect</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>,
@@ -184,11 +184,11 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 </span><span style="color:#e6db74">    on u.user_status = us.user_status_id
 </span><span style="color:#e6db74">`</span>)
 </code></pre></div><p>上記のようなコードで、 <code>userStatus</code> にSQLの結果一覧が入ってくるようになる。</p>
-<h3 id="insert-update-deleteなどその他のクエリ">insert, update, deleteなどその他のクエリ</h3>
+<h3 id="insert-update-deleteなど更新系クエリ">insert, update, deleteなど更新系クエリ</h3>
 <p>その他のクエリは以下のように <code>tx.Query</code> を使う</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;update users set user_name = &#39;update&#39; where user_id = ?&#34;</span>, <span style="color:#ae81ff">1</span>)
 </code></pre></div><p>戻り値には Rowsとerorrが入る</p>
-<h3 id="namedexecメソッド">NamedExecメソッド</h3>
+<h3 id="namedexecメソッドについて">NamedExecメソッドについて</h3>
 <p>実際に触っていると <code>NamedExec</code> というメソッドを見つけた。</p>
 <p>このメソッドが便利そうで、 <code>map[string]interface{}</code> で渡して良い感じにクエリが組み立てられそうだと感じた。</p>
 <p>いちいちただの <code>insert</code> とか <code>update</code> を書くのが面倒くさいから構造体渡したら作成・更新やってほしいと思っていて、実際にプロダクションのコードに <code>reflect</code> を使って構造体渡すだけで作成・更新してくれるメソッドを作っていたりする。</p>
@@ -214,7 +214,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 	}
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">entityMap</span>
 }
-</code></pre></div><h3 id="トランザクション">トランザクション</h3>
+</code></pre></div><h3 id="トランザクションも動かしてみた">トランザクションも動かしてみた</h3>
 <p>トランザクションも一応試してみた。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">tx</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Beginx</span>()
 </code></pre></div><p>最初、 <code>db.Begin</code> でトランザクションを開始していた所、 <code>NamedExec</code> が使えずがっかりしていたが取得するメソッドが違っただけで <code>Beginx</code> から取得する事で使えた。帰ってくる型が違って以下のように返る。</p>
@@ -240,7 +240,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 </tbody>
 </table>
 <p>InteliJで書いてるとタイピング中に <code>db.Begin()</code> のほうが優先してサジェストされるのでいつか無意味にハマりそうだなと思った。</p>
-<h2 id="その他">その他</h2>
+<h2 id="動かしてみて気になった所">動かしてみて気になった所</h2>
 <h3 id="selectでdatetime型がちゃんと認識しない">selectでdatetime型がちゃんと認識しない</h3>
 <p>この問題は <code>sqlx</code> 固有の問題ではなく、 <code>database/sql</code> を生で使ってても発生する。</p>
 <p>dbrだと <code>time.Time</code> への変換は行われる。でも、呼び出されるメソッドを時前で実装すればどうにかなる。</p>
@@ -270,7 +270,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 }
 </code></pre></div><p><code>database/sql</code> の対応してない箇所をあえて <code>sqlx</code> が対応してないように見えて好印象だった。
 この件については<code>time.Time</code> が公式パッケージなんだから対応したら良いのに、と自分は思ってたりします。</p>
-<h2 id="まとめ">まとめ</h2>
+<h2 id="実際に動かしてみて">実際に動かしてみて</h2>
 <p>詳しい使い方については <code>jmoiron</code> さんのgithub Pagesに詳細に書いてあった。</p>
 <p><a href="http://jmoiron.github.io/sqlx/">http://jmoiron.github.io/sqlx/</a></p>
 <p>極々薄い感じのORMでとても良い感じだった。</p>

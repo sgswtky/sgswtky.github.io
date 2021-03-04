@@ -128,12 +128,13 @@
 <p><a href="https://www.digdag.io/">https://www.digdag.io/</a></p>
 <p>TreasureDataが開発するオープンソースのジョブスケジューラ</p>
 <p>個人的に、Jenkinsと比較してコード管理・ログの扱いを厳重に管理できる好印象なプロダクト</p>
-<h2 id="今回の内容">今回の内容</h2>
+<hr>
+<p>このdigdagで、別ワークフローを複数回起動させるという事が業務で必要となり、検証を行いました。</p>
 <p>通常、 <code>require</code> オペレータを使用すると <code>session_time</code> の関係で別のワークフローを複数回起動する事はできないけど、 <code>session_time</code> を動的に変更して無理矢理複数回起動させる。</p>
 <p><code>call</code> を使えば同じ事ができるけど、 <code>ignore_failure</code> を使いたかったので、 <code>require</code> で動くようにしてみた。</p>
 <p>現時点で調べてみた感じ同様の内容は特に記事になってなかったので、せっかくなので書いてみる。</p>
 <p>（<code>session_time</code> と <code>require</code> であえてできないようにしてる事を無理矢理やってる感じがあるので、もし本番に適用する場合は自己責任で…）</p>
-<h3 id="requireを普通に使ったパターン">requireを普通に使ったパターン</h3>
+<h3 id="requireを単純に使用するパターン">requireを単純に使用するパターン</h3>
 <p><code>parent.diglk</code></p>
 <pre><code class="language-parent.dig" data-lang="parent.dig">timezone: UTC
 
@@ -170,7 +171,7 @@
 </code></pre></div><p>requireで <code>child.dig</code> を呼び出すも、複数回呼ばれる事はありません。</p>
 <p>WebUIで見るとこうなる。</p>
 <p><img src="/images/digdag-require-reuse-normal-require.png" alt="digdagのWebUI"></p>
-<h3 id="今回の内容-requireを無理矢理複数回呼び出してみる">[今回の内容] requireを無理矢理複数回呼び出してみる</h3>
+<h3 id="requireを理複数回起動させる">requireを理複数回起動させる</h3>
 <p>内容は比較的単純で、呼び出す <code>require</code> 全てに違う <code>session_time</code> を指定している。</p>
 <p><code>require</code> で <code>session_time</code> 指定せずに起動した場合、親の <code>session_time</code> を使うため、２度目の起動ができない。なのでループ毎に違う <code>session_time</code> を指定するだけで全てのループで <code>require</code> が起動する。</p>
 <p><code>reuse_parent.dig</code></p>

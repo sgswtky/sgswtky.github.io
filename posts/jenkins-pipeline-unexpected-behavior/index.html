@@ -129,8 +129,8 @@
     <div align="start" class="content"><p>先日から古い <code>Jenkins2</code> のジョブをメンテする仕事をしていて、Pipelineで Groovyを書いてたら特定のパターンでは動くけどそれ以外だと動かないという事情に遭遇した。</p>
 <p>やりたかったことは、パイプラインAから、ジョブAを並列で2つ起動させたかった。
 色々調べたけど結局わからなくて、バージョンアップしたら治った話。</p>
-<h2 id="事象">事象</h2>
-<h3 id="動かないコード">動かないコード</h3>
+<h2 id="実際に発生した事象について">実際に発生した事象について</h2>
+<h3 id="記述したけど動かなかったコード">記述したけど動かなかったコード</h3>
 <p>コードは極々単純で以下のようなコード。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;master&#34;</span><span style="color:#f92672">){</span>
   <span style="color:#66d9ef">def</span> tasks <span style="color:#f92672">=</span> <span style="color:#f92672">[:]</span>
@@ -170,7 +170,7 @@ Running on master in /var/lib/jenkins/workspace/Pipeline_A
 [Pipeline] // node
 [Pipeline] End of Pipeline
 Finished: SUCCESS
-</code></pre><h3 id="何故か動くコード">何故か動くコード</h3>
+</code></pre><h3 id="理由はわからないが何故か動くコード">理由はわからないが何故か動くコード</h3>
 <p>以下のコードは期待する動きをした。</p>
 <p>でもサーバー名を渡してるパラメータを廃止したかったため、 <code>params.size()</code> でなく、普通に forで回数分ループするコード（記事上部のコード）にしたかったが動かない。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;master&#34;</span><span style="color:#f92672">){</span>
@@ -188,8 +188,9 @@ Finished: SUCCESS
   print<span style="color:#f92672">(</span>tasks<span style="color:#f92672">)</span>
   parallel tasks
 <span style="color:#f92672">}</span>
-</code></pre></div><p>これの原因が全くわからなくて、バージョンアップした所正常に動くようになった。</p>
-<h2 id="バージョン情報">バージョン情報</h2>
+</code></pre></div><h2 id="解決方法">解決方法</h2>
+<p>これの原因が全くわからなくて、バージョンアップした所正常に動くようになった。</p>
+<h2 id="動作バージョン情報について">動作バージョン情報について</h2>
 <p>バージョンアップの際に対象のプラグインだけでなく全てのプラグインのバージョンアップを行ってしまいました。</p>
 <p>そのため下記に記載するプラグイン以外もバージョンアップしちゃってます。。。</p>
 <table>

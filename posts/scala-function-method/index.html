@@ -159,7 +159,7 @@ toString
 </tr>
 </tbody>
 </table>
-<h2 id="compose">compose</h2>
+<h2 id="compose関数合成を行うメソッド">compose（関数合成を行うメソッド）</h2>
 <ul>
 <li>レシーバの関数を後に適用</li>
 <li>２つの <code>Function1</code> から新しい <code>Function1</code> を生成</li>
@@ -188,8 +188,9 @@ toString
 <pre><code>1. ef1.compose(ef2).compose(ef3)
 2. {ef2のあとef1が実行されるFunction1}.compose(ef3)
 3. {ef3のあとef2のあとef1が実行されるFunction1}
-</code></pre><h2 id="andthen">andThen</h2>
+</code></pre><h2 id="andthen関数合成を行うメソッド">andThen（関数合成を行うメソッド）</h2>
 <ul>
+<li>こちらも関数合成</li>
 <li>composeとは逆でレシーバを先に適用</li>
 <li>２つの <code>Function1</code> から新しい <code>Function1</code> を生成</li>
 </ul>
@@ -212,10 +213,10 @@ toString
 <pre><code>ef1.andThen(ef2).andThen(ef3)
 {ef1の後ef2を適用する関数}.andThen(ef3)
 {ef1の後ef2の後ef3を適用する関数}
-</code></pre><h2 id="apply">apply</h2>
+</code></pre><h2 id="applyコンストラクタ">apply（コンストラクタ）</h2>
 <ul>
 <li>関数を適用する時にすでに呼ばれてる</li>
-<li>普通にいつもシンタックスシュガーで呼び出してる</li>
+<li>意識せずにいつもシンタックスシュガーで呼び出してる</li>
 </ul>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">method</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">def</span> exampleFunc1<span style="color:#f92672">(</span>s<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> s <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; func1&#34;</span>
@@ -244,13 +245,13 @@ toString
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Function1.scala" data-lang="Function1.scala"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">def</span> toString<span style="color:#f92672">()</span> <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;&lt;function1&gt;&#34;</span>
 </code></pre></div><p>でも結果は下記のようになる。。。謎</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">cop.method$$$Lambda$6/817406040@61009542
-</code></pre></div><h1 id="function2">Function2</h1>
+</code></pre></div><h1 id="function2引数2つのメソッド">Function2（引数2つのメソッド）</h1>
 <p>これまで <code>Function1</code> を例として見てきたけど、Function <code>2</code> では実装してるメソッドが異なる。</p>
 <p><code>Function1</code> で実装されていた <code>compore, andThen</code> は実装されておらず、代わりに以下のメソッドが実装されている。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-list.txt" data-lang="list.txt">curried
 tupled
-</code></pre></div><h2 id="curried">curried</h2>
-<p>定義した関数の引数をまとめてカリー化してくれる。</p>
+</code></pre></div><h2 id="curriedカリー化">curried（カリー化）</h2>
+<p>定義した関数の引数をまとめてカリー化が行える。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">method</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">{</span>
 
   <span style="color:#66d9ef">def</span> f2<span style="color:#f92672">(</span>s1<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> s2<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> s1 <span style="color:#f92672">+</span> s2
@@ -270,8 +271,8 @@ tupled
 </code></pre></div><p>出力は以下のようになる</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-output.txt" data-lang="output.txt">EXAMPLE
 EXAMPLE
-</code></pre></div><h2 id="tupled">tupled</h2>
-<p>引数をタプルで受け取れるようにしてくれる。</p>
+</code></pre></div><h2 id="tupled引数のタプル化">tupled（引数のタプル化）</h2>
+<p>引数をタプルで順番に受け取れるようにしてくれる。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">method</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">{</span>
 
   <span style="color:#66d9ef">def</span> f2<span style="color:#f92672">(</span>s1<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> s2<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> s1 <span style="color:#f92672">+</span> s2
@@ -294,7 +295,7 @@ EXAMPLE
 <code>tupled</code> の型は恐らく <code>(String, String) =&gt; String</code> である。</p>
 <p><code>compile error</code> の部分は元の関数 <code>f</code> に対してタプルを渡している。
 これは単純に型が違うのでエラーとなる。 tupledを呼び出す事でタプルで受け付ける関数に変換できる。</p>
-<h2 id="まとめ">まとめ</h2>
+<h2 id="触ってみたまとめ">触ってみたまとめ</h2>
 <p>scalaは全てオブジェクトになっていて、関数ですらオブジェクトになっている。
 こういう細かい実装されてる関数に詳しくなってscalaの使いたい機能をサクサク使えるようになりたい。</p>
 </div>

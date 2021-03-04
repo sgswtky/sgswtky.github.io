@@ -130,16 +130,16 @@
 
     </div>
 
-    <div align="start" class="content"><h2 id="概要">概要</h2>
+    <div align="start" class="content"><h2 id="ずっとselect-insertが便利で使ってた">ずっとSELECT INSERTが便利で使ってた</h2>
 <p><code>SELECT INSERT</code>（構文的に正しくは <code>INSERT SELECT</code> だけど勝手に <code>SELECT INSERT</code>と呼んでる…？）を使うのをやめて、代わりに Auroraに搭載されている機能を使った話。</p>
 <p>所属会社の担当プロダクトの本番環境でこのAuroraを使ってるのですが、運用してデータが蓄積されていくにつれていくつか問題点が出てきました。</p>
-<h2 id="amazon-aurora">Amazon Aurora</h2>
+<h2 id="amazon-aurora-mysql">Amazon Aurora MySQL</h2>
 <p><a href="https://aws.amazon.com/jp/rds/aurora/">https://aws.amazon.com/jp/rds/aurora/</a></p>
 <p>RDBで、要は MySQL を AWS に最適化して機能を増やしたSaaS。</p>
 <p>クエリとかは MySQLで使えるクエリが使える（厳密に使えないのいくつかあるかも）</p>
-<h2 id="select-insert-で長時間ロックが掛かる">SELECT INSERT で長時間ロックが掛かる</h2>
+<h2 id="select-insert-で長時間ロックが掛かってしまう">SELECT INSERT で長時間ロックが掛かってしまう</h2>
 <hr>
-<h3 id="前提1">前提1</h3>
+<h3 id="インフラ負荷周りの前提情報">インフラ・負荷周りの前提情報</h3>
 <ul>
 <li>バージョン: AWS Aurora mysql 5.6(の現時点での最新)</li>
 <li>クラスタ: writer 1台、reader 1台（オートスケール）</li>
@@ -165,7 +165,7 @@
 </code></pre><p>大体の SELECT INSERT は高速なのですが、極端にサイズの大きないくつかのテーブルで非常に時間がかかってしまっている状態でした（ファイルサイズに比例して書き込みに時間がかかるので重い）</p>
 <p>調べてみると、SELECT INSERT するとロックがかかる事が公式マニュアルに乗っていました。
 <a href="https://dev.mysql.com/doc/refman/5.6/ja/insert-select.html">https://dev.mysql.com/doc/refman/5.6/ja/insert-select.html</a></p>
-<h3 id="前提2">前提2</h3>
+<h3 id="ソフトウェア的な挙動の前提">ソフトウェア的な挙動の前提</h3>
 <p>上記の通り、SELECT INSERT するとロックがかかり書き込みができなくなります。
 ですが、僕が担当するプロダクトでは ETL処理による出力の書き込みが <em>report(元テーブル)に対して</em> 30分に1回行われます。</p>
 <p>つまり、 SELECT INSERT の最中に ETL処理出力の書き込みが重なると、 40GBのINSERT処理を待つ必要があります。
@@ -174,7 +174,7 @@
 <li>5000秒以上掛かるクエリはプロダクトとして許容できない</li>
 <li>ETL処理も大幅に遅延してしまうため挙動を変えず（現在の仕様のまま）に競合しないやり方に変える必要が出てきた</li>
 </ul>
-<h3 id="解決方法">解決方法</h3>
+<h3 id="これの課題に対する単純な解決方法">これの課題に対する単純な解決方法</h3>
 <hr>
 <p>解決方法は単純で、 <strong>SELECT INSET を辞めて、Auroraでのみ使えるクエリで解決しました。</strong></p>
 <ol>
@@ -190,9 +190,12 @@
 </ul>
 <h3 id="into-outfile-s3-load-data-from-s3-って何"><code>INTO OUTFILE S3</code>, <code>LOAD DATA FROM S3</code> って何</h3>
 <p><code>INTO OUTFILE</code> と <code>LOAD DATA</code> はそれぞれ MySQLにも実装されているクエリです。が、<strong>S3</strong> 出力に対応してるのは Auroraだけであり、Aurora独自の実装です。</p>
-<h4 id="select-into-構文"><code>SELECT INTO</code> 構文</h4>
+<ul>
+<li><code>SELECT INTO</code> 構文
 <ul>
 <li><a href="https://dev.mysql.com/doc/refman/5.6/ja/select-into.html">https://dev.mysql.com/doc/refman/5.6/ja/select-into.html</a></li>
+</ul>
+</li>
 </ul>
 <p>こんな感じで、SELECTした結果を直接S3に出力できる。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> report r
@@ -201,16 +204,19 @@
 <span style="color:#66d9ef">AND</span> rs.is_display <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>
 <span style="color:#66d9ef">INTO</span> <span style="color:#66d9ef">OUTFILE</span> S3 <span style="color:#e6db74">&#39;s3://#BUCKET/tmp/#HASH&#39;</span>
 FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;,&#39;</span>;
-</code></pre></div><h4 id="load-data-構文"><code>LOAD DATA</code> 構文</h4>
+</code></pre></div><ul>
+<li><code>LOAD DATA</code> 構文
 <ul>
 <li><a href="https://dev.mysql.com/doc/refman/5.6/ja/load-data.html">https://dev.mysql.com/doc/refman/5.6/ja/load-data.html</a></li>
+</ul>
+</li>
 </ul>
 <p>FROM S3 で S3に存在するファイルをテーブルに読み込む事ができる。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">LOAD</span> DATA <span style="color:#66d9ef">FROM</span> S3 PREFIX <span style="color:#e6db74">&#39;s3://#BUCKET/tmp/#HASH&#39;</span>
 <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#66d9ef">TABLE</span> public_report
 FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;,&#39;</span>
 (<span style="color:#75715e">/* テーブルのカラム全て指定 */</span>)
-</code></pre></div><h3 id="結果">結果</h3>
+</code></pre></div><h3 id="実施前後でのマトリクス">実施前後でのマトリクス</h3>
 <hr>
 <table>
 <thead>
@@ -247,7 +253,7 @@ FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef"
 <p>実行あたりの単純速度は、1回あたりの実行時間は長くなった事を指します。</p>
 <p>やはり <code>SELECT INSERT</code> は高速で、書き込みが競合せず即座に完了するのであれば <code>SELECT INSERT</code> が速いし一番良い。</p>
 <p>僕の担当プロダクト的には合わなかったという話なのでケースバイケース。</p>
-<h2 id="感想">感想</h2>
+<h2 id="このチューニングを行ってみての感想">このチューニングを行ってみての感想</h2>
 <p>僕の担当プロダクトでは、ETL処理からの書き込みがあるため、下記を徹底すべきなのかなと感じた。</p>
 <ul>
 <li>書き込み処理は writerエンドポイント</li>

@@ -126,13 +126,13 @@
 
     <div align="start" class="content"><p>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、
 一部不明な点があったので調べてみました。</p>
-<h2 id="scalikejdbcとは">ScalikeJDBCとは</h2>
+<h2 id="scalikejdbcjdbcを用いたscalaのorm">ScalikeJDBC（JDBCを用いたScalaのORM）</h2>
 <p><img src="/images/scalikejdbc-logo.png" alt="ScalikeJDBC_ロゴ"></p>
 <p>ScalikeJDBCは、JDBCをラップしたScalaのライブラリです。
 様々なDBに対応していて、直感的に書けるQueryDSLで効率的にSQLが書けます。</p>
 <p>自分もいくつかのScalaプロジェクトで、MySQLのコネクタとして採用しています。
 日本語の情報が多く、Scala触り始めの方でも扱う敷居は低いのではないかと思います。</p>
-<h2 id="querydsl">QueryDSL</h2>
+<h2 id="querydslクエリ直接記述">QueryDSL（クエリ直接記述）</h2>
 <p>ScalikeJDBCのDSLはコード中にSQLを記述するように書けて、以下の2種類の書き方が可能です。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> userMap <span style="color:#66d9ef">=</span> sql<span style="color:#e6db74">&#34;&#34;&#34;
 </span><span style="color:#e6db74">    select * from user
@@ -143,7 +143,7 @@
 <span style="color:#66d9ef">val</span> groupMember <span style="color:#66d9ef">=</span> withSQL <span style="color:#f92672">{</span>
   select<span style="color:#f92672">.</span>from<span style="color:#f92672">(</span><span style="color:#a6e22e">User</span> as u<span style="color:#f92672">).</span>where<span style="color:#f92672">.</span>gt<span style="color:#f92672">(</span>u<span style="color:#f92672">.</span>createdAt<span style="color:#f92672">,</span> createdAt<span style="color:#f92672">)</span>
 <span style="color:#f92672">}.</span>map<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>toMap<span style="color:#f92672">).</span>list<span style="color:#f92672">.</span>apply
-</code></pre></div><h2 id="一部不明な点とは">一部不明な点とは</h2>
+</code></pre></div><h2 id="挙動がわからず確認してみようと思ったきっかけ">挙動がわからず確認してみようと思ったきっかけ</h2>
 <p>QueryDSLを使って、以下のように WHERE句に LocalDateの値を使用してSELECT句のクエリを流しました。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> value <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">LocalDate</span><span style="color:#f92672">.</span>now<span style="color:#f92672">()</span>
 <span style="color:#66d9ef">val</span> userMap <span style="color:#66d9ef">=</span> sql<span style="color:#e6db74">&#34;&#34;&#34;
@@ -155,7 +155,7 @@
 </code></pre><p>👇以下のSQLが実行されてエラーとなりました。</p>
 <pre><code>select * from user where value = 2018-12-13
 </code></pre><p>つまり、自動でクォートされる型・されない型があるようです。</p>
-<h2 id="クォートされる型と-クォート-されない型">&ldquo;クォート&quot;される型と クォート されない型</h2>
+<h2 id="クォート-が付与される型と-クォート-が付与されない型">&ldquo;クォート&rdquo; が付与される型と クォート が付与されない型</h2>
 <p>今回は、この時にクォートされる型とされない型について SELECT句で調べてみました。</p>
 <p>公式に対応されている型は、👇下記リンク先に書かれています。
 <a href="http://scalikejdbc.org/documentation/sql-interpolation.html">http://scalikejdbc.org/documentation/sql-interpolation.html</a></p>
@@ -299,7 +299,7 @@
 <p>深く追っていないのですが、<code>java.sql.Time</code>のコメントに以下のように書いてあったので、</p>
 <pre><code>The date components should be set to the &quot;zero epoch&quot; value of January 1, 1970 and should not be accessed.
 </code></pre><p>ScalikeJDBCもしくはその先で使用しているライブラリが、<code>java.sql.Time</code> の言う日付コンポーネントにアクセスしているという事が挙動からわかりました。</p>
-<h2 id="まとめ">まとめ</h2>
+<h2 id="最後に">最後に</h2>
 <p>ScalikeJDBCを使用すると、<strong>型によってクォートが付加されない事がある</strong> という事がわかりました。</p>
 <p>クォートが付かない型を無理矢理使い続けると、自前でクォートを付けざるを得ないため、 <strong>スマートに書けるはずの QueryDSLがスマートでは無くなってしまいます</strong> 。</p>
 <p>クォート付けるために implicit使うのも個人的になんとなく好きでなく、できればライブラリにやってほしい…という気持ちがあります。</p>

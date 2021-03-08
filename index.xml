@@ -246,7 +246,6 @@ db, _ := sqlx.Connect(&amp;#34;mysql&amp;#34;, &amp;#34;root:rootpasswd@(example
 自主的なアウトプットが苦手なので、その改善も兼ねて書いていけたらと思っています。
 が、既に更新頻度が1年単位です。
 もしマサカリ等ありましたらご連絡ください。
-Profile部分を 👨こちらに👨移動しました
 credit Minecraft content and materials are trademarks and copyrights of Mojang and its licensors. All rights reserved.
 contact to Twitter.</description>
     </item>

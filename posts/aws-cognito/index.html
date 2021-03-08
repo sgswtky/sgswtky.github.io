@@ -189,36 +189,13 @@ npm run start
 <p>ブラウザから Cognitoを呼び出す事はできるので、次に Cognitoから呼び出す Lambdaを設定する必要があります。</p>
 <p>下記の各それぞれのファイルを各々 <code>go build</code> して Lambdaファンクションの作成＆アップロードしておく。</p>
 <p>※ 環境変数 <code>RECAPTCHA_SECRET</code> に reCAPTCHAのシークレットキーが必要なので Lambdaに設定しておいてください。</p>
-<table>
-<thead>
-<tr>
-<th>トリガー</th>
-<th>url</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>サインアップ前</td>
-<td><a href="https://gist.github.com/sgswtky/c0f83c91ccb66901cb52dfc6b202fb9f">https://gist.github.com/sgswtky/c0f83c91ccb66901cb52dfc6b202fb9f</a></td>
-</tr>
-<tr>
-<td>認証前</td>
-<td><a href="https://gist.github.com/sgswtky/5c877df2553f56d7d668bdea844d0a57">https://gist.github.com/sgswtky/5c877df2553f56d7d668bdea844d0a57</a></td>
-</tr>
-<tr>
-<td>認証チャレンジの定義</td>
-<td><a href="https://gist.github.com/sgswtky/d3bfee839856767b56f0b61151dedf5a">https://gist.github.com/sgswtky/d3bfee839856767b56f0b61151dedf5a</a></td>
-</tr>
-<tr>
-<td>認証チャレンジレスポンスの確認</td>
-<td><a href="https://gist.github.com/sgswtky/62e6ad7f66da8d89bc4738361949e8ca">https://gist.github.com/sgswtky/62e6ad7f66da8d89bc4738361949e8ca</a></td>
-</tr>
-<tr>
-<td>認証チャレンジの作成</td>
-<td><a href="https://gist.github.com/sgswtky/4e55a27b26959f88f17c4ce06730dc9a">https://gist.github.com/sgswtky/4e55a27b26959f88f17c4ce06730dc9a</a></td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><a href="https://gist.github.com/sgswtky/c0f83c91ccb66901cb52dfc6b202fb9f">サインアップ前</a></li>
+<li><a href="https://gist.github.com/sgswtky/5c877df2553f56d7d668bdea844d0a57">認証前</a></li>
+<li><a href="https://gist.github.com/sgswtky/d3bfee839856767b56f0b61151dedf5a">認証チャレンジの定義</a></li>
+<li><a href="https://gist.github.com/sgswtky/62e6ad7f66da8d89bc4738361949e8ca">認証チャレンジレスポンスの確認</a></li>
+<li><a href="https://gist.github.com/sgswtky/4e55a27b26959f88f17c4ce06730dc9a">認証チャレンジの作成</a></li>
+</ul>
 <p>次に、登録した Lambdaファンクションを使用するユーザープールのトリガーからそれぞれ選んでいく。（上記テーブルのトリガー名を参考に設定）</p>
 <p>マネジメントコンソールに下記のような画面があると思うのでそこから設定できる。</p>
 <figure class="center">

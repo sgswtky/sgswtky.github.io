@@ -81,7 +81,7 @@ h1, h2, h3, h4 {
   margin: 30px 0 5px !important;
 }
 
-.highlight {
+.highlight, pre {
   padding: 0px;
   margin: 5px;
   max-width: 80vw;

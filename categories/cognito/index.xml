@@ -13,10 +13,10 @@
     
     <item>
       <title>AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</title>
-      <link>https://sgswtky.github.io/posts/aws-cognito/</link>
+      <link>https://sgswtky.github.io/post/aws-cognito/</link>
       <pubDate>Sun, 21 Feb 2021 10:00:00 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/aws-cognito/</guid>
+      <guid>https://sgswtky.github.io/post/aws-cognito/</guid>
       <description>Cognito は AWS で提供されてるユーザー管理のための機能群のようなもの。
 アプリケーションを作成するとほぼ必ずと言って良いほどつきまとうのが ユーザー管理とその周辺機能。
 Cognitoはこれをサポートするようなプロダクトで、サインアップ・サインインは標準で提供し、 Oauth2.0、SAML2.0の対応やSNS認証やメール認証といった機能も簡単に使える。

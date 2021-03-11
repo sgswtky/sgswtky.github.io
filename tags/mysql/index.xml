@@ -13,10 +13,10 @@
     
     <item>
       <title>Auroraで SELECT INSERT するのやめた</title>
-      <link>https://sgswtky.github.io/posts/aurora-select-insert/</link>
+      <link>https://sgswtky.github.io/post/aurora-select-insert/</link>
       <pubDate>Sun, 16 Aug 2020 13:41:21 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/aurora-select-insert/</guid>
+      <guid>https://sgswtky.github.io/post/aurora-select-insert/</guid>
       <description>ずっとSELECT INSERTが便利で使ってた SELECT INSERT（構文的に正しくは INSERT SELECT だけど勝手に SELECT INSERTと呼んでる…？）を使うのをやめて、代わりに Auroraに搭載されている機能を使った話。
 所属会社の担当プロダクトの本番環境でこのAuroraを使ってるのですが、運用してデータが蓄積されていくにつれていくつか問題点が出てきました。
 Amazon Aurora MySQL https://aws.amazon.com/jp/rds/aurora/

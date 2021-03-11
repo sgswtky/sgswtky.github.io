@@ -13,10 +13,10 @@
     
     <item>
       <title>ScalaのFunctionが実装するメソッド</title>
-      <link>https://sgswtky.github.io/posts/scala-function-method/</link>
+      <link>https://sgswtky.github.io/post/scala-function-method/</link>
       <pubDate>Tue, 23 Oct 2018 09:30:08 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/scala-function-method/</guid>
+      <guid>https://sgswtky.github.io/post/scala-function-method/</guid>
       <description>しばらく放置してた。反省。
 Scalaで関数を定義すると、すでにその時点でいくつかのメソッドが実装されている。 （レシーバとも言う？）
 Function1 で実際にどんなメソッドを実装しているかを見てみた。 以下の4つを実装してるっぽい。

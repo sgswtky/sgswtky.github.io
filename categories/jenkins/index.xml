@@ -13,10 +13,10 @@
     
     <item>
       <title>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした</title>
-      <link>https://sgswtky.github.io/posts/jenkins-pipeline-unexpected-behavior/</link>
+      <link>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</link>
       <pubDate>Tue, 17 Jul 2018 20:14:21 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/jenkins-pipeline-unexpected-behavior/</guid>
+      <guid>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</guid>
       <description>先日から古い Jenkins2 のジョブをメンテする仕事をしていて、Pipelineで Groovyを書いてたら特定のパターンでは動くけどそれ以外だと動かないという事情に遭遇した。
 やりたかったことは、パイプラインAから、ジョブAを並列で2つ起動させたかった。 色々調べたけど結局わからなくて、バージョンアップしたら治った話。
 実際に発生した事象について 記述したけど動かなかったコード コードは極々単純で以下のようなコード。

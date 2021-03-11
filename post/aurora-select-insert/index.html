@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Auroraで SELECT INSERT するのやめた</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+ <link rel="stylesheet" href="https://sgswtky.github.io/css/custom.css"> 
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+        <script data-ad-client="ca-pub-0695732937559315" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Auroraで SELECT INSERT するのやめた</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/post/">Blog</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="/profile/">Profile</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Auroraで SELECT INSERT するのやめた</h2>
+        <h5>August 16, 2020</h5>
+        
+<a href="https://sgswtky.github.io/tags/db"><kbd class="item-tag">DB</kbd></a>
+
+<a href="https://sgswtky.github.io/tags/query"><kbd class="item-tag">Query</kbd></a>
+
+<a href="https://sgswtky.github.io/tags/mysql"><kbd class="item-tag">MySQL</kbd></a>
+
+<a href="https://sgswtky.github.io/tags/aurora"><kbd class="item-tag">Aurora</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><h2 id="ずっとselect-insertが便利で使ってた">ずっとSELECT INSERTが便利で使ってた</h2>
+<p><code>SELECT INSERT</code>（構文的に正しくは <code>INSERT SELECT</code> だけど勝手に <code>SELECT INSERT</code>と呼んでる…？）を使うのをやめて、代わりに Auroraに搭載されている機能を使った話。</p>
+<p>所属会社の担当プロダクトの本番環境でこのAuroraを使ってるのですが、運用してデータが蓄積されていくにつれていくつか問題点が出てきました。</p>
+<h2 id="amazon-aurora-mysql">Amazon Aurora MySQL</h2>
+<p><a href="https://aws.amazon.com/jp/rds/aurora/">https://aws.amazon.com/jp/rds/aurora/</a></p>
+<p>RDBで、要は MySQL を AWS に最適化して機能を増やしたSaaS。</p>
+<p>クエリとかは MySQLで使えるクエリが使える（厳密に使えないのいくつかあるかも）</p>
+<h2 id="select-insert-で長時間ロックが掛かってしまう">SELECT INSERT で長時間ロックが掛かってしまう</h2>
+<hr>
+<h3 id="インフラ負荷周りの前提情報">インフラ・負荷周りの前提情報</h3>
+<ul>
+<li>バージョン: AWS Aurora mysql 5.6(の現時点での最新)</li>
+<li>クラスタ: writer 1台、reader 1台（オートスケール）</li>
+<li>インスタンスサイズ: r5.16xlarge</li>
+</ul>
+<p>ユーザー任意のタイミングで CREATE TABLE の後に SELECT INSERT する機能（要はレコード絞ってテーブルコピー）があるのですが、この出力結果のテーブルが次のようになっています。</p>
+<ul>
+<li>1テーブル 平均 0.8GB</li>
+<li>最小100MB、 最大40GB / 1テーブル</li>
+<li>約1000テーブル以上/日 でコピー</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#75715e">-- イメージこんな感じ
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> public_report ...;
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> public_report <span style="color:#75715e">-- 作りたいテーブル
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> report r <span style="color:#75715e">-- 元データのあるテーブル
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> report_setting rs <span style="color:#75715e">-- 公開情報のあるテーブル
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">ON</span>  r.PRIMARY_KEY <span style="color:#f92672">=</span> rs.PRIMARY_KEY
+<span style="color:#66d9ef">AND</span> rs.is_display <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span> <span style="color:#75715e">-- 公開設定されてる情報だけに絞る
+</span><span style="color:#75715e"></span>;
+</code></pre></div><p>このSQL実行後のコピー完了したテーブルのサイズがすごく大きい。</p>
+<pre><code>report(元テーブル) → SELECT INSERT → public_report(コピーテーブル)
+  ^これは最大80GBくらいある             ^これが 最大40GBくらいある
+</code></pre><p>大体の SELECT INSERT は高速なのですが、極端にサイズの大きないくつかのテーブルで非常に時間がかかってしまっている状態でした（ファイルサイズに比例して書き込みに時間がかかるので重い）</p>
+<p>調べてみると、SELECT INSERT するとロックがかかる事が公式マニュアルに乗っていました。
+<a href="https://dev.mysql.com/doc/refman/5.6/ja/insert-select.html">https://dev.mysql.com/doc/refman/5.6/ja/insert-select.html</a></p>
+<h3 id="ソフトウェア的な挙動の前提">ソフトウェア的な挙動の前提</h3>
+<p>上記の通り、SELECT INSERT するとロックがかかり書き込みができなくなります。
+ですが、僕が担当するプロダクトでは ETL処理による出力の書き込みが <em>report(元テーブル)に対して</em> 30分に1回行われます。</p>
+<p>つまり、 SELECT INSERT の最中に ETL処理出力の書き込みが重なると、 40GBのINSERT処理を待つ必要があります。
+この事象が起こってた時は、 <code>show full processlist;</code> でプロセス確認すると、5000秒以上掛かってる SELECT INSERT が稀に見られました。</p>
+<ul>
+<li>5000秒以上掛かるクエリはプロダクトとして許容できない</li>
+<li>ETL処理も大幅に遅延してしまうため挙動を変えず（現在の仕様のまま）に競合しないやり方に変える必要が出てきた</li>
+</ul>
+<h3 id="これの課題に対する単純な解決方法">これの課題に対する単純な解決方法</h3>
+<hr>
+<p>解決方法は単純で、 <strong>SELECT INSET を辞めて、Auroraでのみ使えるクエリで解決しました。</strong></p>
+<ol>
+<li><code>SELECT INTO OUTFILE S3</code> で CSV形式でS3へファイル出力</li>
+<li><code>LOAD DATA FROM S3</code> で 出力した CSVからデータをインサート</li>
+</ol>
+<p>変更前後は次の図のようになります。</p>
+<p><img src="/images/aurora-image-01.png" alt="digdagのWebUI"></p>
+<p>ざっくり説明するとこう</p>
+<ul>
+<li>変更前: writerだけで完結するがロックが掛かる</li>
+<li>変更後: writerとreaderにクエリを流すが、ロックが掛からない</li>
+</ul>
+<h3 id="into-outfile-s3-load-data-from-s3-って何"><code>INTO OUTFILE S3</code>, <code>LOAD DATA FROM S3</code> って何</h3>
+<p><code>INTO OUTFILE</code> と <code>LOAD DATA</code> はそれぞれ MySQLにも実装されているクエリです。が、<strong>S3</strong> 出力に対応してるのは Auroraだけであり、Aurora独自の実装です。</p>
+<ul>
+<li><code>SELECT INTO</code> 構文
+<ul>
+<li><a href="https://dev.mysql.com/doc/refman/5.6/ja/select-into.html">https://dev.mysql.com/doc/refman/5.6/ja/select-into.html</a></li>
+</ul>
+</li>
+</ul>
+<p>こんな感じで、SELECTした結果を直接S3に出力できる。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> report r
+<span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> report_setting rs
+<span style="color:#66d9ef">ON</span>  r.PRIMARY_KEY <span style="color:#f92672">=</span> rs.PRIMARY_KEY
+<span style="color:#66d9ef">AND</span> rs.is_display <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>
+<span style="color:#66d9ef">INTO</span> <span style="color:#66d9ef">OUTFILE</span> S3 <span style="color:#e6db74">&#39;s3://#BUCKET/tmp/#HASH&#39;</span>
+FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;,&#39;</span>;
+</code></pre></div><ul>
+<li><code>LOAD DATA</code> 構文
+<ul>
+<li><a href="https://dev.mysql.com/doc/refman/5.6/ja/load-data.html">https://dev.mysql.com/doc/refman/5.6/ja/load-data.html</a></li>
+</ul>
+</li>
+</ul>
+<p>FROM S3 で S3に存在するファイルをテーブルに読み込む事ができる。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">LOAD</span> DATA <span style="color:#66d9ef">FROM</span> S3 PREFIX <span style="color:#e6db74">&#39;s3://#BUCKET/tmp/#HASH&#39;</span>
+<span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#66d9ef">TABLE</span> public_report
+FIELDS <span style="color:#66d9ef">TERMINATED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;,&#39;</span>
+(<span style="color:#75715e">/* テーブルのカラム全て指定 */</span>)
+</code></pre></div><h3 id="実施前後でのマトリクス">実施前後でのマトリクス</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th><code>SELECT INSERT</code></th>
+<th><code>INTO OUTFILE S3</code> → <code>LOAD DATA FROM S3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>実行あたりの単純速度</td>
+<td>速い</td>
+<td>遅い</td>
+</tr>
+<tr>
+<td>テーブルロック</td>
+<td>有り</td>
+<td>無し</td>
+</tr>
+<tr>
+<td>オートスケール対応</td>
+<td>してない</td>
+<td>してる(INTO OUTFILEはスケール可)</td>
+</tr>
+<tr>
+<td>最終的なパフォーマンス</td>
+<td>-</td>
+<td>UP</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>実行あたりの単純速度は、1回あたりの実行時間は長くなった事を指します。</p>
+<p>やはり <code>SELECT INSERT</code> は高速で、書き込みが競合せず即座に完了するのであれば <code>SELECT INSERT</code> が速いし一番良い。</p>
+<p>僕の担当プロダクト的には合わなかったという話なのでケースバイケース。</p>
+<h2 id="このチューニングを行ってみての感想">このチューニングを行ってみての感想</h2>
+<p>僕の担当プロダクトでは、ETL処理からの書き込みがあるため、下記を徹底すべきなのかなと感じた。</p>
+<ul>
+<li>書き込み処理は writerエンドポイント</li>
+<li>読み込み処理は readerエンドポイント</li>
+</ul>
+<p>今現時点で writerに対して SELECTしてるクエリがいくつかあるので、洗い出してクエリ実行の向き先を変える必要がありそう。</p>
+<p>年1更新でしたが今年2ポスト目です。これからもチマチマ更新したいと思います。</p>
+</div>
+
+    
+    
+    
+
+    
+    
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

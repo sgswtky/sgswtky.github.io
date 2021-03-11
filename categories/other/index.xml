@@ -13,10 +13,10 @@
     
     <item>
       <title>多相について今一度調べてみた</title>
-      <link>https://sgswtky.github.io/posts/slt-advent-02-polymorphism/</link>
+      <link>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</link>
       <pubDate>Fri, 14 Dec 2018 19:17:05 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/slt-advent-02-polymorphism/</guid>
+      <guid>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</guid>
       <description>エンジニアになって数年が経つけど、たまに基礎の基礎を知らなかったりします。
 最近 Scalaで関数型プログラミングの勉強をしてる時に 高カインド多相 というものが出てきました。
 他の多相も全く知らないのに、名前を見るにすごく高度そうな多相。良い機会だから多相について調べてみようと思ったのが今回のきっかけです。

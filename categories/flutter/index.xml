@@ -13,10 +13,10 @@
     
     <item>
       <title>Flutterが楽しい</title>
-      <link>https://sgswtky.github.io/posts/flutter-tried-get-started/</link>
+      <link>https://sgswtky.github.io/post/flutter-tried-get-started/</link>
       <pubDate>Thu, 09 Apr 2020 17:01:38 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/flutter-tried-get-started/</guid>
+      <guid>https://sgswtky.github.io/post/flutter-tried-get-started/</guid>
       <description>Flutterって何 https://flutter.dev/
 2018年12月に正式リリースされた、Googleが開発するオープンソースのモバイルアプリ向けフレームワーク（iOS, Androidへクロスコンパイル可、もちろん実機でのデバッグも可）。 flutterで開発する際は Dart（https://dart.dev/）という言語で開発する。
 web版は現時点ではベータ。

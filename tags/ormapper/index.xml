@@ -13,10 +13,10 @@
     
     <item>
       <title>go-xorm/xorm - Golang O/R Mapper触ってみた</title>
-      <link>https://sgswtky.github.io/posts/golang-orm-xorm/</link>
+      <link>https://sgswtky.github.io/post/golang-orm-xorm/</link>
       <pubDate>Sun, 15 Jul 2018 23:17:35 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/golang-orm-xorm/</guid>
+      <guid>https://sgswtky.github.io/post/golang-orm-xorm/</guid>
       <description>先日 sqlx を触ってみて、他のORMも触ってみたいと思って触ってみた
 DB接続の定義 接続は他のORMと同じような感じ。
 package orm import ( &amp;#34;testing&amp;#34; _ &amp;#34;github.com/go-sql-driver/mysql&amp;#34; &amp;#34;github.com/go-xorm/xorm&amp;#34; ) var engine *xorm.Engine func TestXorm(t *testing.T) { var err error engine, err = xorm.NewEngine(&amp;#34;mysql&amp;#34;, &amp;#34;root:rootpasswd@tcp(localhost):3306/example?parseTime=true&amp;amp;charset=utf8&amp;#34;) if err != nil { panic(err) } } 今回テストで操作するDDL＆構造体 CREATE TABLE `users` ( `user_id` varchar(11) NOT NULL DEFAULT &amp;#39;&amp;#39; COMMENT &amp;#39;userID&amp;#39;, `user_name` varchar(255) NOT NULL COMMENT &amp;#39;userName&amp;#39;, `created_at` datetime NOT NULL COMMENT &amp;#39;createdAt&amp;#39;, `created_user` varchar(255) DEFAULT NULL COMMENT &amp;#39;createdUser&amp;#39;, `updated_at` datetime NOT NULL COMMENT &amp;#39;updatedAt&amp;#39;, `updated_user` varchar(255) DEFAULT NULL COMMENT &amp;#39;updatedUser&amp;#39;, PRIMARY KEY (`user_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&amp;#39;user&amp;#39;; type Users struct { UserId string UserName string CreatedAt time.</description>
@@ -24,10 +24,10 @@ package orm import ( &amp;#34;testing&amp;#34; _ &amp;#34;github.com/go-sql-driv
     
     <item>
       <title>jmoiron/sqlx - Golang O/R Mapper触ってみた</title>
-      <link>https://sgswtky.github.io/posts/golang-orm-sqlx/</link>
+      <link>https://sgswtky.github.io/post/golang-orm-sqlx/</link>
       <pubDate>Tue, 10 Jul 2018 13:53:07 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/golang-orm-sqlx/</guid>
+      <guid>https://sgswtky.github.io/post/golang-orm-sqlx/</guid>
       <description>このORM触ってみようと思ったきっかけ 会社で僕のチームでは3層WebアプリでGoをサーバーサイドとして使ってます。
 フロントはVuejsをでSPAとしてブラウザで動作する感じです。 AWS上で動いていて、サーバーサイド（Go）とRDS（MySQL）のデータのやり取りで dbr というORMを使っているのですが、以前このORMで一点問題になる事があった。
 日本をターゲットにしたプロダクトを作っているので日本を基準にした時刻でDBとやり取りしたいので、JSTとして時刻を扱いたいけど dbr によって強制的にUTCとなる。 UTCからJSTに無理矢理変換するなどして対応しているのですが、正直かっこ悪いので根本的な対応をしたいです。

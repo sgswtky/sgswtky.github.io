@@ -13,10 +13,10 @@
     
     <item>
       <title>Go言語でwasm動かしてみた</title>
-      <link>https://sgswtky.github.io/posts/golang-wasm/</link>
+      <link>https://sgswtky.github.io/post/golang-wasm/</link>
       <pubDate>Sun, 22 Jul 2018 19:38:54 +0900</pubDate>
       
-      <guid>https://sgswtky.github.io/posts/golang-wasm/</guid>
+      <guid>https://sgswtky.github.io/post/golang-wasm/</guid>
       <description>wasmとは何かを調べてみて、Goでブラウザで動かしてみました。
 WebAssembly とは何なのか  略してwasm。 メジャー4ブラウザ（Chrome、Edge、Firefox、Safari）でサポート ブラウザ上でGo等でコンパイルされたバイナリが動かせる👐 同じWeb API（Javascriptが操作できる領域、プロセスのVM?）でJsのコンテキストの呼び出しや、メソッドを呼び出せる感じ。 ネイティブに近いパフォーマンスで動作する  WebAssembly登場の背景  コードのサイズが大きい場合のダウンロードのコストが高いという問題に対応するため、WebAssemblyが登場。 普通にWebやってると感じないと思うけど、ブラウザ上で動作するゲーム・3Dを使ったサービスのJsコードとかは数十MBあるらしいのでサイズ問題は無視できない。   WebAssemblyを使える言語  LLVMに変換できる言語なら動くらしい。（C・C++・Objective-C・Rust・Go?） kripken/emscripten というツールで LLVM to wasmが可能  将来的には、
  Jsからwasmに置き換わる事はない Javascriptを補完するだけ  WebAssembly を Golangで触るには wasmは go1.11 系のバージョンから使用可能。

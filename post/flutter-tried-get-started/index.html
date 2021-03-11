@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Flutterが楽しい</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+ <link rel="stylesheet" href="https://sgswtky.github.io/css/custom.css"> 
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+        <script data-ad-client="ca-pub-0695732937559315" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Flutterが楽しい</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/post/">Blog</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                                <li><a href="/profile/">Profile</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Flutterが楽しい</h2>
+        <h5>April 9, 2020</h5>
+        
+<a href="https://sgswtky.github.io/tags/flutter"><kbd class="item-tag">Flutter</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><h2 id="flutterって何">Flutterって何</h2>
+<p><a href="https://flutter.dev/">https://flutter.dev/</a></p>
+<p>2018年12月に正式リリースされた、Googleが開発するオープンソースのモバイルアプリ向けフレームワーク（iOS, Androidへクロスコンパイル可、もちろん実機でのデバッグも可）。
+flutterで開発する際は Dart（https://dart.dev/）という言語で開発する。</p>
+<p>web版は現時点ではベータ。</p>
+<p>web版が正式にリリースされれば、iOS・Android・Webフロントエンドの全てが一度に開発できるようになる非常に協力なフレームワーク。</p>
+<hr>
+<h2 id="1アプリ開発なのに敷居が低く感じた">1.アプリ開発なのに敷居が低く感じた</h2>
+<p>Flutterのようなアプリ開発は関係者が多い（エディタ、ランナー、デバイス、SDK…など）のでトラブルが多いイメージがあったが、とてもスムーズに快活できて、敷居が低く感じられた。</p>
+<hr>
+<h3 id="充実したドキュメント英語">充実したドキュメント（英語）</h3>
+<p>公式ドキュメント（英語）がすごく充実しています。</p>
+<p>簡単なアプリを作るのであれば公式の手順に従って進めていけば誰でも作れるようになりそう、と思うくらいに簡単でした。</p>
+<p>flutter Docs: <a href="https://flutter.dev/docs">https://flutter.dev/docs</a></p>
+<hr>
+<h3 id="flutter-doctorコマンドにより環境設定が簡単に">flutter doctorコマンドにより環境設定が簡単に</h3>
+<p>開発環境構築がとても簡単で、何ができて何ができていないのか <code>flutter doctor</code> コマンドですぐにわかる。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console.sh" data-lang="console.sh">▶ flutter doctor
+Doctor summary <span style="color:#f92672">(</span>to see all details, run flutter doctor -v<span style="color:#f92672">)</span>:
+<span style="color:#f92672">[</span>✓<span style="color:#f92672">]</span> Flutter <span style="color:#f92672">(</span>Channel stable, v1.12.13+hotfix.9, on Mac OS X 10.15 19A603, locale ja-JP<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>✗<span style="color:#f92672">]</span> Android toolchain - develop <span style="color:#66d9ef">for</span> Android devices
+    ✗ Unable to locate Android SDK.
+      Install Android Studio from: https://developer.android.com/studio/index.html
+      On first launch it will assist you in installing the Android SDK components.
+      <span style="color:#f92672">(</span>or visit https://flutter.dev/setup/#android-setup <span style="color:#66d9ef">for</span> detailed instructions<span style="color:#f92672">)</span>.
+      If the Android SDK has been installed to a custom location, set ANDROID_HOME to that location.
+      You may also want to add it to your PATH environment variable.
+
+<span style="color:#f92672">[</span>✓<span style="color:#f92672">]</span> Xcode - develop <span style="color:#66d9ef">for</span> iOS and macOS <span style="color:#f92672">(</span>Xcode 11.1<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Android Studio <span style="color:#f92672">(</span>not installed<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>✓<span style="color:#f92672">]</span> IntelliJ IDEA Ultimate Edition <span style="color:#f92672">(</span>version 2019.1<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> VS Code <span style="color:#f92672">(</span>version 1.38.1<span style="color:#f92672">)</span>
+    ✗ Flutter extension not installed; install from
+      https://marketplace.visualstudio.com/items?itemName<span style="color:#f92672">=</span>Dart-Code.flutter
+<span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Connected device
+    ! No devices available
+</code></pre></div><p>iOSの環境だけ整備してあるので、 Android系の環境が整っていない事がわかる。</p>
+<p>かなり昔にアプリ開発に入門しようとした際、環境構築でうまくいかなくて辞めた自分にとっては非常にありがたいと感じました。</p>
+<hr>
+<h3 id="widget画面に配置するuiの部品">widget（画面に配置するUIの部品）</h3>
+<p>flutterには、マテリアルデザインの widgetがプリセットのような形で予め定義されているので、それらを組み合わせるだけでアプリが簡単に完成する。</p>
+<p>超大雑把に言うと、見た目の部品はできてるのであとは挙動をコーディングしたらアプリ完成。すごい。</p>
+<p>それをベースに自分のアプリで使いたいようにカスタマイズしても良いし、containerウィジェットを使って、自分でウィジェットをイチから作っても良い。</p>
+<p>widget一覧: <a href="https://flutter.dev/docs/development/ui/widgets">https://flutter.dev/docs/development/ui/widgets</a></p>
+<hr>
+<h3 id="cupertino-widgetiosライクなui-widget">cupertino widget(iOSライクなUI widget)</h3>
+<p>最初マテリアルデザインで開発してて、iOSライクな見た目じゃなくて気持ち悪いなあと思っていたのですが、このようにiOSライクな見た目のウィジェットも使えました。</p>
+<p>cupertino: <a href="https://flutter.dev/docs/development/ui/widgets/cupertino">https://flutter.dev/docs/development/ui/widgets/cupertino</a></p>
+<p>※Appleの本社がある場所がカルフォルニア州クパチーノにあるからそこから命名？</p>
+<hr>
+<h2 id="2-jsに割と似てる言語-dart">2. jsに割と似てる言語 <code>dart</code></h2>
+<p>Flutterでコーディングする言語。JavaScriptっぽい。</p>
+<p>クラス定義してエディタのサジェストが使える点ではJSよりも使いやすい印象です。（昔はできなかった）
+Flutterで開発する際に使う <strong>dart</strong> は静的型付けに開発できます。（一応動的型付けとして開発する事も可能らしい）</p>
+<hr>
+<h3 id="dartのnullの扱い-nnbd">dartのnullの扱い: NNBD</h3>
+<p>現在dartはnull安全ではない言語ですが <strong>non-null by default(NNBD)</strong> として解決する方針のようです。（詳しく知りたい方はNNBDで検索）</p>
+<p>null安全な言語になればnull考慮漏れが引き起こすバグも減るはずなのでこの辺りは期待しています。</p>
+<hr>
+<h3 id="dartを触った感じ少し関数型っぽく書けそう">dartを触った感じ、少し関数型っぽく書けそう</h3>
+<p>Scalaを関数型で開発してる型にとっては少し物足りないかもしれませんが、最低限の便利なメソッド等は実装されている印象でした。</p>
+<p>ジェネリクスがサポートされてるので、<code>List&lt;String&gt;</code> や <code>List&lt;Int&gt;</code> のような型もサポートされています。</p>
+<p>また、<code>List</code> には <code>map, expand(flatMap) reduce, fold, forEach, where(filter)</code> のような高階関数も標準で存在しています。</p>
+<p><code>traverse, forAll</code> の実装や、 <code>Either, Option</code> あたりの型があったら嬉しかった。（traverse は、Listに限って言えば、unitまたはpure同等のモノが実装されてるようなものなので、自分で作ろうと思えば作れるとは思うのですが…）</p>
+<p>もっと厳密に関数型として開発したい場合は、関数型のパッケージも開発されてるようでした。</p>
+<p>dartz: <a href="https://github.com/spebbe/dartz">https://github.com/spebbe/dartz</a></p>
+<hr>
+<h3 id="dart--flutterは相性が良い">dart + Flutterは相性が良い？</h3>
+<p>コードを書いてて、List<!-- raw HTML omitted --> の各要素の間に <strong>線のWidget(Divider)</strong> を入れたい時にスマートなやり方がわからなかった。
+この辺は Flutter と Dart の相性みたいな話かなと思った。</p>
+<pre><code>[WidgetA, WidgetB, WidgetC]
+を
+[WidgetA, Divider, WidgetB, Divider, WidgetC]
+にするイメージ
+</code></pre><p>処理の方法ですが、実際には色んなウィジェットを使ってるので簡略化してStringで表したものが👇です。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">void</span> main() {
+    <span style="color:#66d9ef">final</span> divider <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Divider&#39;</span>;
+    <span style="color:#66d9ef">final</span> widgets <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;WidgetA&#39;</span>, <span style="color:#e6db74">&#39;WidgetB&#39;</span>, <span style="color:#e6db74">&#39;WidgetC&#39;</span>];
+    <span style="color:#66d9ef">final</span> r <span style="color:#f92672">=</span> widgets.expand((s) <span style="color:#f92672">=&gt;</span> [s, divider]).toList();
+    r.removeLast();
+    print(r);
+}
+</code></pre></div><p>Widgetの間に Widget(Divider) を入れたいというやりたい事はシンプルだけどわかりにくい処理を書かないといけないのがちょっと微妙に感じました。</p>
+<pre><code>List&lt;T&gt; addSeparate(List&lt;T&gt;: list, T: separate)
+</code></pre><p>みたいなメソッドがList型に実装されてたら・Flutterのウィジェット用のユーティリティメソッドがあればなあと思いました。
+ユーティリティメソッドみたいなの生やせばよくない？と言われればそれまでではあるのですが…😭</p>
+<hr>
+<h2 id="3ウィジェットの情報更新について">3.ウィジェットの情報更新について</h2>
+<p>SPAのフロントをがっつり開発した経験が無い自分にとってはここが結構難しかった。しかし恐らくSPAのフロント等であればあるあるなのかもしれない。</p>
+<p>詳しいメリット・デメリット等についてはそれぞれのやり方で調べてみてください。あくまで所感ベースで書いてます。</p>
+<hr>
+<h3 id="情報更新の方法-setstate">情報更新の方法①: setState</h3>
+<hr>
+<h4 id="setstateの挙動">setStateの挙動</h4>
+<p>Flutterを始めて最初に取得するウィジェットの更新方法が恐らく <strong>setState</strong> だと思う。</p>
+<p>例えばボタンのウィジェットでボタンが押された際に何か変更を加える場合</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart">onPressed: () {
+  setState(() <span style="color:#f92672">=&gt;</span> _count<span style="color:#f92672">++</span>);
+}
+<span style="color:#75715e">// _countはStateのメンバ変数
+</span></code></pre></div><p>このように書く必要がある。
+<code>onPressed</code> の定義をクロージャで行い、その中で <strong>setState</strong> を呼ぶが、与える引数もクロージャ。</p>
+<p><strong>setState</strong> は簡単に実装できて、小規模であればデータ、ビジネスロジックがUIに与える影響が分かりやすいモノに感じた。</p>
+<hr>
+<h4 id="setstateで難しい点">setStateで難しい点</h4>
+<p>分かりやすくはあるけど、Flutterを書いていて <strong>setStateは規模が大きくなるにつれて難しい点がいくつかある</strong> と感じた。</p>
+<p>setStateを使ってコードを書いていくと</p>
+<ul>
+<li>ロジックをメソッドで切り出す事は可能ではある</li>
+<li>結局最終的にステートのメンバ変数に依存（そこに代入する形）</li>
+<li>メソッドを分離したとしても、一度async使ったら丁寧にまとめ上げていく必要がある（ロジック分散によるコードの肥大化）</li>
+</ul>
+<p>という点から、いくらメソッドを綺麗に切り分けたとしても限界があると感じた。</p>
+<p>例えば setState の中身が100行あった場合、とてもわかりにくくなってしまう。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart">onPressed: () {
+  setState(() <span style="color:#f92672">=&gt;</span> {
+    <span style="color:#75715e">// 1...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 2...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 99...
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 100...
+</span><span style="color:#75715e"></span>    _count<span style="color:#f92672">++</span>;
+  });
+}
+<span style="color:#75715e">// _countはStateのメンバ変数
+</span></code></pre></div><p>さらにこの中で Futureを使ってたらそれを合成する必要も出てくる。</p>
+<p>UIとビジネスロジックが蜜な関係になりすぎていて、コードが肥大化していくと <strong>何がどうなったらUIがどう変化するのかわからない</strong> という点が問題になりそうだと感じた。</p>
+<hr>
+<h3 id="情報更新の方法-blocパターン">情報更新の方法②: BLoCパターン</h3>
+<p>そこで、BLoCパターンというモノを試してみた。</p>
+<hr>
+<h4 id="blocパターンとは">BLoCパターンとは？</h4>
+<p>UIからビジネスロジックを切り離す事を目的とした手法。</p>
+<p>正式名称は <code>Business Logic Component</code> らしい。</p>
+<p>実際にある程度流れを理解してみて、Flutterを学習する上で鬼門になる、初級者と中級者の壁のようにも感じた。（言いすぎかもしれない）</p>
+<hr>
+<h4 id="実際に動かしたコード">実際に動かしたコード</h4>
+<p>鬼門かも、とは言ったものの実装を見ると割とシンプルに感じると思います。</p>
+<p><code>flutter create</code> すると作成されるサンプルアプリのボタン押して表示されている数に <code>+1</code> してそれを表示する機能を BLoCパターン化してみる。</p>
+<p>まずはウィジェットに埋もれてるステート（数字を管理してる部分）をBLoCとして切り出すイメージで別ファイルに分ける。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plus_counter_bloc.dart" data-lang="plus_counter_bloc.dart"><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;dart:async&#39;</span>;
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PlusCountBloc</span> {
+  StreamController<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> _PlusCountController <span style="color:#f92672">=</span>
+      StreamController<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>.broadcast();
+
+  StreamSink<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">get</span> items <span style="color:#f92672">=&gt;</span> _PlusCountController.sink;
+
+  Stream<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">get</span> outStream <span style="color:#f92672">=&gt;</span> _PlusCountController.stream;
+
+  <span style="color:#66d9ef">var</span> _count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+  <span style="color:#66d9ef">void</span> plusCount(<span style="color:#66d9ef">int</span> plus) {
+    _count <span style="color:#f92672">=</span> _count <span style="color:#f92672">+</span> plus;
+    items.add(_count);
+  }
+}
+</code></pre></div><p>※ちなみに、<code>flutter BLoC</code> でググると綺麗にまとめてくれてる人が沢山居るので、sink, streamについてはググってみてください。</p>
+<p>次に、<code>_MyHomePageState</code> を以下のように書き換える。変更した部分にコメントを入れたので何をしてるかはそこを見てください。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">_MyHomePageState</span> <span style="color:#66d9ef">extends</span> State<span style="color:#f92672">&lt;</span>MyHomePage<span style="color:#f92672">&gt;</span> {
+  <span style="color:#960050;background-color:#1e0010">@</span>override
+  Widget build(BuildContext context) {
+    <span style="color:#75715e">// ※!
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">final</span> _plusCountBloc <span style="color:#f92672">=</span> PlusCountBloc();
+    <span style="color:#66d9ef">return</span> Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <span style="color:#f92672">&lt;</span>Widget<span style="color:#f92672">&gt;</span>[
+            Text(
+              <span style="color:#e6db74">&#39;You have pushed the button this many times:&#39;</span>,
+            ),
+            <span style="color:#75715e">// 数字表示部分のテキストを StreamBuilderに変更
+</span><span style="color:#75715e"></span>            StreamBuilder<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(
+              stream: _plusCountBloc.outStream,
+              initialData: <span style="color:#ae81ff">0</span>,
+              builder: (BuildContext context, AsyncSnapshot<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> snapshot) {
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Text(
+                  <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">${</span>snapshot.data<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>,
+                  style: Theme.of(context).textTheme.display1,
+                );
+              },
+            )
+          ],
+        ),
+      ),
+      <span style="color:#75715e">// onPressedで、BLoCの plusCountを呼ぶ
+</span><span style="color:#75715e"></span>      floatingActionButton: FloatingActionButton(
+        onPressed: () <span style="color:#f92672">=&gt;</span> _plusCountBloc.plusCount(<span style="color:#ae81ff">1</span>),
+        tooltip: <span style="color:#e6db74">&#39;Increment&#39;</span>,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+</code></pre></div><p>ステートを持つコードが完全に消えた点に注目して欲しい。</p>
+<p>下記のコードが書かれていたが、BLoCに役割を移したので <strong>UIはステートの管理という役割から開放された</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#75715e">// 消えたコード
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> _counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+  <span style="color:#66d9ef">void</span> _incrementCounter() {
+    setState(() {
+      _counter<span style="color:#f92672">++</span>;
+    });
+  }
+</code></pre></div><hr>
+<h4 id="blocパターンで開発するメリット">BLoCパターンで開発するメリット</h4>
+<ul>
+<li>UIとロジックの分離によるコードの見通しがよくなる（vueっぽい）</li>
+<li>ロジック部分（BLoC）の一元管理（シングルトン化）による複数ウィジェットの更新（※1）</li>
+<li>クリーンアーキテクチャが適用できそう（多分）</li>
+<li>StatelessWidgetにできる（※2）</li>
+</ul>
+<p>※1: ここでは書いてないけど、InheritedWidgetというものを使って、BLoCをシングルトン的に扱う事が可能。そのため、1BLoCにたいして複数ウィジェットと紐付けられる。載せたサンプルコードでは <code>※!</code> の部分で定義してるのでシングルトンではない。</p>
+<p>InheritedWidget: (<a href="https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html">https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html</a>)</p>
+<p>※2: BLoCを使うとウィジェットがステートを持たなくなる = ステートレスなウィジェットとなり、StatelessWidgetが使える。そのためクラス定義とシグネチャを次のようにしても動くようになる。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyHomePage</span> <span style="color:#66d9ef">extends</span> StatelessWidget {
+  MyHomePage({Key key, <span style="color:#66d9ef">this</span>.title}) <span style="color:#f92672">:</span> <span style="color:#66d9ef">super</span>(key: key);
+  <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">String</span> title;
+
+  <span style="color:#960050;background-color:#1e0010">@</span>override
+  Widget build(BuildContext context) {
+    <span style="color:#75715e">/* StatefulWidgetと同じ中身 */</span>
+  }
+}
+</code></pre></div><p>StatelessWidgetは、StatefulWidgetのように値を変更する事ができない。全て final な値として宣言される。</p>
+<p>他には、非常にザックリとした理解だけどウィジェットの更新タイミングの違い、あとはステータスを持たないので軽い。みたいな理解。</p>
+<p>プロダクションレベルで開発する時はもっとこの辺の挙動や違いを把握しつつ開発する必要がありそう。</p>
+<hr>
+<h4 id="まとめ">まとめ</h4>
+<p>BLoCパターンは実際に触ってみて、クリーンアーキテクチャ的にユースケース層に相当する処理の領域 + リアクティブプログラミングに感じた。</p>
+<hr>
+<h2 id="4flutter触ってみた感想">4.Flutter触ってみた感想</h2>
+<p>触ってる間はとりあえず楽しかった。</p>
+<p>環境設定で大ゴケしたり、詰まって先に進めないエラーが大量に出るわけでもなく、比較的スムーズに開発する事ができた。</p>
+<p>もし機会があればプロダクションレベルでの開発を経験してみたいと思った。</p>
+</div>
+
+    
+    
+    
+
+    
+    
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

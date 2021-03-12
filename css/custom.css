@@ -4,6 +4,10 @@ main {
   padding: 0 !important;
 }
 
+.intro {
+  transform: none;
+}
+
 table {
   text-align: center;
   width: 100%;

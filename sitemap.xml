@@ -1,265 +1,220 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/aws/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/aws/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/aws-cognito/</loc>
     <lastmod>2021-02-21T10:00:00+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/cognito/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/cognito/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/</loc>
     <lastmod>2021-02-21T10:00:00+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2021-02-21T10:00:00+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/aurora/</loc>
-    <lastmod>2020-08-16T13:41:21+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/aurora/</loc>
-    <lastmod>2020-08-16T13:41:21+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/aurora-select-insert/</loc>
     <lastmod>2020-08-16T13:41:21+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/db/</loc>
-    <lastmod>2020-08-16T13:41:21+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/mysql/</loc>
-    <lastmod>2020-08-16T13:41:21+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/mysql/</loc>
-    <lastmod>2020-08-16T13:41:21+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/query/</loc>
-    <lastmod>2020-08-16T13:41:21+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/profile/</loc>
     <lastmod>2020-04-14T16:29:08+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/</loc>
-    <lastmod>2020-04-14T16:29:08+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/flutter/</loc>
-    <lastmod>2020-04-09T17:01:38+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/flutter/</loc>
-    <lastmod>2020-04-09T17:01:38+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/flutter-tried-get-started/</loc>
     <lastmod>2020-04-09T17:01:38+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/digdag/</loc>
-    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
-  </url>
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/digdag-require-reuse/</loc>
     <lastmod>2019-07-26T14:38:49+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/workflow/</loc>
-    <lastmod>2019-07-26T14:38:49+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/other/</loc>
-    <lastmod>2018-12-14T19:17:05+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/slt-advent-02-polymorphism/</loc>
     <lastmod>2018-12-14T19:17:05+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/scala/</loc>
-    <lastmod>2018-12-13T21:30:21+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/scalikejdbc/</loc>
-    <lastmod>2018-12-13T21:30:21+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</loc>
     <lastmod>2018-12-13T21:30:21+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/function/</loc>
-    <lastmod>2018-10-23T09:30:08+09:00</lastmod>
-  </url>
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/scala-function-method/</loc>
     <lastmod>2018-10-23T09:30:08+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/development/</loc>
-    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/environment/</loc>
-    <lastmod>2018-07-28T15:44:16+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/product-development-process/</loc>
     <lastmod>2018-07-28T15:44:16+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/go/</loc>
-    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
-  </url>
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/golang-wasm/</loc>
     <lastmod>2018-07-22T19:38:54+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/webassembly/</loc>
-    <lastmod>2018-07-22T19:38:54+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/jenkins/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/jenkins/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/jenkins-pipeline-unexpected-behavior/</loc>
     <lastmod>2018-07-17T20:14:21+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/pipeline/</loc>
-    <lastmod>2018-07-17T20:14:21+09:00</lastmod>
-  </url>
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/golang-orm-xorm/</loc>
     <lastmod>2018-07-15T23:17:35+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/library/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/ormapper/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/sql/</loc>
-    <lastmod>2018-07-15T23:17:35+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/golang-orm-sqlx/</loc>
     <lastmod>2018-07-10T13:53:07+09:00</lastmod>
   </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/git/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/iterm2/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/categories/local/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-  </url>
   
-  <url>
-    <loc>https://sgswtky.github.io/tags/terminal/</loc>
-    <lastmod>2018-07-09T17:08:18+09:00</lastmod>
-  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   <url>
     <loc>https://sgswtky.github.io/post/local-terminal-setting/</loc>
     <lastmod>2018-07-09T17:08:18+09:00</lastmod>
   </url>
   
+  
+  
   <url>
-    <loc>https://sgswtky.github.io/about/</loc>
+    <loc>https://sgswtky.github.io/</loc>
     <lastmod>2018-07-09T16:50:05+09:00</lastmod>
   </url>
+  
   
 </urlset>

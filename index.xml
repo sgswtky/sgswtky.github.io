@@ -50,12 +50,10 @@ SELECT INSERT で長時間ロックが掛かってしまう  インフラ・負�
       <pubDate>Tue, 14 Apr 2020 16:29:08 +0900</pubDate>
       
       <guid>https://sgswtky.github.io/profile/</guid>
-      <description>Profile  Name: sgswtky Position: backend engineer Birth(yyyy/MM): 1991/02 WorkPlace: Shibuya / 2020.07~ WFH Comment: 本を読了した的なスキルは載せてません。全て実務経験があるスキルのみ載せてます。  Skills Highlight  backend  設計(Restful-API, Batch, App Architecture) Scala(functional) Golang Java   AWS  EC2, ELB, ALB ECS, AWS Batch RDS(Aurora-MySQL)   DB  MySQL   Other  CircleCI Docker swagger digdag    Industry WEB広告の実績可視化システムに長年携わっているため、一般的なエンジニアと比較してWEB広告の構造等への理解があります。
-Career 所属会社にて担当プロダクトの新機能の設計、チューニング、実装等を行っております。
-マネジメント領域ではメンバーのメンタリング・チーム内勉強会の開催等を行っております。
-Scalaでcatsを用いた関数型プログラミングが約2年程、Golangでの開発経験が約3年程あります。
-インフラエンジニアとしての経験もあり、クラウドを用いたウェブアプリのインフラ構築(プロダクション環境にDockerを用いたり等も)がゼロベースから構築可能です。
-そこまで規模の大きくない(超高トラフィックでない)インフラ構築くらいなら大体は可能です。
+      <description>プロフィール  名前: sgswtky 役割: サーバーサイドエンジニア 誕生: 1991/02 勤務先: 渋谷 / 2020.07~ 在宅  スキル  backend  設計(Restful-API, Batch, App Architecture) Scala(functional) Golang Java   AWS  EC2, ELB, ALB ECS, AWS Batch RDS(Aurora-MySQL)   DB  MySQL   Other  CircleCI Docker swagger digdag    現在〜これまでのキャリアについて 所属会社で開発のリーダー職のような立場で、担当プロダクトの新機能開発・設計・チューニング・メンバーのマネジメント・ビジネスメンバーとの折衝等を行っております。
+また、最近では規模は大きくありませんが開発メンバー4~5人でのプロダクト立ち上げにて、サーバーサイドの全領域 + マネジメント領域に携わっておりました。
+Scalaでcatsを用いた関数型プログラミングが約3年程、Golangでの開発経験が約3年程あります。
+インフラエンジニアとしての経験もあり、クラウドを用いてそこまで規模の大きくない(超高トラフィックでない)インフラ構築の経験があり、大規模でなければ大体は構築可能です。
 フロントエンド・モバイルアプリ開発の経験は少ないです。
 DataLake/DWHなど大量のデータ集計処理基盤の構築・開発に経験は薄いですが興味があります。
 🏢(2018.07~現在)大手インターネット広告代理店クライアント向けレポートシステム(toB) 引き続きのチーム異動。

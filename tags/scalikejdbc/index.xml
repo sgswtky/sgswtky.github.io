@@ -6,11 +6,7 @@
     <description>Recent content in ScalikeJDBC on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 13 Dec 2018 21:30:21 +0900</lastBuildDate>
-    
-	<atom:link href="https://sgswtky.github.io/tags/scalikejdbc/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 13 Dec 2018 21:30:21 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/tags/scalikejdbc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ScalikeJDBCのクォート付く付かない挙動調べてみた</title>
       <link>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</link>

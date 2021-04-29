@@ -6,11 +6,7 @@
     <description>Recent content in Aurora on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 16 Aug 2020 13:41:21 +0900</lastBuildDate>
-    
-	<atom:link href="https://sgswtky.github.io/tags/aurora/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 16 Aug 2020 13:41:21 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/tags/aurora/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Auroraで SELECT INSERT するのやめた</title>
       <link>https://sgswtky.github.io/post/aurora-select-insert/</link>

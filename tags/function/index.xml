@@ -6,11 +6,7 @@
     <description>Recent content in Function on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Oct 2018 09:30:08 +0900</lastBuildDate>
-    
-	<atom:link href="https://sgswtky.github.io/tags/function/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 23 Oct 2018 09:30:08 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/tags/function/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ScalaのFunctionが実装するメソッド</title>
       <link>https://sgswtky.github.io/post/scala-function-method/</link>

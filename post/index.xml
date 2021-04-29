@@ -151,7 +151,7 @@ go1.11 系は正式にリリースされていないので、beta版となる。
 僕は go1.11beta2 をインストールして試しました。
 ※go1.11未満だとエラーになります
 &amp;gt; GOARCH=wasm GOOS=js go build -o test.wasm main.go cmd/go: unsupported GOOS/GOARCH pair js/wasm 実際に触ってみるにあたり、golangのwasmをブラウザ上で実際に動かせるこちらのチュートリアルをやってみた https://blog.gopheracademy.com/advent-2017/go-wasm/
-   (adsbygoogle = window.adsbygoogle || []).push({});      (adsbygoogle = window.</description>
+   (adsbygoogle = window.adsbygoogle || []).push({});    実際に試しに動かしてみた Goでビルドしたコードがブラウザで動いて感動。</description>
     </item>
     
     <item>

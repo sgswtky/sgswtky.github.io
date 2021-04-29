@@ -171,6 +171,34 @@
 </code></pre></div><p>requireで <code>child.dig</code> を呼び出すも、複数回呼ばれる事はありません。</p>
 <p>WebUIで見るとこうなる。</p>
 <p><img src="/images/digdag-require-reuse-normal-require.png" alt="digdagのWebUI"></p>
+
+<div style="">
+  <div style="width:48%;display:inline-block">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="ca-pub-0695732937559315"
+       data-ad-slot="8996569687"></ins>
+       <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+       </script>
+  </div>
+  <div style="width:48%;display:inline-block">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="ca-pub-0695732937559315"
+       data-ad-slot="7896893399"></ins>
+       <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+       </script>
+  </div>
+</div>
+
 <h3 id="requireを理複数回起動させる">requireを理複数回起動させる</h3>
 <p>内容は比較的単純で、呼び出す <code>require</code> 全てに違う <code>session_time</code> を指定している。</p>
 <p><code>require</code> で <code>session_time</code> 指定せずに起動した場合、親の <code>session_time</code> を使うため、２度目の起動ができない。なのでループ毎に違う <code>session_time</code> を指定するだけで全てのループで <code>require</code> が起動する。</p>

@@ -151,10 +151,7 @@ go1.11 系は正式にリリースされていないので、beta版となる。
 僕は go1.11beta2 をインストールして試しました。
 ※go1.11未満だとエラーになります
 &amp;gt; GOARCH=wasm GOOS=js go build -o test.wasm main.go cmd/go: unsupported GOOS/GOARCH pair js/wasm 実際に触ってみるにあたり、golangのwasmをブラウザ上で実際に動かせるこちらのチュートリアルをやってみた https://blog.gopheracademy.com/advent-2017/go-wasm/
-実際に試しに動かしてみた Goでビルドしたコードがブラウザで動いて感動。
-wasmファイルのレスポンスヘッダの Content-Typeが application/wasm となっていた。
-以下のようなgoroutineのコードもwasmで動かしてみたらちゃんと動いた。
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;math/rand&amp;#34; ) func f(s string, wg *sync.</description>
+   (adsbygoogle = window.adsbygoogle || []).push({});      (adsbygoogle = window.</description>
     </item>
     
     <item>
@@ -167,7 +164,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; &amp;#34;sync
 やりたかったことは、パイプラインAから、ジョブAを並列で2つ起動させたかった。 色々調べたけど結局わからなくて、バージョンアップしたら治った話。
 実際に発生した事象について 記述したけど動かなかったコード コードは極々単純で以下のようなコード。
 node(&amp;#34;master&amp;#34;){ def tasks = [:] for (i = 0; i &amp;lt; 2; i++) { tasks[i.toString()] = { build job: &amp;#34;Job_A&amp;#34; } } parallel tasks } このコードを実行したら通常であれば ジョブA が２つ実行されるはず。しかし以下のように1つしか Job_Aが実行されなかった。
-Started by timer [Pipeline] node Running on master in /var/lib/jenkins/workspace/Pipeline_A [Pipeline] { [Pipeline] parallel [Pipeline] [0] { (Branch: 0) [Pipeline] [1] { (Branch: 1) [Pipeline] [0] stage [Pipeline] [0] { (branch_2) [Pipeline] [1] stage [Pipeline] [1] { (branch_2) [Pipeline] [0] build (Building Job_A) [0] Scheduling project: Job_A [Pipeline] [1] build (Building Job_A) [1] Scheduling project: Job_A [0] Starting building: Job_A #4 // ↑ここで Job_A が ビルド番号4で起動しているのがわかるが、起動しているのは #4 だけ。 [Pipeline] [0] } [Pipeline] [1] } [Pipeline] [0] // stage [Pipeline] [1] // stage [Pipeline] [0] } [Pipeline] [1] } [Pipeline] // parallel [Pipeline] } [Pipeline] // node [Pipeline] End of Pipeline Finished: SUCCESS 理由はわからないが何故か動くコード 以下のコードは期待する動きをした。</description>
+Started by timer [Pipeline] node Running on master in /var/lib/jenkins/workspace/Pipeline_A [Pipeline] { [Pipeline] parallel [Pipeline] [0] { (Branch: 0) [Pipeline] [1] { (Branch: 1) [Pipeline] [0] stage [Pipeline] [0] { (branch_2) [Pipeline] [1] stage [Pipeline] [1] { (branch_2) [Pipeline] [0] build (Building Job_A) [0] Scheduling project: Job_A [Pipeline] [1] build (Building Job_A) [1] Scheduling project: Job_A [0] Starting building: Job_A #4 // ↑ここで Job_A が ビルド番号4で起動しているのがわかるが、起動しているのは #4 だけ。 [Pipeline] [0] } [Pipeline] [1] } [Pipeline] [0] // stage [Pipeline] [1] // stage [Pipeline] [0] } [Pipeline] [1] } [Pipeline] // parallel [Pipeline] } [Pipeline] // node [Pipeline] End of Pipeline Finished: SUCCESS     (adsbygoogle = window.</description>
     </item>
     
     <item>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Goでポインターの扱いがわからない時に見たい内容</title>
+        <meta name="description" content="Goのポインタ型を扱う時に自分が考えている内容をまとめた記事。ポインタの扱い方はわかったけど具体的にどうしていくのが良いのかをまとめた。">
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+ <link rel="stylesheet" href="https://sgswtky.github.io/css/custom.css"> 
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.80.0" />
+        
+
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-0TV1S0EXHL"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments)};
+              gtag('js', new Date());
+              gtag('config', 'G-0TV1S0EXHL');
+            </script>
+        
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Goでポインターの扱いがわからない時に見たい内容</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Top</a></li>
+                            
+                                <li><a href="/profile/">Profile</a></li>
+                            
+                                <li><a href="/post/">Blog</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Goでポインターの扱いがわからない時に見たい内容</h2>
+        <h5>May 5, 2021</h5>
+        
+<a href="https://sgswtky.github.io/tags/golang"><kbd class="item-tag">Golang</kbd></a>
+
+<a href="https://sgswtky.github.io/tags/pointer"><kbd class="item-tag">pointer</kbd></a>
+
+<a href="https://sgswtky.github.io/tags/gomock"><kbd class="item-tag">gomock</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><p>ポインターで何ができるかはわかったけど、つまりどう扱えば良いのかわからない時に見る内容にしたいきたいと思います。</p>
+<p>色々意見を交わして考えが変わる事もあるので、その度に変更していけたらと思います。</p>
+<hr>
+<p>Go言語触ってると頻出するポインター問題。</p>
+<p>いろいろな人と開発してると、 <strong>どこをポインターにして書いたらいいのかわからない</strong> という話によくなる。</p>
+<p>これは多分正解が無くて、メンバーのGoに対する成熟度やアーキテクチャによってどういう方針で作っていくかが結構変わってくると思う。</p>
+<p>なので、 <strong>正解はない</strong> 前提だけど、個人的に <strong>ここはコレで良い気がしてる</strong> というのを書いていきたい。</p>
+<hr>
+
+<div style="">
+  <div style="">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="ca-pub-0695732937559315"
+       data-ad-slot="7896893399"></ins>
+       <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+       </script>
+  </div>
+</div>
+
+<h2 id="プリミティブ型プリミティブ型の配列をポインタでメソッド間で受け渡す場合は注意する">プリミティブ型、プリミティブ型の配列をポインタでメソッド間で受け渡す場合は注意する</h2>
+<p>例えば下記の型（プリミティブ型はGoに元々にある型のようなもの）</p>
+<pre><code>*int
+*string
+*[]byte
+[]*string
+</code></pre><p>これらの型でreturnを書いている場合、 <strong>本当にその型で返す必要があるのかという所に注意したい。</strong>
+例えば <strong>使ってるライブラリがその型で返す</strong> などの場合は仕方なくそうなるかもしれないけど、そうでない場合は<strong>なんとなく違和感のあるアーキテクチャになってないか注意</strong>する必要があると思う。</p>
+<p>単純にポインタにしたほうが早そうだから、という理由でポインタで受け渡してると、後々にその値を参照する時に頻繁に元に戻す処理(<a href="https://play.golang.org/p/aEqF6sH_Cnj">nilチェック</a>)を書く必要があるので、プリミティブ型の場合は気をつけてポインタとして扱う必要があると思う。</p>
+<p>また、これは結構知られてる事だけど、<code>[]byte</code> をポインタとして扱う場合は <code>io.Reader</code> や <code>io.Writer</code> などのインターフェースとして扱う方が適切な場合が多い。</p>
+<h3 id="ただしresponsebody-は少し気をつける">ただし、<code>Response.Body</code> は少し気をつける</h3>
+<p>httpパッケージにある <code>Response.Body</code> の <a href="https://golang.org/pkg/net/http/#Server.Close">Closeメソッドのコメント</a>の通り、Closeしておくのが正解のようなので気をつける必要がある。</p>
+<pre><code class="language-Google翻訳" data-lang="Google翻訳">// NOTE: Google翻訳
+Closeは、すべてのアクティブなnet.Listenersと、StateNew、StateActive、またはStateIdleの状態にあるすべての接続をただちに閉じます。正常にシャットダウンするには、シャットダウンを使用します。
+
+Closeは、WebSocketなどのハイジャックされた接続を閉じようとはしません（そしてそれについても知りません）。
+
+Closeは、サーバーの基盤となるリスナーを閉じることで返されたエラーを返します。
+</code></pre><p>そして、Closeする場合でも <code>[]byte, *[]byte, []*byte</code> で返すのはどれも正解でなく、下記のように <code>bytes.Buffer</code> 型で定義して <code>io.Reader</code> などで返すのが正解だと思う。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetExample</span>() (<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;http://example.com/&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+	<span style="color:#a6e22e">body</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">NewBuffer</span>(<span style="color:#a6e22e">body</span>), <span style="color:#a6e22e">err</span>
+}
+</code></pre></div><p>このように定義しておけば基本的にはポインタ型で受け渡ししてるのと同等のパフォーマンスが得られます。</p>
+<h2 id="構造体のポインタは使いまくるが良さそう">構造体のポインタは使いまくるが良さそう</h2>
+<p>割と混乱しやすい所ではあるけど、 <strong>構造体のポインタ</strong> を使いまくるは良さそうに感じてます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#a6e22e">Status</span> <span style="color:#66d9ef">int</span>
+}
+</code></pre></div><p>ここで言いたい構造体のポインタは、上記の構造体があったとすると、次のようになる。</p>
+<pre><code>// 使いまくるが良さそうな型
+*User
+[]*User
+
+// そうでない型
+*[]User // これは配列のポインタ型ですね。
+</code></pre><h3 id="何が良くて構造体はポインタが良いのか">何が良くて構造体はポインタが良いのか</h3>
+<ul>
+<li><strong>構造体のポインタの配列</strong> で扱えばループでも高パフォーマンス</li>
+<li>Golangは変数のデフォルト値が決まっているため、「構造体が無い」という状態が定義できる →開発してみるとわかるのですが地味に便利でわかりやすい…</li>
+<li>構造体はメモリを使用する量が多くなりがちなので使ったほうがコスパ良</li>
+</ul>
+<p>たとえば、下記のように構造体のポインタのメンバ変数を呼び出せるため構造体がnilでない限りpanicは発生しない（つまり1回だけnilチェックすればおｋ）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Status</span> <span style="color:#66d9ef">int</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Example</span>() {
+	<span style="color:#a6e22e">u1</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Status</span>: <span style="color:#ae81ff">1</span>}
+	<span style="color:#a6e22e">u2</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Status</span>: <span style="color:#ae81ff">2</span>}
+
+	<span style="color:#75715e">// NOTE: 直接呼び出し可
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">u1</span>.<span style="color:#a6e22e">Status</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">u2</span>.<span style="color:#a6e22e">Status</span>)
+
+	<span style="color:#75715e">// NOTE: usersは、u1とu2のポインタ情報として配列を定義
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">users</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">User</span> = []<span style="color:#f92672">*</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">u1</span>, <span style="color:#a6e22e">u2</span>}
+	
+	<span style="color:#75715e">// NOTE: ループも対応
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">users</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Status</span>)
+	}
+}
+</code></pre></div><p>なので、例えば Repositoryから構造体を取得するコードを書く場合に下記のようなインターフェースにしておけばメモリコピーを最小限に抑えられる＆値ひとつひとつのnilチェックと比較するとコード量が減る。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-user_repository.go" data-lang="user_repository.go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">UserRepository</span>) <span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">User</span>, <span style="color:#66d9ef">error</span>)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">UserRepository</span>) <span style="color:#a6e22e">FindAll</span>() ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">User</span>, <span style="color:#66d9ef">error</span>)
+</code></pre></div>
+<div style="">
+  <div style="">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="ca-pub-0695732937559315"
+       data-ad-slot="7896893399"></ins>
+       <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+       </script>
+  </div>
+</div>
+
+<h2 id="テスタビリティのためにメソッドの引数に気をつける">テスタビリティのためにメソッドの引数に気をつける</h2>
+<p>本来の処理を考えるあまりテストしやすいメソッドの設計になっていないのは割とあるあるだと思います。</p>
+<p>ポインタの使用有無を統一せずに実装するとテスタビリティにも影響を及ぼす一例を元に紹介したいと思います。</p>
+<h3 id="前提">前提</h3>
+<p>ユーザーのステータスを更新する <code>updateUserService</code> メソッドがあるとします（分類的にビジネスロジック、サービス、usecaseのような立ち位置のメソッドです）</p>
+<p>このメソッドのテストコードについて考えていきます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">status</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">error</span>
+</code></pre></div><p>このメソッドの内部で Repositoryが呼び出されます。これは次のような Interfaceとなっています。</p>
+<p>テストではこちらをモック化します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-interfaces.go" data-lang="interfaces.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserRepositoryInterface</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>, <span style="color:#66d9ef">error</span>)
+	<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">user</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>) <span style="color:#66d9ef">error</span>
+}
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserLogRepositoryInterface</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">UpdateLog</span>(<span style="color:#a6e22e">user</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>, <span style="color:#a6e22e">log</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span>
+}
+</code></pre></div><p>そして、<code>updateUserService</code> 本体は次のようになっています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// APIとかから値渡ってきたと過程
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#e6db74">&#34;sgswtky&#34;</span>, <span style="color:#ae81ff">1</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+}
+
+<span style="color:#75715e">// TODO: これをテストしたい
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">status</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">userID</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Status</span> = <span style="color:#a6e22e">status</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span>.<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserLogRepository</span>.<span style="color:#a6e22e">UpdateLog</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#e6db74">&#34;UPDATE STATUS&#34;</span>)
+}
+
+</code></pre></div><p>gomockを使えば、こちらの <code>updateUserService</code> の内部で呼び出されている <code>repository.*</code> をモック化する事ができます。(Interface化されてるので)</p>
+<p>モック化する事により、想定呼び出し回数や想定される引数で呼ばれているかのチェックが可能となるため、コードの品質担保がしやすいという事が利点です。</p>
+<p>実はこのコード、一見すると問題無いように見えますが、 <strong>既に一部分テストできなくなっています。</strong></p>
+<h3 id="gomockを使ったモック化のテスト">gomockを使ったモック化のテスト</h3>
+<p>上記の <code>updateUserService</code> に正常系のパターンでテストを書くと次のようになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-user_test.go" data-lang="user_test.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestUpdateUserService</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">ctrl</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">NewController</span>(<span style="color:#a6e22e">t</span>)
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">ctrl</span>.<span style="color:#a6e22e">Finish</span>()
+
+	<span style="color:#a6e22e">MockUserRepository</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mock_repository</span>.<span style="color:#a6e22e">NewMockUserRepositoryInterface</span>(<span style="color:#a6e22e">ctrl</span>)
+	<span style="color:#a6e22e">MockUserLogRepository</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mock_repository</span>.<span style="color:#a6e22e">NewMockUserLogRepositoryInterface</span>(<span style="color:#a6e22e">ctrl</span>)
+
+	<span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span> = <span style="color:#a6e22e">MockUserRepository</span>
+	<span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserLogRepository</span> = <span style="color:#a6e22e">MockUserLogRepository</span>
+
+	<span style="color:#a6e22e">testUserID</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;sgswtky&#34;</span>
+	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>{<span style="color:#ae81ff">0</span>}
+	<span style="color:#a6e22e">MockUserRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">testUserID</span>).<span style="color:#a6e22e">Return</span>(<span style="color:#a6e22e">user</span>, <span style="color:#66d9ef">nil</span>)
+	<span style="color:#a6e22e">MockUserRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">Any</span>()).<span style="color:#a6e22e">Return</span>(<span style="color:#66d9ef">nil</span>)
+	<span style="color:#a6e22e">MockUserLogRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">UpdateLog</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">Any</span>()).<span style="color:#a6e22e">Return</span>(<span style="color:#66d9ef">nil</span>)
+
+	<span style="color:#75715e">// 想定通りの処理であればエラーにはならないのでエラーの場合失敗
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#a6e22e">testUserID</span>, <span style="color:#ae81ff">1</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fail</span>()
+	}
+}
+</code></pre></div><p>なんの変哲も無いテストで特に問題は無さそうで、テストもPASSします。</p>
+<p>しかし、本当にテストコードとして問題が無いのかチェックするために、 <code>updateUserService</code> の <code>user.Status = status</code> をコメントアウトしてテストを実行してみるとPASSします。</p>
+<p><strong>つまりこのテストコードは正常系のテストコードとしては不十分である事がわかります。</strong></p>
+<p>本来であればステータスが更新された事もテストされている必要があるのですが、漏れています。
+<strong>恐らくコードレビューでも漏れがちな考慮漏れ</strong>だと思います。</p>
+<h3 id="ではどうすれば良いのか">ではどうすれば良いのか</h3>
+<p>コードを見ると、<code>updateUserService</code> 内でステータスを更新し、それを <code>UserRepository.Update</code> に渡している事がわかります。一部抜粋するとこの部分です。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#f92672">...</span>
+	<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Status</span> = <span style="color:#a6e22e">status</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span>.<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+<span style="color:#f92672">...</span>
+</code></pre></div><p>つまり、<code>UserRepository.Update</code> に更新された値が渡されている事をモックが検知する必要がありますが、現在このメソッドのモックは次のように定義しています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">MockUserRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">Any</span>()).<span style="color:#a6e22e">Return</span>(<span style="color:#66d9ef">nil</span>)
+</code></pre></div><p><code>gomock.Any()</code> を使っているため、<strong>「引数は何渡されても問題無し、戻り値は常に nil」</strong> とという挙動をします。</p>
+<p>この部分が問題であるため修正する必要がありますが、ここで今一度 <code>UserRepository</code> の interfaceを思い出してみます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-interface.go" data-lang="interface.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserRepositoryInterface</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>, <span style="color:#66d9ef">error</span>)
+	<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">user</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>) <span style="color:#66d9ef">error</span>
+}
+</code></pre></div><p><code>UserRepository.Update</code> メソッドの引数は <code>user *entity.User</code> 型です。</p>
+<p>構造体はポインタ使った方が良いと書いたのですが、ここではポインタである事によって弊害が出ているように見えると思います。</p>
+<p>しかしもう少し詳しく見ると、ポインタである弊害があるというよりは、 <strong>ポインタと値どちらも使用してしまっているために起こっている問題</strong> である事に気が付きます。</p>
+<p><code>updateUserService</code> メソッドでは、<code>Find</code> で取得した <code>User型</code> を変更して、 <code>Update</code> に渡しています。この <code>Find</code> はポインタでない <code>entity.User</code> を返します。</p>
+<p>つまり、下記のどちらかで正しくテストできるようになります。</p>
+<ul>
+<li><code>Find</code> が <code>*entity.User</code> を返し、変更された値をチェック</li>
+<li><code>Update</code> が <code>entity.User</code> を受け取るように変更し、モックの引数に想定される値を入れる</li>
+</ul>
+<p>今回は全体的にポインタ型で書いていくとどうなるかも見たいので、前者で進めます。</p>
+<h3 id="正しくテストできるコード">正しくテストできるコード</h3>
+<p>今回は全ての <code>entity.User</code> を <code>*entity.User</code> にして、正しくテストできるように変更します。</p>
+<p>Interface</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-interface.go" data-lang="interface.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserRepositoryInterface</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>, <span style="color:#66d9ef">error</span>)
+	<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">user</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>) <span style="color:#66d9ef">error</span>
+}
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserLogRepositoryInterface</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">UpdateLog</span>(<span style="color:#a6e22e">user</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>, <span style="color:#a6e22e">log</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span>
+}
+</code></pre></div><p><code>updateUserService</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-user.go" data-lang="user.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// APIとかから値渡ってきたと過程
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#e6db74">&#34;sgswtky&#34;</span>, <span style="color:#ae81ff">1</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		panic(<span style="color:#a6e22e">err</span>)
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#a6e22e">userID</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">status</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">userID</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Status</span> = <span style="color:#a6e22e">status</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span>.<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">user</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserLogRepository</span>.<span style="color:#a6e22e">UpdateLog</span>(<span style="color:#a6e22e">user</span>, <span style="color:#e6db74">&#34;UPDATE STATUS&#34;</span>)
+}
+</code></pre></div><p>ここまではほとんど変更がありませんが、テストコードでは若干変更があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-user_test.go" data-lang="user_test.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestUpdateUserService</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">ctrl</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">NewController</span>(<span style="color:#a6e22e">t</span>)
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">ctrl</span>.<span style="color:#a6e22e">Finish</span>()
+
+	<span style="color:#a6e22e">MockUserRepository</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mock_repository</span>.<span style="color:#a6e22e">NewMockUserRepositoryInterface</span>(<span style="color:#a6e22e">ctrl</span>)
+	<span style="color:#a6e22e">MockUserLogRepository</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mock_repository</span>.<span style="color:#a6e22e">NewMockUserLogRepositoryInterface</span>(<span style="color:#a6e22e">ctrl</span>)
+
+	<span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserRepository</span> = <span style="color:#a6e22e">MockUserRepository</span>
+	<span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">UserLogRepository</span> = <span style="color:#a6e22e">MockUserLogRepository</span>
+
+	<span style="color:#a6e22e">testUserID</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;sgswtky&#34;</span>
+	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">User</span>{<span style="color:#ae81ff">0</span>}
+	<span style="color:#a6e22e">MockUserRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">testUserID</span>).<span style="color:#a6e22e">Return</span>(<span style="color:#a6e22e">user</span>, <span style="color:#66d9ef">nil</span>)
+	<span style="color:#a6e22e">MockUserRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Return</span>(<span style="color:#66d9ef">nil</span>)
+	<span style="color:#a6e22e">MockUserLogRepository</span>.<span style="color:#a6e22e">EXPECT</span>().<span style="color:#a6e22e">UpdateLog</span>(<span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">Any</span>()).<span style="color:#a6e22e">Return</span>(<span style="color:#66d9ef">nil</span>)
+
+	<span style="color:#75715e">// 想定通りの処理であればエラーにはならないのでエラーの場合失敗
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">updateUserService</span>(<span style="color:#a6e22e">testUserID</span>, <span style="color:#ae81ff">1</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fail</span>()
+	}
+	<span style="color:#75715e">// 変更されてるかチェック
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Status</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">1</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fail</span>()
+	}
+}
+</code></pre></div><p>テストコードで、<code>Find</code> から返る <code>user</code> を <code>Update</code> でも使用しています。<code>user</code> の定義は <code>user := &amp;entity.User{0}</code> となっており、変数はポインタ型です。</p>
+<p>これにより <code>gomock.Any()</code> は回避でき、より詳細にモックを定義できた事になります。
+最後に、値が変更された事の確認として、<code>user.Status</code> のチェックも追記しました。</p>
+<h3 id="結論">結論</h3>
+<p>このように、ポインタをテストで使う時には気をつけて開発する必要がありますが、下記を方針として取り入れて開発する事である程度排除できる気がします。</p>
+<ul>
+<li>構造体は基本的にポインタとして扱う方針</li>
+<li><code>gomock.Any()</code> は便利だけど本当に使うべきか今一度考えてから使うが良さそう</li>
+</ul>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>プリミティブ型、プリミティブ型の配列をポインタでメソッド間で受け渡す時は臭うコードになってないか確認
+<ul>
+<li>回避はインターフェースで</li>
+<li>http.Response.Body は気をつける</li>
+</ul>
+</li>
+<li>構造体はポインタで使っていく</li>
+<li>テストの時の <code>gomock.Any()</code> を安易に使わないように今一度考える</li>
+</ul>
+<p>結構初歩的な内容や「思想強」と思われるような内容になりました。何か意見やマサカリあればDMください🙇</p>
+</div>
+
+    
+    
+    
+
+    
+    
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
+     crossorigin="anonymous"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-0695732937559315"
+     data-ad-slot="4045278298"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

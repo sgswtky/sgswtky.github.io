@@ -6,7 +6,28 @@
     <description>Recent content in Posts on 壁は登るためにある</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 21 Feb 2021 10:00:00 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 May 2021 18:15:00 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Goでポインターの扱いがわからない時に見たい内容</title>
+      <link>https://sgswtky.github.io/post/golang-pointer/</link>
+      <pubDate>Wed, 05 May 2021 18:15:00 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/golang-pointer/</guid>
+      <description>ポインターで何ができるかはわかったけど、つまりどう扱えば良いのかわからない時に見る内容にしたいきたいと思います。
+色々意見を交わして考えが変わる事もあるので、その度に変更していけたらと思います。
+ Go言語触ってると頻出するポインター問題。
+いろいろな人と開発してると、 どこをポインターにして書いたらいいのかわからない という話によくなる。
+これは多分正解が無くて、メンバーのGoに対する成熟度やアーキテクチャによってどういう方針で作っていくかが結構変わってくると思う。
+なので、 正解はない 前提だけど、個人的に ここはコレで良い気がしてる というのを書いていきたい。
+    (adsbygoogle = window.adsbygoogle || []).push({});    プリミティブ型、プリミティブ型の配列をポインタでメソッド間で受け渡す場合は注意する 例えば下記の型（プリミティブ型はGoに元々にある型のようなもの）
+*int *string *[]byte []*string これらの型でreturnを書いている場合、 本当にその型で返す必要があるのかという所に注意したい。 例えば 使ってるライブラリがその型で返す などの場合は仕方なくそうなるかもしれないけど、そうでない場合はなんとなく違和感のあるアーキテクチャになってないか注意する必要があると思う。
+単純にポインタにしたほうが早そうだから、という理由でポインタで受け渡してると、後々にその値を参照する時に頻繁に元に戻す処理(nilチェック)を書く必要があるので、プリミティブ型の場合は気をつけてポインタとして扱う必要があると思う。
+また、これは結構知られてる事だけど、[]byte をポインタとして扱う場合は io.Reader や io.Writer などのインターフェースとして扱う方が適切な場合が多い。
+ただし、Response.Body は少し気をつける httpパッケージにある Response.Body の Closeメソッドのコメントの通り、Closeしておくのが正解のようなので気をつける必要がある。
+// NOTE: Google翻訳 Closeは、すべてのアクティブなnet.Listenersと、StateNew、StateActive、またはStateIdleの状態にあるすべての接続をただちに閉じます。正常にシャットダウンするには、シャットダウンを使用します。 Closeは、WebSocketなどのハイジャックされた接続を閉じようとはしません（そしてそれについても知りません）。 Closeは、サーバーの基盤となるリスナーを閉じることで返されたエラーを返します。 そして、Closeする場合でも []byte, *[]byte, []*byte で返すのはどれも正解でなく、下記のように bytes.Buffer 型で定義して io.Reader などで返すのが正解だと思う。
+func GetExample() (io.Reader, error) { resp, err := http.</description>
+    </item>
+    
     <item>
       <title>AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</title>
       <link>https://sgswtky.github.io/post/aws-cognito/</link>

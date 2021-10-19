@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>jmoiron/sqlx - Golang O/R Mapper触ってみた</title>
-        <meta name="description" content="jmoiron/sqlx という GolangのORMを試しに使ってみました。簡単に CRUDで試したりトランザクション処理を試してみたり、NamedExecという機能も使ってみました。感想としては、極々薄い感じのORMで個人的に好みのORMでした。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,11 +128,11 @@
         <h2>jmoiron/sqlx - Golang O/R Mapper触ってみた</h2>
         <h5>July 10, 2018</h5>
         
-<a href="https://sgswtky.github.io/tags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
+<a href="https://sgswtky.github.iotags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/sql"><kbd class="item-tag">sql</kbd></a>
+<a href="https://sgswtky.github.iotags/sql"><kbd class="item-tag">sql</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/library"><kbd class="item-tag">library</kbd></a>
+<a href="https://sgswtky.github.iotags/library"><kbd class="item-tag">library</kbd></a>
 
 
     </div>
@@ -173,7 +174,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 <h3 id="select句">select句</h3>
 <p>selectでマッピングを行ってくれる。</p>
 <p>カラム名は構造体のタグで明示的に指定する。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">Connect</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">Connect</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>,
   <span style="color:#e6db74">&#34;root:rootpasswd@(example.host:3306)/example?parseTime=true&#34;</span>)
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserStatus</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">UserID</span> <span style="color:#66d9ef">string</span>                <span style="color:#e6db74">`db:&#34;user_id&#34;`</span>
@@ -194,7 +195,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 </code></pre></div><p>上記のようなコードで、 <code>userStatus</code> にSQLの結果一覧が入ってくるようになる。</p>
 <h3 id="insert-update-deleteなど更新系クエリ">insert, update, deleteなど更新系クエリ</h3>
 <p>その他のクエリは以下のように <code>tx.Query</code> を使う</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;update users set user_name = &#39;update&#39; where user_id = ?&#34;</span>, <span style="color:#ae81ff">1</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;update users set user_name = &#39;update&#39; where user_id = ?&#34;</span>, <span style="color:#ae81ff">1</span>)
 </code></pre></div><p>戻り値には Rowsとerorrが入る</p>
 
 <div style="">
@@ -217,7 +218,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 <p>このメソッドが便利そうで、 <code>map[string]interface{}</code> で渡して良い感じにクエリが組み立てられそうだと感じた。</p>
 <p>いちいちただの <code>insert</code> とか <code>update</code> を書くのが面倒くさいから構造体渡したら作成・更新やってほしいと思っていて、実際にプロダクションのコードに <code>reflect</code> を使って構造体渡すだけで作成・更新してくれるメソッドを作っていたりする。</p>
 <p>（これは多分ActiveRecordと同じだと思うのですが、チームでメンテできるし…ということでそんな感じになってます）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#75715e">// 公式READMEより引用
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#75715e">// 公式READMEより引用
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">NamedExec</span>(<span style="color:#e6db74">`
 </span><span style="color:#e6db74">    INSERT INTO person (first_name,last_name,email) VALUES (:first,:last,:email)
 </span><span style="color:#e6db74">`</span>,
@@ -229,7 +230,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 </code></pre></div><p><code>NamedExec</code> はそういう面倒くささを払拭するのに結構使えそうだと思った。</p>
 <p>例えば以下のコードで構造体のカラム名と中身のmap（<code>map[string]interface{}</code>）が取れる。</p>
 <p>これと <code>NamedExec</code> を組み合わせる事で構造体を渡すことで作成・更新してくれるメソッドが作れそうだと思った。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">namedExecMap</span>(<span style="color:#a6e22e">inf</span> <span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">entityMap</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">namedExecMap</span>(<span style="color:#a6e22e">inf</span> <span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">entityMap</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) {
 	<span style="color:#a6e22e">tof</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">TypeOf</span>(<span style="color:#a6e22e">inf</span>)
 	<span style="color:#a6e22e">vof</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">inf</span>)
 	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">tof</span>.<span style="color:#a6e22e">NumField</span>(); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
@@ -240,7 +241,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 }
 </code></pre></div><h3 id="トランザクションも動かしてみた">トランザクションも動かしてみた</h3>
 <p>トランザクションも一応試してみた。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">tx</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Beginx</span>()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">tx</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Beginx</span>()
 </code></pre></div><p>最初、 <code>db.Begin</code> でトランザクションを開始していた所、 <code>NamedExec</code> が使えずがっかりしていたが取得するメソッドが違っただけで <code>Beginx</code> から取得する事で使えた。帰ってくる型が違って以下のように返る。</p>
 <table>
 <thead>
@@ -272,7 +273,7 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
 <li><code>Scan(value interface{}) error</code></li>
 <li><code>Value() (driver.Value, error)</code></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-self_time_type.go" data-lang="self_time_type.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DBTime</span> <span style="color:#66d9ef">struct</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-self_time_type.go" data-lang="self_time_type.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DBTime</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">value</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
 }
 <span style="color:#75715e">// select用
@@ -318,11 +319,11 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
     <h4><a href="/post/golang-orm-xorm/">go-xorm/xorm - Golang O/R Mapper触ってみた</a></h4>
     <h5>go-xorm/xorm という ORMを触った時の記事。簡単なCRUD処理、JOIN、または直接SQLを実行して試してみました。</h5>
     
-<a href="https://sgswtky.github.io/tags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
+<a href="https://sgswtky.github.iotags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/sql"><kbd class="item-tag">sql</kbd></a>
+<a href="https://sgswtky.github.iotags/sql"><kbd class="item-tag">sql</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/library"><kbd class="item-tag">library</kbd></a>
+<a href="https://sgswtky.github.iotags/library"><kbd class="item-tag">library</kbd></a>
 
 
 
@@ -333,24 +334,10 @@ UTCからJSTに無理矢理変換するなどして対応しているのです�
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

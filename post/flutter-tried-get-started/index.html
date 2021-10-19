@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Flutterが楽しい</title>
-        <meta name="description" content="flutterに入門してみた話。BLoCパターンなど独自の文化？書き方があってとても良かった。Flutter Webが正式リリースされたらもう一度触りたい。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,7 +128,7 @@
         <h2>Flutterが楽しい</h2>
         <h5>April 9, 2020</h5>
         
-<a href="https://sgswtky.github.io/tags/flutter"><kbd class="item-tag">Flutter</kbd></a>
+<a href="https://sgswtky.github.iotags/flutter"><kbd class="item-tag">Flutter</kbd></a>
 
 
     </div>
@@ -149,7 +150,7 @@ flutterで開発する際は Dart（https://dart.dev/）という言語で開発
 <hr>
 <h3 id="flutter-doctorコマンドにより環境設定が簡単に">flutter doctorコマンドにより環境設定が簡単に</h3>
 <p>開発環境構築がとても簡単で、何ができて何ができていないのか <code>flutter doctor</code> コマンドですぐにわかる。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console.sh" data-lang="console.sh">▶ flutter doctor
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console.sh" data-lang="console.sh">▶ flutter doctor
 Doctor summary <span style="color:#f92672">(</span>to see all details, run flutter doctor -v<span style="color:#f92672">)</span>:
 <span style="color:#f92672">[</span>✓<span style="color:#f92672">]</span> Flutter <span style="color:#f92672">(</span>Channel stable, v1.12.13+hotfix.9, on Mac OS X 10.15 19A603, locale ja-JP<span style="color:#f92672">)</span>
 <span style="color:#f92672">[</span>✗<span style="color:#f92672">]</span> Android toolchain - develop <span style="color:#66d9ef">for</span> Android devices
@@ -207,7 +208,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 [WidgetA, Divider, WidgetB, Divider, WidgetC]
 にするイメージ
 </code></pre><p>処理の方法ですが、実際には色んなウィジェットを使ってるので簡略化してStringで表したものが👇です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">void</span> main() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">void</span> main() {
     <span style="color:#66d9ef">final</span> divider <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Divider&#39;</span>;
     <span style="color:#66d9ef">final</span> widgets <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;WidgetA&#39;</span>, <span style="color:#e6db74">&#39;WidgetB&#39;</span>, <span style="color:#e6db74">&#39;WidgetC&#39;</span>];
     <span style="color:#66d9ef">final</span> r <span style="color:#f92672">=</span> widgets.expand((s) <span style="color:#f92672">=&gt;</span> [s, divider]).toList();
@@ -244,7 +245,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 <h4 id="setstateの挙動">setStateの挙動</h4>
 <p>Flutterを始めて最初に取得するウィジェットの更新方法が恐らく <strong>setState</strong> だと思う。</p>
 <p>例えばボタンのウィジェットでボタンが押された際に何か変更を加える場合</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart">onPressed: () {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart">onPressed: () {
   setState(() <span style="color:#f92672">=&gt;</span> _count<span style="color:#f92672">++</span>);
 }
 <span style="color:#75715e">// _countはStateのメンバ変数
@@ -262,7 +263,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 </ul>
 <p>という点から、いくらメソッドを綺麗に切り分けたとしても限界があると感じた。</p>
 <p>例えば setState の中身が100行あった場合、とてもわかりにくくなってしまう。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart">onPressed: () {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart">onPressed: () {
   setState(() <span style="color:#f92672">=&gt;</span> {
     <span style="color:#75715e">// 1...
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// 2...
@@ -288,7 +289,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 <p>鬼門かも、とは言ったものの実装を見ると割とシンプルに感じると思います。</p>
 <p><code>flutter create</code> すると作成されるサンプルアプリのボタン押して表示されている数に <code>+1</code> してそれを表示する機能を BLoCパターン化してみる。</p>
 <p>まずはウィジェットに埋もれてるステート（数字を管理してる部分）をBLoCとして切り出すイメージで別ファイルに分ける。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plus_counter_bloc.dart" data-lang="plus_counter_bloc.dart"><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;dart:async&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plus_counter_bloc.dart" data-lang="plus_counter_bloc.dart"><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#39;dart:async&#39;</span>;
 
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PlusCountBloc</span> {
   StreamController<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> _PlusCountController <span style="color:#f92672">=</span>
@@ -307,7 +308,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 }
 </code></pre></div><p>※ちなみに、<code>flutter BLoC</code> でググると綺麗にまとめてくれてる人が沢山居るので、sink, streamについてはググってみてください。</p>
 <p>次に、<code>_MyHomePageState</code> を以下のように書き換える。変更した部分にコメントを入れたので何をしてるかはそこを見てください。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">_MyHomePageState</span> <span style="color:#66d9ef">extends</span> State<span style="color:#f92672">&lt;</span>MyHomePage<span style="color:#f92672">&gt;</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">_MyHomePageState</span> <span style="color:#66d9ef">extends</span> State<span style="color:#f92672">&lt;</span>MyHomePage<span style="color:#f92672">&gt;</span> {
   <span style="color:#960050;background-color:#1e0010">@</span>override
   Widget build(BuildContext context) {
     <span style="color:#75715e">// ※!
@@ -348,7 +349,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 }
 </code></pre></div><p>ステートを持つコードが完全に消えた点に注目して欲しい。</p>
 <p>下記のコードが書かれていたが、BLoCに役割を移したので <strong>UIはステートの管理という役割から開放された</strong>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#75715e">// 消えたコード
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#75715e">// 消えたコード
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> _counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 
   <span style="color:#66d9ef">void</span> _incrementCounter() {
@@ -367,7 +368,7 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
 <p>※1: ここでは書いてないけど、InheritedWidgetというものを使って、BLoCをシングルトン的に扱う事が可能。そのため、1BLoCにたいして複数ウィジェットと紐付けられる。載せたサンプルコードでは <code>※!</code> の部分で定義してるのでシングルトンではない。</p>
 <p>InheritedWidget: (<a href="https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html">https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html</a>)</p>
 <p>※2: BLoCを使うとウィジェットがステートを持たなくなる = ステートレスなウィジェットとなり、StatelessWidgetが使える。そのためクラス定義とシグネチャを次のようにしても動くようになる。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyHomePage</span> <span style="color:#66d9ef">extends</span> StatelessWidget {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.dart" data-lang="main.dart"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyHomePage</span> <span style="color:#66d9ef">extends</span> StatelessWidget {
   MyHomePage({Key key, <span style="color:#66d9ef">this</span>.title}) <span style="color:#f92672">:</span> <span style="color:#66d9ef">super</span>(key: key);
   <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">String</span> title;
 
@@ -396,24 +397,10 @@ Flutterで開発する際に使う <strong>dart</strong> は静的型付けに�
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</title>
-        <meta name="description" content="awsのサービス Cognito というユーザー管理のためのプロダクトを Lambda(Golang) &#43; PureJS &#43; reCAPTCHA v3 で動かした時の記事です。Cognitoは無料枠も大きく非常に有用なプロダクトで、柔軟性の効く作りになっており非常に良いプロダクトでした。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,11 +128,11 @@
         <h2>AWS Cognito UserPool で reCAPTCHA &#43; golang lambdaでカスタム認証</h2>
         <h5>February 21, 2021</h5>
         
-<a href="https://sgswtky.github.io/tags/aws"><kbd class="item-tag">AWS</kbd></a>
+<a href="https://sgswtky.github.iotags/aws"><kbd class="item-tag">AWS</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/cognito"><kbd class="item-tag">Cognito</kbd></a>
+<a href="https://sgswtky.github.iotags/cognito"><kbd class="item-tag">Cognito</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E7%AE%A1%E7%90%86"><kbd class="item-tag">ユーザー管理</kbd></a>
+<a href="https://sgswtky.github.iotags/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E7%AE%A1%E7%90%86"><kbd class="item-tag">ユーザー管理</kbd></a>
 
 
     </div>
@@ -159,12 +160,11 @@
 <ul>
 <li><a href="https://gist.github.com/sgswtky/385b836ac5ad3ef04d0557199f725e8a">https://gist.github.com/sgswtky/385b836ac5ad3ef04d0557199f725e8a</a></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console.sh" data-lang="console.sh">npm i
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console.sh" data-lang="console.sh">npm i
 npm run start
 </code></pre></div><h4 id="画面">画面</h4>
 <p>これらのファイルから立ち上がるフロントの画面は下記画像のようになっており、 <strong>サインアップ</strong>、<strong>サインイン</strong>、<strong>チャレンジでのサインイン</strong> のフォームが存在します。</p>
-<figure class="center">
-    <img src="/images/cognito-front-image.png"/> 
+<figure class="center"><img src="/images/cognito-front-image.png"/>
 </figure>
 
 <table>
@@ -206,19 +206,17 @@ npm run start
 </ul>
 <p>次に、登録した Lambdaファンクションを使用するユーザープールのトリガーからそれぞれ選んでいく。（上記テーブルのトリガー名を参考に設定）</p>
 <p>マネジメントコンソールに下記のような画面があると思うのでそこから設定できる。</p>
-<figure class="center">
-    <img src="/images/aws-cognito-trigger.png"/> 
+<figure class="center"><img src="/images/aws-cognito-trigger.png"/>
 </figure>
 
 <h3 id="実際にサインアップサインインを動かしてみる">実際にサインアップ・サインインを動かしてみる</h3>
 <p>ブラウザからサインアップ・サインインしてみると、CloudWatch Logsから Lambdaのログ出力がされている事が確認できると思う。</p>
-<figure class="center">
-    <img src="/images/aws-cognito-pre_sign_up.png"/> 
+<figure class="center"><img src="/images/aws-cognito-pre_sign_up.png"/>
 </figure>
 
 <p>サインアップ・サインインそれぞれのコード内 <code>localVerify</code> メソッドにて、 reCAPTCHAスコアが0.5未満の場合に認証をエラーにする処理を入れているので、もし動かない場合はその処理をコメントアウトして試すと良いかもしれません。</p>
 <p>下記のような処理が入っています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">localVerify</span>(<span style="color:#a6e22e">recaptchaResponse</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RecaptchaResponse</span>) <span style="color:#66d9ef">error</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">localVerify</span>(<span style="color:#a6e22e">recaptchaResponse</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">RecaptchaResponse</span>) <span style="color:#66d9ef">error</span> {
 	<span style="color:#75715e">// TODO: write verify logic.
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">errMsg</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;recaptcha failed&#34;</span>
 	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">recaptchaResponse</span>.<span style="color:#a6e22e">Success</span> {
@@ -311,24 +309,10 @@ npm run start
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

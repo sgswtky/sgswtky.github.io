@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>多相について今一度調べてみた</title>
-        <meta name="description" content="エンジニアになって数年が経つが、未だに多相についての理解が浅かったので調べてみた。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -160,14 +161,14 @@
 <p>この多相を指して単にポリモーフィズムと呼ぶ場合もあります。</p>
 <p>複数種類の型を１つの型のように扱える性質の事を指します。</p>
 <p>例えば、 Animal を extendsした3つの型があるとします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Subtype.scala" data-lang="Subtype.scala"><span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Subtype.scala" data-lang="Subtype.scala"><span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">def</span> call<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span>
 <span style="color:#f92672">}</span>
 <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">def</span> call<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;bark&#34;</span> <span style="color:#f92672">}</span>
 <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dog</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">def</span> call<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mew&#34;</span> <span style="color:#f92672">}</span>
 <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cow</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Animal</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">def</span> call<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;low&#34;</span> <span style="color:#f92672">}</span>
 </code></pre></div><p>3つの型は、Animal型として扱えるので、これが実現できる Scalaは部分型多相の性質を持っています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-signture.txt" data-lang="signture.txt">// 引数が Animal であるため部分型多相
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-signture.txt" data-lang="signture.txt">// 引数が Animal であるため部分型多相
 def connectLeads(a: Animal): Unit
 // 戻り値が Animal であるため部分型多相
 def randomAnimal(): Animal
@@ -176,7 +177,7 @@ def randomAnimal(): Animal
 <p>これが部分型多相です。</p>
 <p>ScalaやJavaは、extends（継承）によってこれらの性質が提供されています。</p>
 <p><code>Animal</code> と <code>Cat</code>, <code>Dog</code>, <code>Cow</code> は、以下のように表記できるらしいです。（Wikipediaに書いてあった）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Example.txt" data-lang="Example.txt">Cat &lt;: Animal
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Example.txt" data-lang="Example.txt">Cat &lt;: Animal
 Dog &lt;: Animal
 Cow &lt;: Animal
 </code></pre></div><p>（この表記が何なのかは知りません）</p>
@@ -184,7 +185,7 @@ Cow &lt;: Animal
 <h2 id="アドホック多相オーバーロード">アドホック多相（オーバーロード）</h2>
 <p><strong>要はオーバーロードがその性質に値</strong> します。</p>
 <p>Scalaでは以下のように表現できると思います。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Adhoc.scala" data-lang="Adhoc.scala"><span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Book</span><span style="color:#f92672">()</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Adhoc.scala" data-lang="Adhoc.scala"><span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Book</span><span style="color:#f92672">()</span>
 <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MobilePhone</span><span style="color:#f92672">()</span>
 <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Computer</span><span style="color:#f92672">()</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SecondHandBuyer</span> <span style="color:#f92672">{</span>
@@ -225,7 +226,7 @@ Cow &lt;: Animal
 </ul>
 <p><strong>特定の型を指定しなくても良い性質の事</strong> を指します。</p>
 <p>Scalaでいうと、下記のような「A型」が該当します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Parameter.scala" data-lang="Parameter.scala"><span style="color:#66d9ef">def</span> get<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">](</span>l<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">List</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">],</span> n<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=</span> l <span style="color:#66d9ef">match</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Parameter.scala" data-lang="Parameter.scala"><span style="color:#66d9ef">def</span> get<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">](</span>l<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">List</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">],</span> n<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=</span> l <span style="color:#66d9ef">match</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">if</span> l<span style="color:#f92672">.</span>length <span style="color:#f92672">&lt;</span> n <span style="color:#66d9ef">=&gt;</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Exception</span>
   <span style="color:#66d9ef">case</span> h <span style="color:#66d9ef">:</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Nil</span> <span style="color:#f92672">=&gt;</span> h
   <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">:</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">t</span> <span style="color:#f92672">=&gt;</span> get<span style="color:#f92672">(</span>t<span style="color:#f92672">,</span> n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
@@ -248,7 +249,7 @@ get<span style="color:#f92672">(</span><span style="color:#a6e22e">List</span><s
 <p>Scalaでよく見かける <code>[F[_]]</code> の事です。 Haskellや C++ も高階多相らしいです。</p>
 <p>これは、型コンストラクタ（≠ 普通の型）を受け取り型を返す性質で、型コンストラクタは <code>List, Stream, Option</code> などが該当します。</p>
 <p>例えば、以下の モナドのトレイトと ファンクタのトレイトは高階多相です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-HigherKind.scala" data-lang="HigherKind.scala"><span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">Monad</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]]</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-HigherKind.scala" data-lang="HigherKind.scala"><span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">Monad</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]]</span> <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">def</span> unit<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">](</span>a<span style="color:#66d9ef">:</span> <span style="color:#f92672">=&gt;</span> A<span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
   <span style="color:#66d9ef">def</span> flatMap<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span>,<span style="color:#66d9ef">B</span><span style="color:#f92672">](</span>ma<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">])(</span>f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=&gt;</span> F<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">])</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span>
 <span style="color:#f92672">}</span>
@@ -261,7 +262,7 @@ get<span style="color:#f92672">(</span><span style="color:#a6e22e">List</span><s
 <h2 id="余談ダックタイピング">余談:ダックタイピング</h2>
 <p>多相とは関係ありそうで関係無いのですが、ダックタイピングというものもあります。</p>
 <p>これはいわゆる Go言語でいう所の Interfaceです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
 	<span style="color:#e6db74">&#34;fmt&#34;</span>
@@ -308,24 +309,10 @@ get<span style="color:#f92672">(</span><span style="color:#a6e22e">List</span><s
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

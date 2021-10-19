@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>go-xorm/xorm - Golang O/R Mapper触ってみた</title>
-        <meta name="description" content="go-xorm/xorm という ORMを触った時の記事。簡単なCRUD処理、JOIN、または直接SQLを実行して試してみました。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,11 +128,11 @@
         <h2>go-xorm/xorm - Golang O/R Mapper触ってみた</h2>
         <h5>July 15, 2018</h5>
         
-<a href="https://sgswtky.github.io/tags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
+<a href="https://sgswtky.github.iotags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/sql"><kbd class="item-tag">sql</kbd></a>
+<a href="https://sgswtky.github.iotags/sql"><kbd class="item-tag">sql</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/library"><kbd class="item-tag">library</kbd></a>
+<a href="https://sgswtky.github.iotags/library"><kbd class="item-tag">library</kbd></a>
 
 
     </div>
@@ -139,7 +140,7 @@
     <div align="start" class="content"><p>先日 <code>sqlx</code> を触ってみて、他のORMも触ってみたいと思って触ってみた</p>
 <h3 id="db接続の定義">DB接続の定義</h3>
 <p>接続は他のORMと同じような感じ。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">orm</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">orm</span>
 
 <span style="color:#f92672">import</span> (
 	<span style="color:#e6db74">&#34;testing&#34;</span>
@@ -157,7 +158,7 @@
 	}
 }
 </code></pre></div><h3 id="今回テストで操作するddl構造体">今回テストで操作するDDL＆構造体</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>users<span style="color:#f92672">`</span> (
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>users<span style="color:#f92672">`</span> (
   <span style="color:#f92672">`</span>user_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span> COMMENT <span style="color:#e6db74">&#39;userID&#39;</span>,
   <span style="color:#f92672">`</span>user_name<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;userName&#39;</span>,
   <span style="color:#f92672">`</span>created_at<span style="color:#f92672">`</span> <span style="color:#66d9ef">datetime</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;createdAt&#39;</span>,
@@ -166,7 +167,7 @@
   <span style="color:#f92672">`</span>updated_user<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;updatedUser&#39;</span>,
   <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>user_id<span style="color:#f92672">`</span>)
 ) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8mb4 COMMENT<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user&#39;</span>;
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">struct</span> {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">UserId</span> <span style="color:#66d9ef">string</span>
 	<span style="color:#a6e22e">UserName</span> <span style="color:#66d9ef">string</span>
 	<span style="color:#a6e22e">CreatedAt</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`xorm:&#34;created&#34;`</span>
@@ -177,30 +178,30 @@
 </code></pre></div><p>これで CRUDを動かしてみる。</p>
 <h3 id="get-select--from--limit-1-を動かしてみる">GET (SELECT * FROM .. LIMIT 1) を動かしてみる</h3>
 <p><code>SELECT * FROM users LIMIT 1</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-get.go" data-lang="get.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Users</span>{}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-get.go" data-lang="get.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Users</span>{}
 <span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
 </code></pre></div><p>hasには値を取得できたかどうかが入る。 <code>user</code> に結果が入る</p>
 <h3 id="find-select--from--を動かしてみる">Find (SELECT * FROM ..) を動かしてみる</h3>
 <ul>
 <li>通常のFind。全て取得する</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-find.go" data-lang="find.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-find.go" data-lang="find.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
 <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
 <span style="color:#75715e">// SELECT * FROM users
 </span></code></pre></div><ul>
 <li>第2引数にUsers構造体を指定することで WHERE句として扱ってくれる</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-find.go" data-lang="find.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-find.go" data-lang="find.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
 <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">Users</span>{<span style="color:#a6e22e">UserName</span>: <span style="color:#e6db74">&#34;bbbb&#34;</span>})
 <span style="color:#75715e">// SELECT * FROM users WHERE user_name = &#34;bbbb&#34;
 </span></code></pre></div><ul>
 <li>構造体でないパターンで指定も可能</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-find.go" data-lang="find.go"><span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;user_name = ?&#34;</span>, <span style="color:#e6db74">&#34;bbbb&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-find.go" data-lang="find.go"><span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;user_name = ?&#34;</span>, <span style="color:#e6db74">&#34;bbbb&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
 <span style="color:#75715e">// SELECT * FROM users WHERE user_name = &#34;bbbb&#34;
 </span></code></pre></div><h3 id="joinも検証">JOINも検証</h3>
 <p>もう一つテーブルが必要なので下記を定義して検証を進めた</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>friends<span style="color:#f92672">`</span> (
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.sql" data-lang="example.sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>friends<span style="color:#f92672">`</span> (
   <span style="color:#f92672">`</span>user_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span> COMMENT <span style="color:#e6db74">&#39;userID&#39;</span>,
   <span style="color:#f92672">`</span>friend_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;friendID&#39;</span>,
   <span style="color:#f92672">`</span>created_at<span style="color:#f92672">`</span> <span style="color:#66d9ef">datetime</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;createdAt&#39;</span>,
@@ -209,7 +210,7 @@
   <span style="color:#f92672">`</span>updated_user<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;updatedUser&#39;</span>,
   <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>user_id<span style="color:#f92672">`</span>)
 ) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8mb4 COMMENT<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user&#39;</span>;
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Friends</span> <span style="color:#66d9ef">struct</span> {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Friends</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">UserId</span> <span style="color:#66d9ef">string</span>
 	<span style="color:#a6e22e">FriendId</span> <span style="color:#66d9ef">string</span>
 	<span style="color:#a6e22e">CreatedAt</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`xorm:&#34;created&#34;`</span>
@@ -218,7 +219,7 @@
 	<span style="color:#a6e22e">UpdatedUser</span> <span style="color:#66d9ef">string</span>
 }
 </code></pre></div><p>今回、usersテーブルとfriendsテーブルの結果が欲しいため以下のような構造体とレシーバを作成する</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-users_friends.go" data-lang="users_friends.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UsersFriends</span> <span style="color:#66d9ef">struct</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-users_friends.go" data-lang="users_friends.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UsersFriends</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">Users</span> <span style="color:#e6db74">`xorm:&#34;extends&#34;`</span>
 	<span style="color:#a6e22e">Friends</span> <span style="color:#e6db74">`xorm:&#34;extends&#34;`</span>
 }
@@ -229,7 +230,7 @@
 </code></pre></div><ul>
 <li><code>friends</code> テーブルとJOINしてみる</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-join.go" data-lang="join.go"><span style="color:#a6e22e">usersFriends</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">UsersFriends</span>, <span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-join.go" data-lang="join.go"><span style="color:#a6e22e">usersFriends</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">UsersFriends</span>, <span style="color:#ae81ff">0</span>)
 <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#e6db74">&#34;INNER&#34;</span>, <span style="color:#e6db74">&#34;friends&#34;</span>, <span style="color:#e6db74">&#34;friends.user_id = users.user_id&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">usersFriends</span>)
 </code></pre></div><p><code>UsersFriends</code> 構造体にちゃんと結果が入ってきた。JOINの時に既存の構造体を使いまわしてるのが割とわかりやすくて良いかもしれない。</p>
 <h3 id="iterateで反復処理の記述も可能">Iterateで反復処理の記述も可能</h3>
@@ -237,7 +238,7 @@
 <li>全てのユーザーの名前に「さん」付する処理。Iterate意外に便利そうな気がする</li>
 <li>ただ、SQLで付けるのと切り分けが難しそう…。</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-iterate.go" data-lang="iterate.go"><span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-iterate.go" data-lang="iterate.go"><span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
 <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Iterate</span>(new(<span style="color:#a6e22e">Users</span>),
   <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">bean</span> <span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">error</span> {
     <span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bean</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">Users</span>)
@@ -249,7 +250,7 @@
 <ul>
 <li>rowsの処理も書ける</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rows.go" data-lang="rows.go"><span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rows.go" data-lang="rows.go"><span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
 <span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Rows</span>(<span style="color:#a6e22e">users</span>)
 <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
   panic(<span style="color:#a6e22e">err</span>)
@@ -262,19 +263,19 @@
 <ul>
 <li>sumできるカラムの存在するテーブルを作成して取得してみる</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sum.sql" data-lang="sum.sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>sums<span style="color:#f92672">`</span> (
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sum.sql" data-lang="sum.sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>sums<span style="color:#f92672">`</span> (
   <span style="color:#f92672">`</span>user_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span> COMMENT <span style="color:#e6db74">&#39;userID&#39;</span>,
   <span style="color:#f92672">`</span>login_count<span style="color:#f92672">`</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> COMMENT <span style="color:#e6db74">&#39;friendID&#39;</span>,
   <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>user_id<span style="color:#f92672">`</span>)
 ) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8mb4 COMMENT<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user&#39;</span>;
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sum.go" data-lang="sum.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Sums</span> <span style="color:#66d9ef">struct</span> {
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sum.go" data-lang="sum.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Sums</span> <span style="color:#66d9ef">struct</span> {
   <span style="color:#a6e22e">UserId</span> <span style="color:#66d9ef">string</span>
   <span style="color:#a6e22e">LoginCount</span> <span style="color:#66d9ef">int</span>
 }
 </code></pre></div><ul>
 <li>sumするにもテーブルの構造体が必要</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sums.go" data-lang="sums.go"><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Sums</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sums.go" data-lang="sums.go"><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Sums</span>)
 <span style="color:#a6e22e">total</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">SumInt</span>(<span style="color:#a6e22e">s</span>, <span style="color:#e6db74">&#34;login_count&#34;</span>)
 <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">total</span>)
 </code></pre></div><ul>
@@ -285,7 +286,7 @@
 <li>直接SQLを指定する事が可能</li>
 <li><code>...FROM sums&quot;).Find(&amp;us...</code> の <code>Find</code> を <code>Sum</code> 等に変える事で違う形で結果の取得が可能</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql.go" data-lang="sql.go"><span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql.go" data-lang="sql.go"><span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> make([]<span style="color:#a6e22e">Users</span>, <span style="color:#ae81ff">0</span>)
 <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">SQL</span>(<span style="color:#e6db74">&#34;SELECT * FROM sums&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
 </code></pre></div><h3 id="update">update</h3>
 <ul>
@@ -293,7 +294,7 @@
 <li><a href="http://gobook.io/read/github.com/go-xorm/manual-en-US/chapter-06/index.html">http://gobook.io/read/github.com/go-xorm/manual-en-US/chapter-06/index.html</a></li>
 <li>Where句で指定</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-update.go" data-lang="update.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Users</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-update.go" data-lang="update.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Users</span>)
 <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">UserName</span> = <span style="color:#e6db74">&#34;UPDATE&#34;</span>
 <span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;user_id = ?&#34;</span>, <span style="color:#e6db74">&#34;test1&#34;</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#a6e22e">user</span>)
 <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
@@ -302,7 +303,7 @@
 <li>Where＆Deleteで削除できた。</li>
 <li>論理削除（deletedAt）にも対応してるみたい <a href="http://gobook.io/read/github.com/go-xorm/manual-en-US/chapter-07/1.deleted.html">http://gobook.io/read/github.com/go-xorm/manual-en-US/chapter-07/1.deleted.html</a></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-delete.go" data-lang="delete.go"><span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;user_id = ?&#34;</span>, <span style="color:#e6db74">&#34;test1&#34;</span>).<span style="color:#a6e22e">Delete</span>(<span style="color:#a6e22e">user</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-delete.go" data-lang="delete.go"><span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;user_id = ?&#34;</span>, <span style="color:#e6db74">&#34;test1&#34;</span>).<span style="color:#a6e22e">Delete</span>(<span style="color:#a6e22e">user</span>)
 </code></pre></div>
 <div style="">
   <div style="">
@@ -341,7 +342,7 @@ xormを使うなら <code>userID</code> が <code>user_id</code> として変換
 <li><code>.Id()</code> でプライマリキーを指定して更新できる機能が備わっている</li>
 <li>下記で構造体のタグを<code>xorm:&quot;user_id&quot;</code> -&gt; <code>xorm:&quot;user_id pk&quot;</code> としていて、 <code>&quot;pk&quot;</code> を足す事でこの機能を使える</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pk.go" data-lang="pk.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">struct</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pk.go" data-lang="pk.go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">UserId</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`xorm:&#34;user_id pk&#34;`</span>
 	<span style="color:#a6e22e">UserName</span> <span style="color:#66d9ef">string</span>
 	<span style="color:#a6e22e">CreatedAt</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`xorm:&#34;created&#34;`</span>
@@ -352,7 +353,7 @@ xormを使うなら <code>userID</code> が <code>user_id</code> として変換
 </code></pre></div><ul>
 <li>これで <code>Id</code> が <code>test2</code> のユーザーの <code>user_name</code> が <code>UPDATE</code> に変更される</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pk.go" data-lang="pk.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Users</span>{<span style="color:#a6e22e">UserName</span>: <span style="color:#e6db74">&#34;UPDATE&#34;</span>}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pk.go" data-lang="pk.go"><span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Users</span>{<span style="color:#a6e22e">UserName</span>: <span style="color:#e6db74">&#34;UPDATE&#34;</span>}
 <span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Id</span>(<span style="color:#e6db74">&#34;test2&#34;</span>).<span style="color:#a6e22e">Cols</span>(<span style="color:#e6db74">&#34;user_name&#34;</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
 </code></pre></div><h2 id="実際に触ってみてまとめ">実際に触ってみてまとめ</h2>
 <p>慣れれば問題無いかもしれないが、 <code>engine.Where(...)</code> で、その後に <code>Find</code>, <code>Delete</code>, <code>Update</code> を指定するのが個人的に受け付けなかった。
@@ -380,11 +381,11 @@ APIとかでDBから値とってレスポンス返却する時にほんの少し
     <h4><a href="/post/golang-orm-sqlx/">jmoiron/sqlx - Golang O/R Mapper触ってみた</a></h4>
     <h5>jmoiron/sqlx という GolangのORMを試しに使ってみました。簡単に CRUDで試したりトランザクション処理を試してみたり、NamedExecという機能も使ってみました。感想としては、極々薄い感じのORMで個人的に好みのORMでした。</h5>
     
-<a href="https://sgswtky.github.io/tags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
+<a href="https://sgswtky.github.iotags/ormapper"><kbd class="item-tag">ORMapper</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/sql"><kbd class="item-tag">sql</kbd></a>
+<a href="https://sgswtky.github.iotags/sql"><kbd class="item-tag">sql</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/library"><kbd class="item-tag">library</kbd></a>
+<a href="https://sgswtky.github.iotags/library"><kbd class="item-tag">library</kbd></a>
 
 
 
@@ -395,24 +396,10 @@ APIとかでDBから値とってレスポンス返却する時にほんの少し
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

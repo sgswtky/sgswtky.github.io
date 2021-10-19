@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Go言語でwasm動かしてみた</title>
-        <meta name="description" content="Golangでwasmをどんなもんなのか動かしてみた。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,7 +128,7 @@
         <h2>Go言語でwasm動かしてみた</h2>
         <h5>July 22, 2018</h5>
         
-<a href="https://sgswtky.github.io/tags/webassembly"><kbd class="item-tag">WebAssembly</kbd></a>
+<a href="https://sgswtky.github.iotags/webassembly"><kbd class="item-tag">WebAssembly</kbd></a>
 
 
     </div>
@@ -162,7 +163,7 @@
 <p><code>go1.11</code> 系は正式にリリースされていないので、beta版となる。</p>
 <p>僕は <code>go1.11beta2</code> をインストールして試しました。</p>
 <p>※go1.11未満だとエラーになります</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-failure.bash" data-lang="failure.bash">&gt; GOARCH<span style="color:#f92672">=</span>wasm GOOS<span style="color:#f92672">=</span>js go build -o test.wasm main.go
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-failure.bash" data-lang="failure.bash">&gt; GOARCH<span style="color:#f92672">=</span>wasm GOOS<span style="color:#f92672">=</span>js go build -o test.wasm main.go
 cmd/go: unsupported GOOS/GOARCH pair js/wasm
 </code></pre></div><p>実際に触ってみるにあたり、golangのwasmをブラウザ上で実際に動かせるこちらのチュートリアルをやってみた <a href="https://blog.gopheracademy.com/advent-2017/go-wasm/">https://blog.gopheracademy.com/advent-2017/go-wasm/</a></p>
 
@@ -185,7 +186,7 @@ cmd/go: unsupported GOOS/GOARCH pair js/wasm
 <p>Goでビルドしたコードがブラウザで動いて感動。</p>
 <p>wasmファイルのレスポンスヘッダの Content-Typeが <code>application/wasm</code> となっていた。</p>
 <p>以下のようなgoroutineのコードもwasmで動かしてみたらちゃんと動いた。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
 	<span style="color:#e6db74">&#34;fmt&#34;</span>
@@ -234,24 +235,10 @@ Content-Typeが <code>wasm</code> となる所、<code>fmt.Printlf</code> が co
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

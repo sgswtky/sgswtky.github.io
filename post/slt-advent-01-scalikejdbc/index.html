@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>ScalikeJDBCのクォート付く付かない挙動調べてみた</title>
-        <meta name="description" content="所属チームのプロダクトで使用している ScalikeJDBCのクォーテーションが付く付かないの挙動が気になったので調べてみた。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,7 +128,7 @@
         <h2>ScalikeJDBCのクォート付く付かない挙動調べてみた</h2>
         <h5>December 13, 2018</h5>
         
-<a href="https://sgswtky.github.io/tags/scalikejdbc"><kbd class="item-tag">ScalikeJDBC</kbd></a>
+<a href="https://sgswtky.github.iotags/scalikejdbc"><kbd class="item-tag">ScalikeJDBC</kbd></a>
 
 
     </div>
@@ -142,18 +143,18 @@
 日本語の情報が多く、Scala触り始めの方でも扱う敷居は低いのではないかと思います。</p>
 <h2 id="querydslクエリ直接記述">QueryDSL（クエリ直接記述）</h2>
 <p>ScalikeJDBCのDSLはコード中にSQLを記述するように書けて、以下の2種類の書き方が可能です。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> userMap <span style="color:#66d9ef">=</span> sql<span style="color:#e6db74">&#34;&#34;&#34;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> userMap <span style="color:#66d9ef">=</span> sql<span style="color:#e6db74">&#34;&#34;&#34;
 </span><span style="color:#e6db74">    select * from user
 </span><span style="color:#e6db74">    where created_at &gt; &#39;2018-10-01&#39;
 </span><span style="color:#e6db74">  &#34;&#34;&#34;</span><span style="color:#f92672">.</span>map<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>toMap<span style="color:#f92672">).</span>list<span style="color:#f92672">.</span>apply
 </code></pre></div><p>SQLInterpolation という機能を使用している場合は、クエリビルダのようにクエリを組み立てられます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> u <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">.</span>syntax<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;u&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> u <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">.</span>syntax<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;u&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">val</span> groupMember <span style="color:#66d9ef">=</span> withSQL <span style="color:#f92672">{</span>
   select<span style="color:#f92672">.</span>from<span style="color:#f92672">(</span><span style="color:#a6e22e">User</span> as u<span style="color:#f92672">).</span>where<span style="color:#f92672">.</span>gt<span style="color:#f92672">(</span>u<span style="color:#f92672">.</span>createdAt<span style="color:#f92672">,</span> createdAt<span style="color:#f92672">)</span>
 <span style="color:#f92672">}.</span>map<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>toMap<span style="color:#f92672">).</span>list<span style="color:#f92672">.</span>apply
 </code></pre></div><h2 id="挙動がわからず確認してみようと思ったきっかけ">挙動がわからず確認してみようと思ったきっかけ</h2>
 <p>QueryDSLを使って、以下のように WHERE句に LocalDateの値を使用してSELECT句のクエリを流しました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> value <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">LocalDate</span><span style="color:#f92672">.</span>now<span style="color:#f92672">()</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> value <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">LocalDate</span><span style="color:#f92672">.</span>now<span style="color:#f92672">()</span>
 <span style="color:#66d9ef">val</span> userMap <span style="color:#66d9ef">=</span> sql<span style="color:#e6db74">&#34;&#34;&#34;
 </span><span style="color:#e6db74">  select * from user
 </span><span style="color:#e6db74">  where value = $value
@@ -185,7 +186,7 @@
 <a href="http://scalikejdbc.org/documentation/sql-interpolation.html">http://scalikejdbc.org/documentation/sql-interpolation.html</a></p>
 <p>Scala組み込みのオブジェクトや、<code>java.sql</code> , <code>java.util.Date</code>, <code>org.joda.time.</code>, <code>java.time</code> が含まれている事がわかります。</p>
 <p>👇下記のように、変数 <strong>value</strong> の型を変えてQueryDSL内部でSQL実行、実行されたSQLにクォートが付加されたかされなかったかを見ていきます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> value<span style="color:#66d9ef">:</span><span style="color:#66d9ef">A</span> <span style="color:#f92672">=</span> <span style="color:#f92672">???</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.scala" data-lang="example.scala"><span style="color:#66d9ef">val</span> value<span style="color:#66d9ef">:</span><span style="color:#66d9ef">A</span> <span style="color:#f92672">=</span> <span style="color:#f92672">???</span>
 <span style="color:#66d9ef">val</span> userMap <span style="color:#66d9ef">=</span> sql<span style="color:#e6db74">&#34;&#34;&#34;
 </span><span style="color:#e6db74">  select * from user
 </span><span style="color:#e6db74">  where value = $value
@@ -339,24 +340,10 @@
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

@@ -6,7 +6,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした</title>
-        <meta name="description" content="Jenkinsを使ってた時の話。バージョンアップはとても大切。">
         
         <style>
 
@@ -35,10 +34,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
  
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -67,7 +66,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.80.0" />
+ <meta name="generator" content="Hugo 0.87.0" />
         
 
         
@@ -79,9 +78,11 @@
               gtag('config', 'G-0TV1S0EXHL');
             </script>
         
+
         
             <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         
+
         
 
     </head>
@@ -127,9 +128,9 @@
         <h2>Jenkins Pipeline でGroovyを書いてたら期待しない動きをした</h2>
         <h5>July 17, 2018</h5>
         
-<a href="https://sgswtky.github.io/tags/jenkins"><kbd class="item-tag">Jenkins</kbd></a>
+<a href="https://sgswtky.github.iotags/jenkins"><kbd class="item-tag">Jenkins</kbd></a>
 
-<a href="https://sgswtky.github.io/tags/pipeline"><kbd class="item-tag">Pipeline</kbd></a>
+<a href="https://sgswtky.github.iotags/pipeline"><kbd class="item-tag">Pipeline</kbd></a>
 
 
     </div>
@@ -140,7 +141,7 @@
 <h2 id="実際に発生した事象について">実際に発生した事象について</h2>
 <h3 id="記述したけど動かなかったコード">記述したけど動かなかったコード</h3>
 <p>コードは極々単純で以下のようなコード。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;master&#34;</span><span style="color:#f92672">){</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;master&#34;</span><span style="color:#f92672">){</span>
   <span style="color:#66d9ef">def</span> tasks <span style="color:#f92672">=</span> <span style="color:#f92672">[:]</span>
   <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
     tasks<span style="color:#f92672">[</span>i<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">()]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
@@ -197,7 +198,7 @@ Finished: SUCCESS
 <h3 id="理由はわからないが何故か動くコード">理由はわからないが何故か動くコード</h3>
 <p>以下のコードは期待する動きをした。</p>
 <p>でもサーバー名を渡してるパラメータを廃止したかったため、 <code>params.size()</code> でなく、普通に forで回数分ループするコード（記事上部のコード）にしたかったが動かない。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;master&#34;</span><span style="color:#f92672">){</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-pipeline.groovy" data-lang="pipeline.groovy">node<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;master&#34;</span><span style="color:#f92672">){</span>
   <span style="color:#66d9ef">def</span> params <span style="color:#f92672">=</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;server-01&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;server-02&#34;</span><span style="color:#f92672">]</span>
   <span style="color:#66d9ef">def</span> tasks <span style="color:#f92672">=</span> <span style="color:#f92672">[:]</span>
 
@@ -252,24 +253,10 @@ Jenkinsのバージョンアップだけは動かなくなる可能性がある�
     
     
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315"
-     crossorigin="anonymous"></script>
-
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0695732937559315"
-     data-ad-slot="4045278298"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
 </main>
 
         <footer>
             <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-
         </footer>
 
         

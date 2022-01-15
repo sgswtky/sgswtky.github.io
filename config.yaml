@@ -1,0 +1,50 @@
+---
+baseURL: https://sgswtky.github.io
+languageCode: ja-jp
+publishDir: public
+title: 壁は登るためにある
+theme: minimal
+googleAnalytics: G-0TV1S0EXHL
+params:
+  author: sgswtky
+  githubUsername: sgswtky
+  accent: green
+  css:
+    - /css/custom.css
+  showBorder: true
+  logo:
+    url: logo.png
+    width: 50
+    height: 50
+    alt: logo
+  addThis: ra-5b4b66137935d0b4
+  backgroundColor: white
+  font: Noto Sans JP
+  highlight: true
+  highlightStyle: default
+  highlightLanguages:
+  - go
+  - haskell
+  - kotlin
+  - scala
+  - swift
+menu:
+  main:
+    - name: Top
+      url: /
+      weight: 1
+    - name: Blog
+      url: /post/
+      weight: 2
+    - name: Profile
+      url: /profile/
+      weight: 3
+    - name: Blog
+      url: /post/
+      weight: 4
+    - name: GitHub
+      url: https://github.com/sgswtky
+      weight: 5
+    - name: Twitter
+      url: https://twitter.com/sgswtky
+      weight: 4

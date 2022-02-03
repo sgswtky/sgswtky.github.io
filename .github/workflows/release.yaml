@@ -15,6 +15,7 @@ jobs:
       - run: hugo -t minimal && mv public docs && rm .gitignore
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
+          branch: release
           commit_message: Auto generated.
           push_options: --force
 

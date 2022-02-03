@@ -12,7 +12,7 @@ jobs:
       - uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 0.87.0
-      - run: hugo -t minimal && mv public docs
+      - run: hugo -t minimal && mv public docs && .gitignore
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Auto generated.

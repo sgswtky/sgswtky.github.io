@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ジェネリクス on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/tags/%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AA%E3%82%AF%E3%82%B9/</link>
+    <description>Recent content in ジェネリクス on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Thu, 03 Feb 2022 03:33:33 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/tags/%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AA%E3%82%AF%E3%82%B9/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang 1.18 Beta1 でOption型を作って遊んだ</title>
+      <link>https://sgswtky.github.io/post/golang-118-beta1-impressions-of-played/</link>
+      <pubDate>Thu, 03 Feb 2022 03:33:33 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/golang-118-beta1-impressions-of-played/</guid>
+      <description>ジェネリクスが実装されるとの事で前々から気にはなってた 1.18。
+ジェネリクスと聞くだけで他にも色々実装されちゃうんじゃないかと期待を膨らませていました。（暗黙的な型変換とか継承とか、、でもそれらはなかった）
+果たして消せるのか大量のエラーチェック Goといえばエラーチェック。丁寧にエラーをチェックして適宜きちんとエラー処理しましょうという設計。
+なので Exceptionは無い。
+value, err := repository.GetByID(id) // これのこと👇 if err != nil { return err } 方針はわかるけど3行使うのがどうしても気になってた。
+ジェネリクスが来たらこの大量に書かれるエラーチェックが消えるんじゃないかと期待してた。
+// イメージ。動きません。 func GetByID(id int) Error[Value] { ... } 上記のようなリポジトリがあったとして、下記のように使うイメージ
+// イメージ。動きません。 errV := repository.GetByID(id). FlatMap(value =&amp;gt; repository.GetByID2(value.ID)). FlatMap(value =&amp;gt; repository.GetByID3(value.ID) if errV.IsExists() { return errV.ToErr } こんな風に使えたらなあと。
+最終的には for yeild とか実装されてたら IOモナドが使えるライブラリとか出てきてひたすら flatMapする感じで書けるのかなあと。
+// イメージ。動きません。 errV := for { value &amp;lt;:= repository.GetByID(id) value2 &amp;lt;:= repository.GetByID2(value.ID) value3 &amp;lt;:= repository.</description>
+    </item>
+    
+  </channel>
+</rss>

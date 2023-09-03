@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>environment on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/tags/environment/</link>
+    <description>Recent content in environment on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sat, 28 Jul 2018 15:44:16 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/tags/environment/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>所属プロダクトの開発プロセス</title>
+      <link>https://sgswtky.github.io/post/product-development-process/</link>
+      <pubDate>Sat, 28 Jul 2018 15:44:16 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/product-development-process/</guid>
+      <description>来週から期間限定で違うチームに異動するため、今のチームの開発プロセスをなるべく詳細に書き残しておこうと思う。 チームを異動して戻ってきた時に見返した時に何か得られるような気がするので。
+進め方 進め方は全体的にやんわりスクラムで進めるような感じ。 やんわりというのは、スクラムマスターが居てちゃんとしたスクラムのやり方を実践していこう！というわけではないので、割と中途半端なスクラムでやってると思う。
+チームメンバーの構成  開発責任者 1人 ※後述の朝会・レビュー会には参加しない PO 1人 サーバーサイド・インフラエンジニア 2人 iOSエンジニア 2人 フロントエンドエンジニア 1人  使ってるツール  GitHub ZenHub（GitHubの拡張） esa instagantt スプレッドシート（KPTのシート等）  やっている事ハイライト  朝会（デイリースクラム） レビュー会 振り返り（スプリントレトロスペクティブ）   スプリントレビュー スプリントプランニング KPT  スプリントプランニングミーティング（スプリント計画） 分報（雑談）  1週間の予定    曜日 内容     月 10:00~朝会 11:00~レビュー会   火 10:00~朝会 11:00~レビュー会 18:00~振り返り（スプリントレトロスペクティブ）   水 10:00~スプリントプランニングミーティング（スプリント計画）   木 10:00~朝会 11:00~レビュー会   金 10:00~朝会 11:00~レビュー会    1.</description>
+    </item>
+    
+  </channel>
+</rss>

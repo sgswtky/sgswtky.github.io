@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Golang 1.18 Beta1 でOption型を作って遊んだ</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: green;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://sgswtky.github.io/css/main.css">
+
+
+ <link rel="stylesheet" href="https://sgswtky.github.io/css/custom.css"> 
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto%20Sans%20JP">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.87.0" />
+        
+
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-0TV1S0EXHL"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments)};
+              gtag('js', new Date());
+              gtag('config', 'G-0TV1S0EXHL');
+            </script>
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Golang 1.18 Beta1 でOption型を作って遊んだ</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Top</a></li>
+                            
+                                <li><a href="/profile/">Profile</a></li>
+                            
+                                <li><a href="/post/">Blog</a></li>
+                            
+                                <li><a href="https://twitter.com/sgswtky">Twitter</a></li>
+                            
+                                <li><a href="https://github.com/sgswtky">GitHub</a></li>
+                            
+                        </ul>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2>Golang 1.18 Beta1 でOption型を作って遊んだ</h2>
+        <h5>February 3, 2022</h5>
+        
+<a href="https://sgswtky.github.iotags/golang"><kbd class="item-tag">Golang</kbd></a>
+
+<a href="https://sgswtky.github.iotags/go%E8%A8%80%E8%AA%9E"><kbd class="item-tag">Go言語</kbd></a>
+
+<a href="https://sgswtky.github.iotags/%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AA%E3%82%AF%E3%82%B9"><kbd class="item-tag">ジェネリクス</kbd></a>
+
+
+    </div>
+
+    <div align="start" class="content"><p>ジェネリクスが実装されるとの事で前々から気にはなってた 1.18。</p>
+<p>ジェネリクスと聞くだけで他にも色々実装されちゃうんじゃないかと期待を膨らませていました。（暗黙的な型変換とか継承とか、、でもそれらはなかった）</p>
+<h2 id="果たして消せるのか大量のエラーチェック">果たして消せるのか大量のエラーチェック</h2>
+<p>Goといえばエラーチェック。丁寧にエラーをチェックして適宜きちんとエラー処理しましょうという設計。</p>
+<p>なので Exceptionは無い。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID</span>(<span style="color:#a6e22e">id</span>)
+<span style="color:#75715e">// これのこと👇
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+}
+</code></pre></div><p>方針はわかるけど3行使うのがどうしても気になってた。</p>
+<p>ジェネリクスが来たらこの大量に書かれるエラーチェックが消えるんじゃないかと期待してた。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-repository.go" data-lang="repository.go"><span style="color:#75715e">// イメージ。動きません。
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetByID</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int</span>) <span style="color:#a6e22e">Error</span>[<span style="color:#a6e22e">Value</span>] {
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><p>上記のようなリポジトリがあったとして、下記のように使うイメージ</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-usecase.go" data-lang="usecase.go"><span style="color:#75715e">// イメージ。動きません。
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">errV</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID</span>(<span style="color:#a6e22e">id</span>).
+          <span style="color:#a6e22e">FlatMap</span>(<span style="color:#a6e22e">value</span> =&gt; <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID2</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">ID</span>)).
+          <span style="color:#a6e22e">FlatMap</span>(<span style="color:#a6e22e">value</span> =&gt; <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID3</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">ID</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">errV</span>.<span style="color:#a6e22e">IsExists</span>() {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errV</span>.<span style="color:#a6e22e">ToErr</span>
+}
+</code></pre></div><p>こんな風に使えたらなあと。</p>
+<p>最終的には <code>for yeild</code> とか実装されてたら IOモナドが使えるライブラリとか出てきてひたすら flatMapする感じで書けるのかなあと。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-usecase.go" data-lang="usecase.go"><span style="color:#75715e">// イメージ。動きません。
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">errV</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">for</span> {
+    <span style="color:#a6e22e">value</span>  &lt;<span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID</span>(<span style="color:#a6e22e">id</span>)
+    <span style="color:#a6e22e">value2</span> &lt;<span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID2</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">ID</span>)
+    <span style="color:#a6e22e">value3</span> &lt;<span style="color:#f92672">:=</span> <span style="color:#a6e22e">repository</span>.<span style="color:#a6e22e">GetByID3</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">ID</span>)
+} <span style="color:#a6e22e">yeild</span> <span style="color:#a6e22e">value3</span>
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">errV</span>.<span style="color:#a6e22e">IsExists</span>() {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errV</span>.<span style="color:#a6e22e">ToErr</span>
+}
+</code></pre></div><p>もちろんイカ <code>&lt;:=</code> オペレータは存在しないし、<code>for yeild</code> も無いです。</p>
+<p>そういった想像を膨らませながら Optionモナドをミニマムで実装してみた。</p>
+<h2 id="optionモナドを実装してみた">Optionモナドを実装してみた</h2>
+<p>Listよりもモナドとしては比較的理解しやすい Optionを Goで実装したら、どういう風に書けるのか確認したかったので書いてみた。</p>
+<p>Option型に対して良い感じにロジックを書けそうならエラーをラップする前述 <code>Error[T]</code> 的なのも悪くない感じで書けるのでは？と考えたわけです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-option.go" data-lang="option.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">T</span> <span style="color:#a6e22e">any</span>] <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">isNone</span>() <span style="color:#66d9ef">bool</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span> <span style="color:#a6e22e">any</span>] <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">value</span> <span style="color:#a6e22e">T</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]) <span style="color:#a6e22e">isNone</span>() <span style="color:#66d9ef">bool</span> { <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span> }
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">None</span>[<span style="color:#a6e22e">T</span> <span style="color:#a6e22e">any</span>] <span style="color:#66d9ef">struct</span>{}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">None</span>[<span style="color:#a6e22e">T</span>]) <span style="color:#a6e22e">isNone</span>() <span style="color:#66d9ef">bool</span> { <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span> }
+</code></pre></div><p>上記のような感じに宣言しておいて、型パラメータを設定して呼ぶ感じです。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">None</span>[<span style="color:#a6e22e">any</span>]{}.<span style="color:#a6e22e">isNone</span>()) <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">any</span>]{}.<span style="color:#a6e22e">isNone</span>()) <span style="color:#75715e">// false
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>※ <code>any</code> は <code>interface{}</code> のエイリアスみたいなもので 1.18から採用されてます。3文字で定義できるので便利です。</p>
+<p>そして続き。メソッド類は下記のようになります。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-option.go" data-lang="option.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Unit</span>[<span style="color:#a6e22e">T</span> <span style="color:#a6e22e">any</span>](<span style="color:#a6e22e">v</span> <span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">T</span>] {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]{<span style="color:#a6e22e">value</span>: <span style="color:#a6e22e">v</span>}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Map</span>[<span style="color:#a6e22e">T</span>, <span style="color:#a6e22e">V</span> <span style="color:#a6e22e">any</span>](<span style="color:#a6e22e">opt</span> <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">T</span>], <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">V</span>) <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">V</span>] {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">opt</span>.(<span style="color:#66d9ef">type</span>) {
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]:
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">V</span>]{<span style="color:#a6e22e">value</span>: <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">value</span>)}
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]:
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">V</span>]{<span style="color:#a6e22e">value</span>: <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">value</span>)}
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">None</span>[<span style="color:#a6e22e">T</span>]{}
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">FlatMap</span>[<span style="color:#a6e22e">T</span>, <span style="color:#a6e22e">V</span> <span style="color:#a6e22e">any</span>](<span style="color:#a6e22e">opt</span> <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">T</span>], <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">V</span>]) <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">V</span>] {
+	<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">opt</span>.(<span style="color:#66d9ef">type</span>) {
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">value</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]:
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">value</span>)
+	<span style="color:#66d9ef">default</span>:
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">None</span>[<span style="color:#a6e22e">T</span>]{}
+	}
+}
+</code></pre></div><p>※ <code>Some</code> の case文が冗長ですが、型switchでは fallthroughは使えないため冗長になってしまいました。</p>
+<p>これで <code>Some</code> は値がある場合に使われ、<code>None</code> は値が無い場合に使われるようになり、どちらも <code>Option</code> として扱える状態となりました。</p>
+<p>コレを使うとしたら下記のような感じ。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-main.go" data-lang="main.go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">dollars</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">10</span>
+
+	<span style="color:#a6e22e">optDollars</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Unit</span>(<span style="color:#a6e22e">dollars</span>)
+	<span style="color:#a6e22e">optYen</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">optDollars</span>, <span style="color:#a6e22e">USDToYen</span>)
+	<span style="color:#a6e22e">optZeikomi</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">FlatMap</span>(<span style="color:#a6e22e">optYen</span>, <span style="color:#a6e22e">ToJpTaxIncluded</span>)
+	<span style="color:#a6e22e">optLabel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">optZeikomi</span>, <span style="color:#a6e22e">ToLabel</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">optLabel</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">optLabel</span>.<span style="color:#a6e22e">isNone</span>())
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">USDToYen</span>(<span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">float64</span> {
+	<span style="color:#66d9ef">return</span> float64(<span style="color:#a6e22e">i</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">114.68</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToJpTaxIncluded</span>(<span style="color:#a6e22e">value</span> <span style="color:#66d9ef">float64</span>) <span style="color:#a6e22e">Option</span>[<span style="color:#66d9ef">string</span>] {
+	<span style="color:#66d9ef">if</span> float64(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">==</span> <span style="color:#a6e22e">value</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">None</span>[<span style="color:#66d9ef">string</span>]{}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Some</span>[<span style="color:#66d9ef">string</span>]{
+		<span style="color:#a6e22e">value</span>: <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%f(税込み)&#34;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">*</span><span style="color:#ae81ff">1.1</span>),
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToLabel</span>(<span style="color:#a6e22e">priceStr</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;とってもお得な %s でご提供しております。&#34;</span>, <span style="color:#a6e22e">priceStr</span>)
+}
+</code></pre></div><p>これを実行すると下記のような出力になる。</p>
+<pre><code class="language-console.log" data-lang="console.log">▶ go run main.go option.go
+&amp;{とってもお得な 1261.480000(税込み) でご提供しております。}
+false
+</code></pre><p><code>Some[string]</code> に <code>とってもお得な 1261.480000(税込み) でご提供しております。</code> が入っています。
+<code>Some</code> なので <code>isNone()</code> は <code>false</code> となります。</p>
+<p><code>dollars</code> を <code>0</code> にして実行すると、下記のような結果となります。</p>
+<pre><code class="language-console.log" data-lang="console.log">▶ go run main.go option.go
+&amp;{}
+true
+</code></pre><p>これは <code>ToJpTaxIncluded</code> で <code>None</code> になったためそれ以降の処理が行われなかったためこのような結果となります。</p>
+
+<div style="">
+  <div style="">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0695732937559315" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="ca-pub-0695732937559315"
+       data-ad-slot="7896893399"></ins>
+       <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+       </script>
+  </div>
+</div>
+
+<h3 id="unit-map-flatmap-が関数である理由">Unit, Map, FlatMap が関数である理由</h3>
+<p>前述のこれらの関数を見て <strong>いやいや、レシーバにしたらメソッドチェーンでいけるやん</strong> と見た 100%の人がそう思われたのではないかと思います。</p>
+<p>結論、これはレシーバにできなかったため関数として定義しています。</p>
+<p>メソッドチェーンで書けたら</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-example.go" data-lang="example.go"><span style="color:#a6e22e">optLabel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Unit</span>(<span style="color:#a6e22e">dollars</span>).
+  <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">USDToYen</span>).
+  <span style="color:#a6e22e">FlatMap</span>(<span style="color:#a6e22e">ToJpTaxIncluded</span>).
+  <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">ToLabel</span>)
+</code></pre></div><p>と書けるので非常にわかりやすくて見通しが良いと思います。</p>
+<p><code>Some</code> のレシーバに 下記のように実装してみます。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-option.go" data-lang="option.go"><span style="color:#75715e">// ※うごきません
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">T</span>]) <span style="color:#a6e22e">Map</span>[<span style="color:#a6e22e">V</span> <span style="color:#a6e22e">any</span>](<span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">V</span>) <span style="color:#a6e22e">Option</span>[<span style="color:#a6e22e">V</span>] {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Some</span>[<span style="color:#a6e22e">V</span>]{<span style="color:#a6e22e">value</span>: <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">value</span>)}
+}
+</code></pre></div><p>（<code>Some</code> に生やせるので処理短くて良い感じ…）</p>
+<p>これで <code>go run</code> するとエラーが出ます。</p>
+<pre><code class="language-console.log" data-lang="console.log">▶ go run main.go option.go
+# command-line-arguments
+./option.go:43:21: methods cannot have type parameters
+./option.go:43:22: invalid AST: method must have no type parameters
+</code></pre><p><code>Error[T]</code> 的な型を作って処理を簡素化したりできるかな、という夢は散りました。</p>
+<p>このあたりの事は<a href="https://go.googlesource.com/proposal/+/refs/heads/master/design/43651-type-parameters.md#no-parameterized-methods">この辺に</a> 書いてあるみたいなので時間がある時に読んでおきたい。</p>
+<h2 id="触ってみての感想">触ってみての感想</h2>
+<p>とりあえず新しい機能に触れられて面白かった。</p>
+<p>レシーバで型パラメータが扱えないのは残念ではあるけど、それを除いても言語としての幅が広がってるのを感じた。</p>
+<p>例えば下記のように単純なReduce関数があったとして、どうReduce処理するかだけ与えてあげれば動くようになるのはとても強力に感じた。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-reduce.go" data-lang="reduce.go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">calcList</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{
+		<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>,
+	}
+	<span style="color:#75715e">// 👇どうreduceするか
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">reducer</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">i1</span>, <span style="color:#a6e22e">i2</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">i1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">i2</span> }
+	<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Reduce</span>(<span style="color:#a6e22e">calcList</span>, <span style="color:#a6e22e">reducer</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">sum</span>)
+}
+
+<span style="color:#75715e">// Reduce バグあるかも
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Reduce</span>[<span style="color:#a6e22e">T</span> <span style="color:#a6e22e">any</span>](<span style="color:#a6e22e">sliceT</span> []<span style="color:#a6e22e">T</span>, <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t1</span>, <span style="color:#a6e22e">t2</span> <span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">T</span> {
+	<span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sliceT</span>[<span style="color:#ae81ff">0</span>]
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">sliceT</span>) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
+	}
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">sliceT</span>[<span style="color:#ae81ff">1</span>:] {
+		<span style="color:#a6e22e">result</span> = <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">v</span>)
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
+}
+</code></pre></div><p>今までのGoだとこういうの書きたくても <code>reflect</code> 使わないと書けないとか、型ごとにReduce必要とかでどうも処理が冗長になってた感じある。</p>
+<p>listutil的なのがかなり書きやすくなった感じありそう。</p>
+<p>また、これまで誰が書いても大体同じようなコードになってた気がするけど、そうでなくなってきたのを感じた。</p>
+<h2 id="最後に">最後に</h2>
+<p>1.18を触ってみたけど、自分の担当するプロダクトでは今現在 1.11, 1.16がメインなので当分触る事は無さそう。（GAEで対応されたら使える）</p>
+<p>map, flatMap, reduceなどなど関数が引数になる関数好きなので早く使いたい。機会があったら積極的に使っていきたいけど既存のGoユーザーは慣れてないのでとっつきにくそう…。</p>
+</div>
+
+    
+    
+    
+        <h4 class="page-header">Related</h4>
+         <div class="item">
+
+    
+    
+    
+
+    
+      
+
+    <h4><a href="/post/golang-pointer/">Goでポインターの扱いがわからない時に見たい内容。</a></h4>
+    <h5>Goのポインタ型を扱う時に自分が考えている内容をまとめた記事。ポインタの扱い方はわかったけど具体的にどうしていくのが良いのかをまとめた。</h5>
+    
+<a href="https://sgswtky.github.iotags/golang"><kbd class="item-tag">Golang</kbd></a>
+
+<a href="https://sgswtky.github.iotags/pointer"><kbd class="item-tag">pointer</kbd></a>
+
+<a href="https://sgswtky.github.iotags/gomock"><kbd class="item-tag">gomock</kbd></a>
+
+<a href="https://sgswtky.github.iotags/go%E8%A8%80%E8%AA%9E"><kbd class="item-tag">Go言語</kbd></a>
+
+<a href="https://sgswtky.github.iotags/%E3%83%9D%E3%82%A4%E3%83%B3%E3%82%BF"><kbd class="item-tag">ポインタ</kbd></a>
+
+
+
+</div>
+ 
+    
+
+    
+    
+
+</main>
+
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

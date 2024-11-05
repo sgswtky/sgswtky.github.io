@@ -1,0 +1,95 @@
+@media (max-width: 500px)
+main {
+  max-width: 100vw;
+  padding: 0 !important;
+}
+
+.intro {
+  transform: none;
+}
+
+table {
+  text-align: center;
+  width: 100%;
+  max-width: 100vw;
+  margin:0 auto;
+  border-radius:10px;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border:1px solid #ccc;
+  border-spacing: 0;
+  overflow:hidden;
+}
+
+td,th {
+  border-bottom:1px solid #ccc;
+  padding: 10px !important;
+}
+th {
+  text-align: center !important;
+  background: var(--accent);
+  color: #fff;
+}
+table tbody tr:last-child th,
+table tbody tr:last-child td{
+  border-bottom: none;
+}
+th + th,td {
+  border-left:1px solid #ccc;
+}
+table tr:nth-child(odd) td {
+  background: #eee;
+}
+
+.content > p {
+  margin: 25px 0 25px !important;
+  font-size: 16px !important;
+  max-width: 90vw;
+}
+
+ul {
+  margin-top: 5px !important;
+  margin-bottom: 15px !important;
+}
+
+.content > ul > li {
+  overflow-wrap: break-word;
+  max-width: 70vw;
+  list-style-type: none;
+  position: relative;
+  padding-left: 0.8em;
+  font-size: 16px;
+}
+
+.content > ul > li:before {
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  display: block;
+  position: absolute;
+  left: 0; 
+  top: 0.6em;
+  content: "";
+  background: var(--accent);;
+}
+
+a {
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4 {
+  max-width: 100vw;
+  margin: 30px 0 5px !important;
+}
+
+.highlight, pre {
+  padding: 0px;
+  margin: 5px;
+  max-width: 80vw;
+}
+
+.intro > h1 {
+  font-size: 44px;
+  max-width: 140px;
+}
+

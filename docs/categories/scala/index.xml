@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scala on 壁は登るためにある</title>
+    <link>https://sgswtky.github.io/categories/scala/</link>
+    <description>Recent content in Scala on 壁は登るためにある</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Thu, 13 Dec 2018 21:30:21 +0900</lastBuildDate><atom:link href="https://sgswtky.github.io/categories/scala/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ScalikeJDBCのクォート付く付かない挙動調べてみた</title>
+      <link>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</link>
+      <pubDate>Thu, 13 Dec 2018 21:30:21 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/slt-advent-01-scalikejdbc/</guid>
+      <description>ScalikeJDBCというScalaのライブラリを業務で使用しているのですが、 一部不明な点があったので調べてみました。
+ScalikeJDBC（JDBCを用いたScalaのORM） ScalikeJDBCは、JDBCをラップしたScalaのライブラリです。 様々なDBに対応していて、直感的に書けるQueryDSLで効率的にSQLが書けます。
+自分もいくつかのScalaプロジェクトで、MySQLのコネクタとして採用しています。 日本語の情報が多く、Scala触り始めの方でも扱う敷居は低いのではないかと思います。
+QueryDSL（クエリ直接記述） ScalikeJDBCのDSLはコード中にSQLを記述するように書けて、以下の2種類の書き方が可能です。
+val userMap = sql&amp;#34;&amp;#34;&amp;#34; select * from user where created_at &amp;gt; &amp;#39;2018-10-01&amp;#39; &amp;#34;&amp;#34;&amp;#34;.map(_.toMap).list.apply SQLInterpolation という機能を使用している場合は、クエリビルダのようにクエリを組み立てられます。
+val u = User.syntax(&amp;#34;u&amp;#34;) val groupMember = withSQL { select.from(User as u).where.gt(u.createdAt, createdAt) }.map(_.toMap).list.apply 挙動がわからず確認してみようと思ったきっかけ QueryDSLを使って、以下のように WHERE句に LocalDateの値を使用してSELECT句のクエリを流しました。
+val value = LocalDate.now() val userMap = sql&amp;#34;&amp;#34;&amp;#34; select * from user where value = $value &amp;#34;&amp;#34;&amp;#34;.map(_.toMap).list.apply 👇下記のようにSQLが流れる想定でしたが、
+select * from user where value = &#39;2018-12-13&#39; 👇以下のSQLが実行されてエラーとなりました。
+select * from user where value = 2018-12-13 つまり、自動でクォートされる型・されない型があるようです。</description>
+    </item>
+    
+    <item>
+      <title>ScalaのFunctionが実装するメソッド</title>
+      <link>https://sgswtky.github.io/post/scala-function-method/</link>
+      <pubDate>Tue, 23 Oct 2018 09:30:08 +0900</pubDate>
+      
+      <guid>https://sgswtky.github.io/post/scala-function-method/</guid>
+      <description>しばらく放置してた。反省。
+Scalaで関数を定義すると、すでにその時点でいくつかのメソッドが実装されている。 （レシーバとも言う？）
+Function1 で実際にどんなメソッドを実装しているかを見てみた。 以下の4つを実装してるっぽい。
+compose andThen apply toString    method description     compose 関数の合成   andThen 関数の合成   apply 関数の適用   toString String型に変換    compose（関数合成を行うメソッド）  レシーバの関数を後に適用 ２つの Function1 から新しい Function1 を生成  引数に  func{n} を結合するメソッドを３つ compose してみる
+object method extends App { def exampleFunc1(s: String): String = s + &amp;#34; func1&amp;#34; def exampleFunc2(s: String): String = s + &amp;#34; func2&amp;#34; def exampleFunc3(s: String): String = s + &amp;#34; func3&amp;#34; val ef1: String =&amp;gt; String = exampleFunc1 val ef2 = exampleFunc2 _ val ef3 = exampleFunc3 _ val f = ef1 compose ef2 compose ef3 val r = f(&amp;#34;EXAMPLE&amp;#34;) println(r) } EXAMPLE func3 func2 func1 composeはレシーバのメソッドを後ろから実行するような動きをするみたい。</description>
+    </item>
+    
+  </channel>
+</rss>
